@@ -26,17 +26,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final carbLeft = (carbsGoal - carbs);
     final fatLeft = (fatGoal - fat);
 
-    if (calLeft < -150) return 'You’re ${calLeft.abs()} kcal over. Choose a lighter meal and add a short walk.';
+    if (calLeft < -150) return 'You\'re ${calLeft.abs()} kcal over. Choose a lighter meal and add a short walk.';
     if (fatLeft < -10)  return 'Fat is a bit high today. Go lean protein and veggies next.';
     if (carbLeft < -25) return 'Carbs trending high. Prefer leafy greens and proteins tonight.';
 
-    if (proLeft > 20)   return 'You’re ${proLeft}g short on protein. Add chicken, tofu, or eggs next.';
+    if (proLeft > 20)   return 'You\'re ${proLeft}g short on protein. Add chicken, tofu, or eggs next.';
     if (calLeft > 250)  return 'About ${calLeft} kcal left—try a balanced snack (yogurt + fruit).';
     if (carbLeft > 40)  return 'You still have ${carbLeft}g carbs—whole grains or fruit could help.';
     if (fatLeft > 15)   return 'Room for ${fatLeft}g fat—add a little olive oil or nuts.';
 
     if (calLeft.abs() <= 100 && proLeft <= 10 && carbLeft <= 20 && fatLeft <= 10) {
-      return 'Great pace! A light, balanced dinner will nail today’s goals.';
+      return 'Great pace! A light, balanced dinner will nail today\'s goals.';
     }
     return 'Keep it steady—aim for balanced portions in your next meal.';
   }
@@ -47,171 +47,133 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // BottomNav is owned by MainDashboard.
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          children: [
-            const SizedBox(height: 16),
-            Center(child: Text('FitMeal', style: GoogleFonts.pacifico(fontSize: 32, color: darkGreen))),
-            const SizedBox(height: 12),
+        child: RefreshIndicator(
+          onRefresh: _refreshData,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            children: [
+              const SizedBox(height: 16),
+              Center(child: Text('FitMeal', style: GoogleFonts.pacifico(fontSize: 32, color: darkGreen))),
+              const SizedBox(height: 12),
 
-            // Search pill → Ingredient Search
-            InkWell(
-              onTap: () => Navigator.pushNamed(context, '/ingredient_search'),
-              borderRadius: BorderRadius.circular(24),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(24)),
-                child: Row(
+              // Search pill → Ingredient Search
+              InkWell(
+                onTap: () => Navigator.pushNamed(context, '/ingredient_search'),
+                borderRadius: BorderRadius.circular(24),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(24)),
+                  child: Row(
+                    children: [
+                      Icon(Icons.search, color: darkGreen),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text('Search recipes by ingredients',
+                          maxLines: 1, overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(color: Colors.black54)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Elegant daily progress (calories + macros)
+              _dailyProgressCard(),
+
+              const SizedBox(height: 12),
+
+              // Smart reminder
+              _reminderCard(_dailyTip),
+
+              const SizedBox(height: 16),
+
+              // Plan selector
+              Container(
+                height: 46,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(14), color: Colors.grey.shade200),
+                child: Row(children: [
+                  _planTabButton('Weekly Plan', 0),
+                  _planTabButton('Daily Plan', 1),
+                ]),
+              ),
+              const SizedBox(height: 12),
+
+              // Days of week scroll
+              SizedBox(
+                height: 36,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: days.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (_, i) {
+                    final selected = i == selectedDay;
+                    return GestureDetector(
+                      onTap: () => setState(() => selectedDay = i),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: selected ? darkGreen : Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(days[i],
+                          style: GoogleFonts.poppins(
+                            color: selected ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Plan summary with error handling
+              _planSummaryCard(),
+
+              const SizedBox(height: 16),
+              Text('Details', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 17)),
+              const SizedBox(height: 8),
+              Text('Breakfast', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+
+              // Tappable meal → Recipe details
+              _mealCard(),
+
+              const SizedBox(height: 12),
+              Text('Ingredients', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16)),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 72,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: [
-                    Icon(Icons.search, color: darkGreen),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text('Search recipes by ingredients',
-                        maxLines: 1, overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(color: Colors.black54)),
-                    ),
+                    _ingredientIcon('🥖', 'Bread'),
+                    _ingredientIcon('🍅', 'Tomato'),
+                    _ingredientIcon('🥬', 'Lettuce'),
+                    _ingredientIcon('➕', 'View All'),
                   ],
                 ),
               ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Elegant daily progress (calories + macros)
-            _dailyProgressCard(),
-
-            const SizedBox(height: 12),
-
-            // Smart reminder
-            _reminderCard(_dailyTip),
-
-            const SizedBox(height: 16),
-
-            // Plan selector
-            Container(
-              height: 46,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(14), color: Colors.grey.shade200),
-              child: Row(children: [
-                _planTabButton('Weekly Plan', 0),
-                _planTabButton('Daily Plan', 1),
-              ]),
-            ),
-            const SizedBox(height: 12),
-
-            // Days of week scroll
-            SizedBox(
-              height: 36,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: days.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
-                itemBuilder: (_, i) {
-                  final selected = i == selectedDay;
-                  return GestureDetector(
-                    onTap: () => setState(() => selectedDay = i),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: selected ? darkGreen : Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Text(days[i],
-                        style: GoogleFonts.poppins(
-                          color: selected ? Colors.white : Colors.black87,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Plan summary (now Wrap → no overflow)
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Colors.orange.shade50, borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Your Weight Loss Meal Plan",
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 16)),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 8,
-                    children: [
-                      _planStat('Protein', '450g', Colors.orange),
-                      _planStat('Calories', '1800', Colors.deepOrange),
-                      _planStat('Fat', '60g', Colors.redAccent),
-                      _planStat('Carbs', '200g', Colors.amber),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16),
-            Text('Details', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 17)),
-            const SizedBox(height: 8),
-            Text('Breakfast', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-
-            // Tappable meal → Recipe details
-            InkWell(
-              borderRadius: BorderRadius.circular(10),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const RecipeDetailScreen(
-                      name: 'Egg, Wheat Bread, Orange Juice',
-                      imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
-                      calories: 320, protein: 16, fat: 10, carbs: 42,
-                      ingredients: ['Egg', 'Wheat Bread', 'Orange Juice'],
-                      steps: ['Boil the egg.', 'Toast the bread.', 'Pour orange juice into glass.'],
-                      tags: ['Breakfast', 'Vegetarian'],
-                      allergens: ['Egg', 'Gluten'],
-                      comments: [
-                        {'user':'Anna','comment':'Quick and easy!'},
-                        {'user':'Ben','comment':'Perfect for busy mornings.'}
-                      ],
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                height: 56,
-                margin: const EdgeInsets.only(top: 6, bottom: 12),
-                decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(10)),
-                alignment: Alignment.center,
-                child: Text('Egg, Wheat Bread, Orange Juice',
-                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(color: Colors.black54)),
-              ),
-            ),
-
-            Text('Ingredients', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 72,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _ingredientIcon('🥖', 'Bread'),
-                  _ingredientIcon('🍅', 'Tomato'),
-                  _ingredientIcon('🥬', 'Lettuce'),
-                  _ingredientIcon('➕', 'View All'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 18),
-          ],
+              const SizedBox(height: 18),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _refreshData() async {
+    // Simulate data refresh
+    await Future.delayed(const Duration(seconds: 1));
+    if (mounted) {
+      setState(() {
+        // Refresh data here
+      });
+    }
   }
 
   // === Progress Card ===
@@ -364,18 +326,145 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Widget _planSummaryCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.orange.shade50, 
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.orange.shade200, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.restaurant_menu, color: Colors.orange.shade700),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text("Your Weight Loss Meal Plan",
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 16)),
+              ),
+              IconButton(
+                icon: Icon(Icons.edit, color: Colors.orange.shade700, size: 20),
+                onPressed: () => _editPlan(),
+                tooltip: 'Edit plan',
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 16,
+            runSpacing: 8,
+            children: [
+              _planStat('Protein', '450g', Colors.orange),
+              _planStat('Calories', '1800', Colors.deepOrange),
+              _planStat('Fat', '60g', Colors.redAccent),
+              _planStat('Carbs', '200g', Colors.amber),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _mealCard() {
+    return InkWell(
+      borderRadius: BorderRadius.circular(10),
+      onTap: () => _navigateToRecipe(),
+      child: Container(
+        height: 80,
+        margin: const EdgeInsets.only(top: 6, bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                width: 56,
+                height: 56,
+                color: Colors.orange.shade200,
+                child: Icon(Icons.breakfast_dining, color: Colors.orange.shade700),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Egg, Wheat Bread, Orange Juice',
+                      maxLines: 1, overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 4),
+                  Text('320 kcal • 16g protein',
+                      style: GoogleFonts.poppins(fontSize: 12, color: Colors.black54)),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: Colors.grey.shade400),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _navigateToRecipe() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const RecipeDetailScreen(
+          name: 'Egg, Wheat Bread, Orange Juice',
+          imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
+          calories: 320, protein: 16, fat: 10, carbs: 42,
+          ingredients: ['Egg', 'Wheat Bread', 'Orange Juice'],
+          steps: ['Boil the egg.', 'Toast the bread.', 'Pour orange juice into glass.'],
+          tags: ['Breakfast', 'Vegetarian'],
+          allergens: ['Egg', 'Gluten'],
+          comments: [
+            {'user':'Anna','comment':'Quick and easy!'},
+            {'user':'Ben','comment':'Perfect for busy mornings.'}
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _editPlan() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Plan editing feature coming soon!'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   // === Existing helpers ===
   Widget _planStat(String label, String value, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white, borderRadius: BorderRadius.circular(8),
+        color: Colors.white, 
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(label, style: GoogleFonts.poppins(fontSize: 13, color: color, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 2),
           Text(value, style: GoogleFonts.poppins(fontSize: 16, color: color, fontWeight: FontWeight.w600)),
         ],
       ),
@@ -415,13 +504,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       margin: const EdgeInsets.only(right: 12),
       width: 64,
-      decoration: BoxDecoration(color: Colors.orange.shade50, borderRadius: BorderRadius.circular(14)),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(emoji, style: const TextStyle(fontSize: 28)),
-        const SizedBox(height: 6),
-        Text(label, maxLines: 1, overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500)),
-      ]),
+      decoration: BoxDecoration(
+        color: Colors.orange.shade50, 
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.orange.shade200),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, 
+        children: [
+          Text(emoji, style: const TextStyle(fontSize: 28)),
+          const SizedBox(height: 6),
+          Text(label, 
+              maxLines: 1, 
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500)),
+        ]
+      ),
     );
   }
 }

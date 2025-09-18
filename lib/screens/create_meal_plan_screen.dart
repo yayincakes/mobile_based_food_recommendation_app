@@ -3,10 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 
 enum PlanMode { auto, manual }
 
-class CreateMealPlanScreen extends StatelessWidget {
+class CreateMealPlanScreen extends StatefulWidget {
   const CreateMealPlanScreen({super.key});
 
+  @override
+  State<CreateMealPlanScreen> createState() => _CreateMealPlanScreenState();
+}
+
+class _CreateMealPlanScreenState extends State<CreateMealPlanScreen> {
   Color get darkGreen => const Color(0xFF0B6A0B);
+  PlanMode? _selectedMode;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +31,7 @@ class CreateMealPlanScreen extends StatelessWidget {
             style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
         actions: [
           TextButton(
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, '/dashboard'),
+            onPressed: () => _navigateToSkip(),
             child: Text('Skip',
                 style: GoogleFonts.poppins(
                   color: Colors.white,
@@ -54,13 +60,13 @@ class CreateMealPlanScreen extends StatelessWidget {
                       icon: Icons.healing,
                       color: darkGreen,
                       text:
-                          'This app is disease‑specific. Your choices (e.g., Diabetes, Hypertension, CKD, Hyperlipidemia) tailor calories, macros, sodium/sugar thresholds, and recommended recipes.',
+                          'This app is disease-specific. Your choices (e.g., Diabetes, Hypertension, CKD, Hyperlipidemia) tailor calories, macros, sodium/sugar thresholds, and recommended recipes.',
                     ),
                     const SizedBox(height: 16),
 
                     // Options
                     _OptionCard(
-                      title: 'Auto‑Generate Plan',
+                      title: 'Auto-Generate Plan',
                       icon: Icons.auto_awesome,
                       iconColor: Colors.amber[700]!,
                       description:
@@ -70,8 +76,9 @@ class CreateMealPlanScreen extends StatelessWidget {
                         'Instant weekly plan',
                         'You can edit later'
                       ],
-                      onTap: () => _goFlow(context, PlanMode.auto),
+                      onTap: () => _selectMode(PlanMode.auto),
                       accent: darkGreen,
+                      isSelected: _selectedMode == PlanMode.auto,
                     ),
                     const SizedBox(height: 12),
                     _OptionCard(
@@ -85,14 +92,15 @@ class CreateMealPlanScreen extends StatelessWidget {
                         'Swap recipes anytime',
                         'Keep condition rules active'
                       ],
-                      onTap: () => _goFlow(context, PlanMode.manual),
+                      onTap: () => _selectMode(PlanMode.manual),
                       outlined: true,
                       accent: darkGreen,
+                      isSelected: _selectedMode == PlanMode.manual,
                     ),
                     const SizedBox(height: 20),
 
                     // What we'll ask + privacy
-                    _SectionHeader(title: 'What we’ll ask'),
+                    _SectionHeader(title: 'What we\'ll ask'),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
@@ -125,8 +133,8 @@ class CreateMealPlanScreen extends StatelessWidget {
                       offset: const Offset(0, -2))
                 ],
               ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 12, bottom: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16)
+                  .copyWith(top: 12, bottom: 12),
               child: Column(
                 children: [
                   SizedBox(
@@ -141,9 +149,18 @@ class CreateMealPlanScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                       ),
-                      icon: const Icon(Icons.auto_awesome),
-                      label: const Text('Auto‑Generate Plan'),
-                      onPressed: () => _goFlow(context, PlanMode.auto),
+                      icon: _isLoading 
+                          ? const SizedBox(
+                              width: 20, 
+                              height: 20, 
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
+                          : const Icon(Icons.auto_awesome),
+                      label: Text(_isLoading ? 'Processing...' : 'Auto-Generate Plan'),
+                      onPressed: _isLoading ? null : () => _goFlow(PlanMode.auto),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -161,7 +178,7 @@ class CreateMealPlanScreen extends StatelessWidget {
                       ),
                       icon: const Icon(Icons.edit),
                       label: const Text('Create Manually'),
-                      onPressed: () => _goFlow(context, PlanMode.manual),
+                      onPressed: _isLoading ? null : () => _goFlow(PlanMode.manual),
                     ),
                   ),
                 ],
@@ -173,16 +190,43 @@ class CreateMealPlanScreen extends StatelessWidget {
     );
   }
 
-  void _goFlow(BuildContext context, PlanMode mode) {
-    // Navigate to your onboarding_flow_screen and pass the chosen mode.
-    // In your flow screen, read arguments:
-    // final args = ModalRoute.of(context)!.settings.arguments as Map?;
-    // final mode = args?['mode'] as PlanMode? ?? PlanMode.auto;
-    Navigator.pushNamed(
-      context,  
-      '/onboarding_flow',
-      arguments: {'mode': mode.name},
-    );
+  void _selectMode(PlanMode mode) {
+    setState(() => _selectedMode = mode);
+  }
+
+  void _navigateToSkip() {
+    Navigator.pushReplacementNamed(context, '/dashboard');
+  }
+
+  Future<void> _goFlow(PlanMode mode) async {
+    if (_isLoading) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      // Simulate a brief loading delay
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      if (!mounted) return;
+      
+      Navigator.pushNamed(
+        context,
+        '/onboarding_flow',
+        arguments: {'mode': mode.name},
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to start plan creation: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 }
 
@@ -197,6 +241,7 @@ class _OptionCard extends StatelessWidget {
   final VoidCallback onTap;
   final bool outlined;
   final Color accent;
+  final bool isSelected;
 
   const _OptionCard({
     required this.title,
@@ -207,14 +252,20 @@ class _OptionCard extends StatelessWidget {
     required this.onTap,
     required this.accent,
     this.outlined = false,
+    this.isSelected = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final box = BoxDecoration(
-      color: outlined ? Colors.white : Colors.white,
+      color: isSelected ? accent.withOpacity(0.05) : Colors.white,
       borderRadius: BorderRadius.circular(16),
-      border: outlined ? Border.all(color: accent.withOpacity(.35)) : null,
+      border: Border.all(
+        color: isSelected 
+            ? accent 
+            : (outlined ? accent.withOpacity(.35) : Colors.transparent),
+        width: isSelected ? 2 : 1,
+      ),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(.04),
@@ -280,6 +331,8 @@ class _OptionCard extends StatelessWidget {
                 ],
               ),
             ),
+            if (isSelected)
+              Icon(Icons.check_circle, color: accent, size: 24),
           ],
         ),
       ),

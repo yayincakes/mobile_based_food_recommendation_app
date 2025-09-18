@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_recommendation_app/screens/profile_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'screens/splash_screen.dart';
@@ -11,6 +10,7 @@ import 'screens/favorite_screen.dart';
 import 'screens/create_meal_plan_screen.dart';
 import 'screens/onboarding_flow_screen.dart';
 import 'screens/tracker_screen.dart';
+import 'screens/profile_screen.dart';
 
 void main() {
   runApp(const FitMealApp());
@@ -40,24 +40,48 @@ class FitMealApp extends StatelessWidget {
         ),
         primaryColor: darkGreen,
       ),
-
-      // Flow:
-      // / (Splash) -> /onboarding -> /login -> /create_plan -> /onboarding_flow -> /dashboard
       initialRoute: '/',
-      routes: {
-        '/': (context) => const SplashScreen(),
-        '/onboarding': (context) => const OnboardingScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/create_plan': (context) => const CreateMealPlanScreen(),
-        '/onboarding_flow': (context) => const OnboardingFlowScreen(),
-        '/dashboard': (context) => const MainDashboard(),
-
-        // Extra pages (reachable from dashboard/bottom nav)
-        '/ingredient_search': (context) => const IngredientSearchScreen(),
-        '/favorites': (context) => const FavoriteScreen(),
-        '/tracker': (context) => const TrackerScreen(),
-        '/profile': (context) => const ProfileScreen(), // optional direct route
-      },
+      onGenerateRoute: _generateRoute,
     );
+  }
+
+  static Route<dynamic>? _generateRoute(RouteSettings settings) {
+    // Handle route arguments properly
+    final args = settings.arguments as Map<String, dynamic>?;
+    
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case '/onboarding':
+        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
+      case '/login':
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case '/create_plan':
+        return MaterialPageRoute(builder: (_) => const CreateMealPlanScreen());
+      case '/onboarding_flow':
+        return MaterialPageRoute(
+          builder: (_) => OnboardingFlowScreen(
+            planMode: args?['mode'] ?? 'auto',
+          ),
+        );
+      case '/dashboard':
+        return MaterialPageRoute(builder: (_) => const MainDashboard());
+      case '/ingredient_search':
+        return MaterialPageRoute(builder: (_) => const IngredientSearchScreen());
+      case '/favorites':
+        return MaterialPageRoute(builder: (_) => const FavoriteScreen());
+      case '/tracker':
+        return MaterialPageRoute(builder: (_) => const TrackerScreen());
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      default:
+        return MaterialPageRoute(
+          builder: (_) => Scaffold(
+            body: Center(
+              child: Text('Route ${settings.name} not found'),
+            ),
+          ),
+        );
+    }
   }
 }
