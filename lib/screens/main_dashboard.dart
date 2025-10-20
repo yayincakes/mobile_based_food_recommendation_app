@@ -218,12 +218,22 @@ class _AddMealBottomSheetState extends State<AddMealBottomSheet> {
   ];
 
   final List<String> _quickMeals = [
-    'Grilled Chicken Salad',
-    'Oatmeal with Berries',
-    'Greek Yogurt Bowl',
-    'Veggie Wrap',
-    'Protein Smoothie',
-    'Mixed Nuts',
+    'Tapsilog',
+    'Chicken Adobo',
+    'Sinigang na Baboy',
+    'Pancit Canton',
+    'Lumpia Shanghai',
+    'Arroz Caldo',
+    'Tinola',
+    'Pinakbet',
+    'Lechon Kawali',
+    'Kare-Kare',
+    'Sisig',
+    'Bangus',
+    'Champorado',
+    'Turon',
+    'Banana Cue',
+    'Halo-Halo',
   ];
 
   @override
@@ -311,7 +321,7 @@ class _AddMealBottomSheetState extends State<AddMealBottomSheet> {
               controller: _mealController,
               decoration: InputDecoration(
                 labelText: 'Meal Name',
-                hintText: 'e.g., Grilled chicken with rice',
+                hintText: 'e.g., Chicken Adobo with Rice',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -331,7 +341,7 @@ class _AddMealBottomSheetState extends State<AddMealBottomSheet> {
           
           // Quick add options
           Text(
-            'Quick Add',
+            'Quick Add (Filipino Favorites)',
             style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -355,6 +365,8 @@ class _AddMealBottomSheetState extends State<AddMealBottomSheet> {
                       style: GoogleFonts.poppins(fontSize: 12),
                     ),
                     onPressed: () => _addQuickMeal(meal),
+                    backgroundColor: Colors.orange.shade50,
+                    side: BorderSide(color: Colors.orange.shade200),
                   ),
                 );
               },
