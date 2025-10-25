@@ -1113,7 +1113,7 @@ class _TrackerScreenState extends State<TrackerScreen>
                             children: [
                               Text('${data.calories} kcal',
                                 style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-                              Text('${data.steps} steps • ${data.water} glasses',
+                              Text('${data.steps} steps â€¢ ${data.water} glasses',
                                 style: GoogleFonts.poppins(
                                   fontSize: 12, 
                                   color: Colors.black54,

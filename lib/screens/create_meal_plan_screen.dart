@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/profile_management_service.dart';
 
 enum PlanMode { auto, manual }
 
@@ -14,6 +15,49 @@ class _CreateMealPlanScreenState extends State<CreateMealPlanScreen> {
   Color get darkGreen => const Color(0xFF0B6A0B);
   PlanMode? _selectedMode;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkExistingMealPlan();
+  }
+
+  Future<void> _checkExistingMealPlan() async {
+    try {
+      // Check if user already has an active meal plan
+      final existingMealPlan = await ProfileManagementService.getActiveMealPlan();
+      
+      if (existingMealPlan != null) {
+        // User already has a meal plan - redirect to dashboard
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text('You already have a meal plan. Redirecting to dashboard...',
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                  ),
+                ],
+              ),
+              backgroundColor: darkGreen,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          );
+          
+          // Wait a moment for user to see the message, then redirect
+          await Future.delayed(const Duration(seconds: 2));
+          Navigator.pushReplacementNamed(context, '/dashboard');
+        }
+      }
+    } catch (e) {
+      // If there's an error checking, continue with plan creation
+      debugPrint('Error checking existing meal plan: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

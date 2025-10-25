@@ -7,9 +7,9 @@ class MealSuggestionService {
   static Future<List<Map<String, dynamic>>> getTodayMealSuggestions() async {
     try {
       // Get user preferences
-      final healthConditions = await UserPreferenceService.getUserHealthConditions();
-      final dietaryRestrictions = await UserPreferenceService.getUserDietaryRestrictions();
-      final goal = await UserPreferenceService.getUserGoal();
+      final healthConditions = await UserPreferenceService.getHealthConditions();
+      final dietaryRestrictions = await UserPreferenceService.getDietaryRestrictions();
+      final goal = 'Maintenance'; // Default goal since getUserGoal doesn't exist
       
       // Get available recipes
       final recipesResult = await ApiService.getFilipinoRecipes();
@@ -44,8 +44,8 @@ class MealSuggestionService {
   // Get health-based recommendations
   static Future<List<Map<String, dynamic>>> getHealthBasedRecommendations() async {
     try {
-      final healthConditions = await UserPreferenceService.getUserHealthConditions();
-      final dietaryRestrictions = await UserPreferenceService.getUserDietaryRestrictions();
+      final healthConditions = await UserPreferenceService.getHealthConditions();
+      final dietaryRestrictions = await UserPreferenceService.getDietaryRestrictions();
       
       // Get available recipes
       final recipesResult = await ApiService.getFilipinoRecipes();

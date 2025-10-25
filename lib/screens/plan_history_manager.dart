@@ -18,6 +18,9 @@ class PlanHistoryManager {
   // Get current plans (immutable copy)
   List<UserMealPlan> get plans => List.unmodifiable(_plans);
   
+  // Get the current active plan (one plan per user)
+  UserMealPlan? get activePlan => _plans.where((plan) => plan.status == PlanStatus.active).firstOrNull;
+  
   // Get plans count
   int get count => _plans.length;
   
@@ -25,7 +28,7 @@ class PlanHistoryManager {
   bool get isEmpty => _plans.isEmpty;
   bool get isNotEmpty => _plans.isNotEmpty;
 
-  // Add a new meal plan
+  // Add a new meal plan (one plan per user - deactivates existing plans)
   String addPlan({
     required DateTime date,
     required String goal,
@@ -39,6 +42,28 @@ class PlanHistoryManager {
     String? planName,
   }) {
     try {
+      // Deactivate all existing plans (one plan per user)
+      for (int i = 0; i < _plans.length; i++) {
+        if (_plans[i].status == PlanStatus.active) {
+          _plans[i] = UserMealPlan(
+            id: _plans[i].id,
+            name: _plans[i].name,
+            createdDate: _plans[i].createdDate,
+            goal: _plans[i].goal,
+            activityLevel: _plans[i].activityLevel,
+            heightCm: _plans[i].heightCm,
+            weightKg: _plans[i].weightKg,
+            targetWeight: _plans[i].targetWeight,
+            healthConditions: _plans[i].healthConditions,
+            dietaryRestrictions: _plans[i].dietaryRestrictions,
+            planMode: _plans[i].planMode,
+            status: PlanStatus.completed, // Mark old plan as completed
+            progress: _plans[i].progress,
+            lastModified: DateTime.now(),
+          );
+        }
+      }
+
       final planId = DateTime.now().millisecondsSinceEpoch.toString();
       final plan = UserMealPlan(
         id: planId,
@@ -60,7 +85,7 @@ class PlanHistoryManager {
       _notifyListeners();
       _persistPlans();
       
-      if (kDebugMode) print('Added plan: ${plan.name}');
+      if (kDebugMode) print('Added plan: ${plan.name} (deactivated ${_plans.length - 1} old plans)');
       return planId;
     } catch (e) {
       if (kDebugMode) print('Error adding plan: $e');

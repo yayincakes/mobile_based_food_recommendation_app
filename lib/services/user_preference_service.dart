@@ -2,163 +2,147 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferenceService {
-  // Get user health conditions
-  static Future<List<String>> getUserHealthConditions() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final conditionsJson = prefs.getString('healthConditions');
-      if (conditionsJson != null) {
-        final conditions = List<String>.from(json.decode(conditionsJson));
-        return conditions;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-  
   // Get user dietary restrictions
-  static Future<List<String>> getUserDietaryRestrictions() async {
+  static Future<List<String>> getDietaryRestrictions() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final restrictionsJson = prefs.getString('restrictions');
       if (restrictionsJson != null) {
-        final restrictions = List<String>.from(json.decode(restrictionsJson));
-        return restrictions;
+        return List<String>.from(json.decode(restrictionsJson));
       }
       return [];
     } catch (e) {
       return [];
     }
   }
-  
-  // Get user goal
-  static Future<String> getUserGoal() async {
+
+  // Get user health conditions
+  static Future<List<String>> getHealthConditions() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return prefs.getString('dietGoal') ?? 'Maintenance';
+      final conditionsJson = prefs.getString('healthConditions');
+      if (conditionsJson != null) {
+        return List<String>.from(json.decode(conditionsJson));
+      }
+      return [];
     } catch (e) {
-      return 'Maintenance';
+      return [];
     }
   }
-  
-  // Get calorie goal
-  static Future<int> getCalorieGoal() async {
+
+  // Get user allergens (from restrictions)
+  static Future<List<String>> getAllergens() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      return prefs.getInt('calorieGoal') ?? 2000;
-    } catch (e) {
-      return 2000;
-    }
-  }
-  
-  // Get macro targets
-  static Future<Map<String, double>> getMacroTargets() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final protein = prefs.getDouble('proteinTarget') ?? 0.25;
-      final carbs = prefs.getDouble('carbsTarget') ?? 0.50;
-      final fat = prefs.getDouble('fatTarget') ?? 0.25;
+      final restrictions = await getDietaryRestrictions();
+      final allergenKeywords = [
+        'Nut allergy', 'Dairy-free', 'Gluten-free', 'Shellfish', 'Soy', 'Eggs'
+      ];
       
-      return {
-        'protein': protein,
-        'carbs': carbs,
-        'fat': fat,
-      };
+      return restrictions.where((restriction) => 
+        allergenKeywords.any((allergen) => 
+          restriction.toLowerCase().contains(allergen.toLowerCase())
+        )
+      ).toList();
     } catch (e) {
-      return {
-        'protein': 0.25,
-        'carbs': 0.50,
-        'fat': 0.25,
-      };
+      return [];
     }
   }
-  
-  // Filter recipes based on user preferences
-  static List<Map<String, dynamic>> filterRecipesForUser(
-    List<Map<String, dynamic>> recipes, {
-    required List<String> healthConditions,
-    required List<String> dietaryRestrictions,
-    required String goal,
-  }) {
-    return recipes.where((recipe) {
-      // Filter based on health conditions
-      if (healthConditions.isNotEmpty && healthConditions.first != 'None') {
-        // Add health-based filtering logic here
-        // For now, return all recipes
+
+  // Get user dietary preferences (vegetarian, vegan, etc.)
+  static Future<List<String>> getDietaryPreferences() async {
+    try {
+      final restrictions = await getDietaryRestrictions();
+      final preferenceKeywords = [
+        'Vegetarian', 'Vegan', 'Pork-free'
+      ];
+      
+      return restrictions.where((restriction) => 
+        preferenceKeywords.any((preference) => 
+          restriction.toLowerCase().contains(preference.toLowerCase())
+        )
+      ).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Check if recipe is suitable for user based on restrictions
+  static Future<bool> isRecipeSuitable(Map<String, dynamic> recipe) async {
+    try {
+      final allergens = await getAllergens();
+      final preferences = await getDietaryPreferences();
+      final healthConditions = await getHealthConditions();
+      
+      // Check allergens
+      final recipeAllergens = List<String>.from(recipe['allergens'] ?? []);
+      for (String allergen in allergens) {
+        if (recipeAllergens.any((recipeAllergen) => 
+          recipeAllergen.toLowerCase().contains(allergen.toLowerCase())
+        )) {
+          return false;
+        }
       }
       
-      // Filter based on dietary restrictions
-      if (dietaryRestrictions.isNotEmpty && dietaryRestrictions.first != 'None') {
-        for (final restriction in dietaryRestrictions) {
-          if (restriction == 'Vegetarian' && _containsMeat(recipe)) {
-            return false;
-          }
-          if (restriction == 'Vegan' && (_containsMeat(recipe) || _containsDairy(recipe))) {
-            return false;
-          }
-          if (restriction == 'Dairy-free' && _containsDairy(recipe)) {
-            return false;
-          }
-          if (restriction == 'Nut allergy' && _containsNuts(recipe)) {
-            return false;
-          }
-          if (restriction == 'Gluten-free' && _containsGluten(recipe)) {
-            return false;
-          }
-          if (restriction == 'Pork-free' && _containsPork(recipe)) {
-            return false;
-          }
+      // Check dietary preferences
+      if (preferences.contains('Vegetarian') || preferences.contains('Vegan')) {
+        final ingredients = List<String>.from(recipe['ingredients'] ?? []);
+        final meatKeywords = ['manok', 'chicken', 'baboy', 'pork', 'baka', 'beef', 'isda', 'fish'];
+        
+        if (ingredients.any((ingredient) => 
+          meatKeywords.any((meat) => 
+            ingredient.toLowerCase().contains(meat)
+          )
+        )) {
+          return false;
+        }
+      }
+      
+      // Check health conditions
+      if (healthConditions.contains('Diabetes')) {
+        // Filter high-carb recipes for diabetes
+        final calories = recipe['calories'] ?? 0;
+        final carbs = recipe['carbs'] ?? 0;
+        if (carbs > 50 || calories > 400) {
+          return false;
+        }
+      }
+      
+      if (healthConditions.contains('Hypertension')) {
+        // Filter high-sodium recipes for hypertension
+        final ingredients = List<String>.from(recipe['ingredients'] ?? []);
+        final sodiumKeywords = ['toyo', 'soy sauce', 'patis', 'fish sauce', 'bagoong', 'shrimp paste'];
+        
+        if (ingredients.any((ingredient) => 
+          sodiumKeywords.any((sodium) => 
+            ingredient.toLowerCase().contains(sodium)
+          )
+        )) {
+          return false;
         }
       }
       
       return true;
-    }).toList();
-  }
-  
-  // Helper methods for dietary restrictions
-  
-  static bool _containsMeat(Map<String, dynamic> recipe) {
-    final ingredients = _getIngredientsList(recipe);
-    final meatKeywords = ['manok', 'baboy', 'baka', 'karne', 'chicken', 'pork', 'beef', 'meat'];
-    return ingredients.any((ingredient) => 
-      meatKeywords.any((keyword) => ingredient.toLowerCase().contains(keyword)));
-  }
-  
-  static bool _containsDairy(Map<String, dynamic> recipe) {
-    final ingredients = _getIngredientsList(recipe);
-    final dairyKeywords = ['gatas', 'milk', 'cheese', 'dairy', 'butter', 'cream'];
-    return ingredients.any((ingredient) => 
-      dairyKeywords.any((keyword) => ingredient.toLowerCase().contains(keyword)));
-  }
-  
-  static bool _containsNuts(Map<String, dynamic> recipe) {
-    final ingredients = _getIngredientsList(recipe);
-    final nutKeywords = ['mani', 'nuts', 'peanut', 'almond', 'cashew', 'walnut'];
-    return ingredients.any((ingredient) => 
-      nutKeywords.any((keyword) => ingredient.toLowerCase().contains(keyword)));
-  }
-  
-  static bool _containsGluten(Map<String, dynamic> recipe) {
-    final ingredients = _getIngredientsList(recipe);
-    final glutenKeywords = ['wheat', 'flour', 'bread', 'pasta', 'noodles', 'canton'];
-    return ingredients.any((ingredient) => 
-      glutenKeywords.any((keyword) => ingredient.toLowerCase().contains(keyword)));
-  }
-  
-  static bool _containsPork(Map<String, dynamic> recipe) {
-    final ingredients = _getIngredientsList(recipe);
-    final porkKeywords = ['baboy', 'pork', 'bacon', 'ham'];
-    return ingredients.any((ingredient) => 
-      porkKeywords.any((keyword) => ingredient.toLowerCase().contains(keyword)));
-  }
-  
-  static List<String> _getIngredientsList(Map<String, dynamic> recipe) {
-    if (recipe['ingredients'] is List) {
-      return (recipe['ingredients'] as List)
-          .map((e) => e.toString().toLowerCase())
-          .toList();
+    } catch (e) {
+      return true; // If error, show all recipes
     }
-    return [];
+  }
+
+  // Get recommended recipes based on user profile
+  static Future<List<Map<String, dynamic>>> getRecommendedRecipes(
+    List<Map<String, dynamic>> allRecipes
+  ) async {
+    try {
+      final suitableRecipes = <Map<String, dynamic>>[];
+      
+      for (Map<String, dynamic> recipe in allRecipes) {
+        if (await isRecipeSuitable(recipe)) {
+          suitableRecipes.add(recipe);
+        }
+      }
+      
+      return suitableRecipes;
+    } catch (e) {
+      return allRecipes; // If error, return all recipes
+    }
   }
 }

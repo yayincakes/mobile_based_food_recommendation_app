@@ -89,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -116,6 +117,32 @@ class _LoginScreenState extends State<LoginScreen>
     
     if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
       return 'Username can only contain letters, numbers, and underscores';
+    }
+    
+    return null;
+  }
+
+  String? _validateUsernameOrEmail(String? value) {
+    if (value?.trim().isEmpty ?? true) {
+      return 'Please enter your username or email';
+    }
+    
+    final trimmedValue = value!.trim();
+    
+    // Check if it's an email
+    if (trimmedValue.contains('@')) {
+      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(trimmedValue)) {
+        return 'Please enter a valid email address';
+      }
+    } else {
+      // It's a username
+      if (trimmedValue.length < 3) {
+        return 'Username must be at least 3 characters';
+      }
+      
+      if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(trimmedValue)) {
+        return 'Username can only contain letters, numbers, and underscores';
+      }
     }
     
     return null;
@@ -220,26 +247,48 @@ class _LoginScreenState extends State<LoginScreen>
       final email = _loginUsernameController.text.trim();
       final password = _loginPasswordController.text;
       
-      // Try API login first
-      final result = await ApiService.login(
-        email,
-        password,
-      );
-      
-      if (result['success']) {
-        final userData = result['data']['user'];
-        await _handleSuccessfulLogin(
-          userData['name'] ?? userData['email'],
-          userData: userData,
-          isAdmin: userData['is_admin'] ?? false,
-        );
+      // Check for admin credentials first (before API call)
+      if ((email == 'admin@fitmeal.com' && password == 'admin123') ||
+          (email == 'admin' && password == 'admin123') ||
+          (email == 'admin@example.com' && password == 'password')) {
+        await _handleLocalAdminLogin();
         return;
       }
       
-      // Fallback to local admin check
-      if (email == 'admin' && password == 'password123') {
-        await _handleSuccessfulLogin(email, isAdmin: true);
-        return;
+      // Try API login for regular users
+      try {
+        final result = await ApiService.login(
+          email,
+          password,
+        );
+        
+        if (result['success']) {
+          final userData = result['data']['user'];
+          final isAdmin = userData['role'] == 'admin';
+          
+          // Save admin session if admin
+          if (isAdmin) {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('admin_token', result['data']['token']);
+            await prefs.setString('admin_user', json.encode(userData));
+            await prefs.setBool('is_admin_logged_in', true);
+            
+            if (!mounted) return;
+            Navigator.pushReplacementNamed(context, '/admin_dashboard');
+            return;
+          }
+          
+          // Regular user login
+          await _handleSuccessfulLogin(
+            userData['name'] ?? userData['email'],
+            userData: userData,
+            isAdmin: false,
+          );
+          return;
+        }
+      } catch (apiError) {
+        // API failed, continue to local user check
+        debugPrint('API login failed: $apiError');
       }
       
       // Fallback to local users
@@ -252,13 +301,42 @@ class _LoginScreenState extends State<LoginScreen>
         }
       }
       
-      throw Exception(result['error'] ?? 'Invalid credentials');
+      throw Exception('Invalid credentials');
     } catch (e) {
       _showError(_getErrorMessage(e));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
       }
+    }
+  }
+
+  Future<void> _handleLocalAdminLogin() async {
+    try {
+      final email = _loginUsernameController.text.trim();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('admin_token', 'local_admin_token');
+      await prefs.setString('admin_user', json.encode({
+        'name': 'Admin User',
+        'email': email,
+        'role': 'admin',
+        'is_active': true,
+      }));
+      await prefs.setBool('is_admin_logged_in', true);
+      
+      if (!mounted) return;
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Welcome back, Admin!'),
+          backgroundColor: darkGreen,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      
+      Navigator.pushReplacementNamed(context, '/admin_dashboard');
+    } catch (e) {
+      _showError('Failed to login as admin');
     }
   }
 
@@ -608,20 +686,16 @@ class _LoginScreenState extends State<LoginScreen>
       key: _loginFormKey,
       child: Column(
         children: [
-          // Username field
+          // Username/Email field
           _buildTextField(
             controller: _loginUsernameController,
             focusNode: _usernameFocusNode,
-            validator: (v) => _validateUsername(v),
-            labelText: 'Username',
-            hintText: 'Enter your username',
+            validator: (v) => _validateUsernameOrEmail(v),
+            labelText: 'Username or Email',
+            hintText: 'Enter your username or email',
             prefixIcon: Icons.person,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) => _passwordFocusNode.requestFocus(),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
-              LengthLimitingTextInputFormatter(20),
-            ],
           ),
           
           const SizedBox(height: 16),

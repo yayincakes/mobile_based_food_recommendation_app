@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'favorites_manager.dart';
 import 'recipe_detail_screen.dart';
+import '../models/recipe.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -355,22 +356,41 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  void _navigateToRecipe(Map<String, dynamic> recipe) {
+  // Helper method to convert Map to Recipe object
+  Recipe _mapToRecipe(Map<String, dynamic> recipeMap) {
+    return Recipe(
+      id: recipeMap['id'] ?? 0,
+      name: recipeMap['name'] ?? '',
+      description: recipeMap['description'] ?? '',
+      prepTime: recipeMap['prepTime'] ?? 0,
+      cookTime: recipeMap['cookTime'] ?? 0,
+      servings: recipeMap['servings'] ?? 1,
+      difficulty: recipeMap['difficulty'] ?? 'Easy',
+      category: recipeMap['category'] ?? '',
+      caloriesPerServing: recipeMap['calories'] ?? 0,
+      proteinPerServing: recipeMap['protein'] ?? 0,
+      carbsPerServing: recipeMap['carbs'] ?? 0,
+      fatPerServing: recipeMap['fat'] ?? 0,
+      instructions: recipeMap['instructions'] ?? '',
+      isFilipinoDish: recipeMap['isFilipinoDish'] ?? false,
+      ingredients: List<String>.from(recipeMap['ingredients'] ?? []),
+      tags: List<String>.from(recipeMap['tags'] ?? []),
+      allergens: List<String>.from(recipeMap['allergens'] ?? []),
+      rating: (recipeMap['rating'] ?? 4.0).toDouble(),
+      cookTimeFormatted: recipeMap['cookTimeFormatted'] ?? '${recipeMap['cookTime'] ?? 0} min',
+      prepTimeFormatted: recipeMap['prepTimeFormatted'] ?? '${recipeMap['prepTime'] ?? 0} min',
+      imageUrl: recipeMap['imageUrl'] ?? '',
+    );
+  }
+
+  void _navigateToRecipe(Map<String, dynamic> recipeMap) {
+    final recipe = _mapToRecipe(recipeMap);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => RecipeDetailScreen(
-          name: recipe['name'],
-          imageUrl: recipe['imageUrl'] ?? '',
-          calories: recipe['calories'],
-          protein: recipe['protein'],
-          fat: recipe['fat'],
-          carbs: recipe['carbs'],
-          ingredients: List<String>.from(recipe['ingredients'] ?? []),
-          steps: List<String>.from(recipe['steps'] ?? []),
-          tags: List<String>.from(recipe['tags'] ?? []),
-          allergens: List<String>.from(recipe['allergens'] ?? []),
-          comments: List<Map<String, String>>.from(recipe['comments'] ?? []),
+          recipe: recipe,
+          mealType: 'Favorite', // Default meal type for favorites
         ),
       ),
     ).then((_) => setState(() {})); // Refresh after return

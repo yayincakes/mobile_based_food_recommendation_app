@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   static const String baseUrl = 'http://localhost:8000/api';
@@ -179,6 +180,128 @@ class ApiService {
         'success': false,
         'error': 'Network error: $e',
       };
+    }
+  }
+
+  // Generic HTTP methods for admin
+  static Future<Map<String, dynamic>> get(String endpoint) async {
+    try {
+      final token = await _getAuthToken();
+      final response = await http.get(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+      );
+      
+      return _handleResponse(response);
+    } catch (e) {
+      return {
+        'success': false,
+        'error': 'Network error: $e',
+      };
+    }
+  }
+
+  static Future<Map<String, dynamic>> post(String endpoint, Map<String, dynamic> data) async {
+    try {
+      final token = await _getAuthToken();
+      final response = await http.post(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+        body: json.encode(data),
+      );
+      
+      return _handleResponse(response);
+    } catch (e) {
+      return {
+        'success': false,
+        'error': 'Network error: $e',
+      };
+    }
+  }
+
+  static Future<Map<String, dynamic>> put(String endpoint, Map<String, dynamic> data) async {
+    try {
+      final token = await _getAuthToken();
+      final response = await http.put(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+        body: json.encode(data),
+      );
+      
+      return _handleResponse(response);
+    } catch (e) {
+      return {
+        'success': false,
+        'error': 'Network error: $e',
+      };
+    }
+  }
+
+  static Future<Map<String, dynamic>> delete(String endpoint) async {
+    try {
+      final token = await _getAuthToken();
+      final response = await http.delete(
+        Uri.parse('$baseUrl$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+      );
+      
+      return _handleResponse(response);
+    } catch (e) {
+      return {
+        'success': false,
+        'error': 'Network error: $e',
+      };
+    }
+  }
+
+  static Future<String?> _getAuthToken() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('admin_token');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Map<String, dynamic> _handleResponse(http.Response response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        final data = json.decode(response.body);
+        return {
+          'success': true,
+          'data': data,
+        };
+      } catch (e) {
+        return {
+          'success': true,
+          'data': response.body,
+        };
+      }
+    } else {
+      try {
+        final error = json.decode(response.body);
+        return {
+          'success': false,
+          'error': error['message'] ?? 'Request failed: ${response.statusCode}',
+        };
+      } catch (e) {
+        return {
+          'success': false,
+          'error': 'Request failed: ${response.statusCode}',
+        };
+      }
     }
   }
 }
