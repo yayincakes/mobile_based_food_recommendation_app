@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "flutter build web --release",
+  "outputDirectory": "build/web",
+  "installCommand": "flutter pub get",
   "builds": [
     {
       "src": "build/web/**",
@@ -9,7 +12,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/build/web/$1"
+      "dest": "/$1"
     }
   ]
 }
