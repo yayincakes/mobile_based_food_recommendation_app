@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/user_data_service.dart';
+import '../services/nutrition_tracking_service.dart';
+import '../services/goal_calculation_service.dart';
+import '../services/nutrition_integration_service.dart';
 
 class TrackerScreen extends StatefulWidget {
   const TrackerScreen({super.key});
@@ -17,15 +21,12 @@ class _TrackerScreenState extends State<TrackerScreen>
   final days = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   int _selectedDay = DateTime.now().weekday % 7; // 0..6
 
-  // Demo state (wire up to your store later)
-  int calories = 1235, caloriesGoal = 1800;
-  int steps = 5200, stepsGoal = 8000;
-  int water = 5, waterGoal = 8; // glasses
-  int protein = 58, proteinGoal = 110;
-  int carbs = 165, carbsGoal = 220;
-  int fat = 35, fatGoal = 60;
-  int sleep = 7, sleepGoal = 8; // hours
-  int workoutMinutes = 25, workoutGoal = 30;
+  // Real user data
+  UserProfileData? _userProfile;
+  DailyNutritionLog? _todayLog;
+  Map<String, int> _goals = {};
+  Map<String, int> _currentValues = {};
+  bool _isLoading = true;
 
   // Animation controller for progress animations
   late AnimationController _animationController;
@@ -34,22 +35,16 @@ class _TrackerScreenState extends State<TrackerScreen>
   // Habits (simple toggles)
   final List<_Habit> habits = [
     _Habit('Morning walk (30 min)', false, Icons.directions_walk),
-    _Habit('Drink 8 glasses of water', true, Icons.local_drink),
+    _Habit('Drink 8 glasses of water', false, Icons.local_drink),
     _Habit('Take vitamins', false, Icons.medication),
-    _Habit('Stretch for 10 minutes', true, Icons.self_improvement),
-    _Habit('Read nutrition labels', false, Icons.label),
+    _Habit('Stretch for 10 minutes', false, Icons.self_improvement),
   ];
 
-  // Weekly progress data
-  final List<_WeeklyData> weeklyData = [
-    _WeeklyData('Mon', 1650, 7500, 6),
-    _WeeklyData('Tue', 1720, 8200, 7),
-    _WeeklyData('Wed', 1580, 6800, 8),
-    _WeeklyData('Thu', 1650, 9100, 6),
-    _WeeklyData('Fri', 1235, 5200, 7),
-    _WeeklyData('Sat', 0, 0, 0), // Today (partial)
-    _WeeklyData('Sun', 0, 0, 0), // Future
-  ];
+  // Weekly progress data - will be loaded dynamically
+  List<_WeeklyData> weeklyData = [];
+  
+  // Streak count - will be calculated dynamically
+  int _streakCount = 0;
 
   double _pct(int v, int g) => (v / g).clamp(0.0, 1.0);
 
@@ -57,6 +52,9 @@ class _TrackerScreenState extends State<TrackerScreen>
   void initState() {
     super.initState();
     _setupAnimation();
+    _loadUserData();
+    _loadWeeklyData();
+    _calculateStreak();
   }
 
   void _setupAnimation() {
@@ -70,6 +68,153 @@ class _TrackerScreenState extends State<TrackerScreen>
     _animationController.forward();
   }
 
+  // Load user data and goals
+  Future<void> _loadUserData() async {
+    try {
+      setState(() => _isLoading = true);
+      
+      // Load user profile
+      _userProfile = await UserDataService.getUserProfile();
+      
+      // Calculate personalized goals
+      if (_userProfile != null) {
+        _goals = GoalCalculationService.getAllGoals(_userProfile);
+      } else {
+        // Default goals if no profile
+        _goals = {
+          'calories': 1800,
+          'protein': 80,
+          'carbs': 200,
+          'fat': 60,
+          'water': 8,
+        };
+      }
+      
+      // Auto-sync with diet history if needed
+      await NutritionIntegrationService.autoSyncIfNeeded();
+      
+      // Load today's combined nutrition log (includes diet history)
+      _todayLog = await NutritionIntegrationService.getCombinedTodayLog();
+      
+      // Set current values
+      _updateCurrentValues();
+      
+      setState(() => _isLoading = false);
+    } catch (e) {
+      print('Error loading user data: $e');
+      setState(() => _isLoading = false);
+    }
+  }
+
+  // Update current values from today's log
+  void _updateCurrentValues() {
+    if (_todayLog != null) {
+      _currentValues = {
+        'calories': _todayLog!.calories,
+        'protein': _todayLog!.protein,
+        'carbs': _todayLog!.carbs,
+        'fat': _todayLog!.fat,
+        'water': _todayLog!.water,
+      };
+    } else {
+      _currentValues = {
+        'calories': 0,
+        'protein': 0,
+        'carbs': 0,
+        'fat': 0,
+        'water': 0,
+      };
+    }
+  }
+
+  // Load real weekly nutrition data
+  Future<void> _loadWeeklyData() async {
+    try {
+      final now = DateTime.now();
+      final weekStart = now.subtract(Duration(days: now.weekday - 1));
+      
+      // Get logs for the past 7 days
+      final logs = await NutritionTrackingService.getLogsForDateRange(
+        weekStart, 
+        weekStart.add(const Duration(days: 6))
+      );
+      
+      // Create a map of date to log for easy lookup
+      final Map<String, DailyNutritionLog> logMap = {};
+      for (final log in logs) {
+        final dateKey = '${log.date.year}-${log.date.month.toString().padLeft(2, '0')}-${log.date.day.toString().padLeft(2, '0')}';
+        logMap[dateKey] = log;
+      }
+      
+      // Generate weekly data for the past 7 days
+      weeklyData.clear();
+      final dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      
+      for (int i = 0; i < 7; i++) {
+        final date = weekStart.add(Duration(days: i));
+        final dateKey = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+        
+        final log = logMap[dateKey];
+        final calories = log?.calories ?? 0;
+        final water = log?.water ?? 0;
+        final steps = log?.steps ?? 0;
+        
+        weeklyData.add(_WeeklyData(dayNames[i], calories, steps, water));
+      }
+      
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading weekly data: $e');
+      // Fallback to empty data
+      weeklyData = List.generate(7, (index) => _WeeklyData(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index], 0, 0, 0));
+    }
+  }
+
+  // Calculate streak count based on consecutive days with nutrition logging
+  Future<void> _calculateStreak() async {
+    try {
+      final now = DateTime.now();
+      int streak = 0;
+      
+      // Check consecutive days backwards from today
+      for (int i = 0; i < 30; i++) { // Check up to 30 days back
+        final checkDate = now.subtract(Duration(days: i));
+        
+        // Get log for this date
+        final log = await NutritionTrackingService.getLogsForDateRange(checkDate, checkDate);
+        
+        if (log.isNotEmpty && log.first.calories > 0) {
+          // Day has nutrition data, continue streak
+          streak++;
+        } else {
+          // No data for this day, streak ends
+          break;
+        }
+      }
+      
+      _streakCount = streak;
+      
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error calculating streak: $e');
+      _streakCount = 0;
+    }
+  }
+
+  // Get current value for a metric
+  int _getCurrentValue(String metric) {
+    return _currentValues[metric] ?? 0;
+  }
+
+  // Get goal for a metric
+  int _getGoal(String metric) {
+    return _goals[metric] ?? 1;
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -78,6 +223,27 @@ class _TrackerScreenState extends State<TrackerScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: darkGreen,
+          elevation: 0,
+          title: Text('Daily Tracker', 
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+          leading: Navigator.canPop(context)
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                )
+              : null,
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     final today = DateTime.now();
     final todayStr = _formatDate(today);
 
@@ -100,9 +266,9 @@ class _TrackerScreenState extends State<TrackerScreen>
             tooltip: 'Weekly progress',
           ),
           IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: _showSettings,
-            tooltip: 'Tracker settings',
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshData,
+            tooltip: 'Refresh',
           ),
         ],
       ),
@@ -142,30 +308,18 @@ class _TrackerScreenState extends State<TrackerScreen>
 
                   const SizedBox(height: 16),
 
-                  // Additional metrics
-                  _additionalMetricsRow(),
-
-                  const SizedBox(height: 16),
-
                   // Habits and goals section
                   _habitsAndGoalsSection(),
 
                   const SizedBox(height: 16),
 
-                  // Quick add section
-                  _quickAddSection(),
+                  // Goal reminders section
+                  _goalRemindersSection(),
                 ],
               ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _showAddEntryDialog,
-        backgroundColor: darkGreen,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
-        label: Text('Log Entry', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
       ),
     );
   }
@@ -219,7 +373,7 @@ class _TrackerScreenState extends State<TrackerScreen>
               ],
             ),
           ),
-          _streakBadge(count: 4),
+          _streakBadge(count: _streakCount),
         ],
       ),
     );
@@ -283,9 +437,8 @@ class _TrackerScreenState extends State<TrackerScreen>
 
   // Progress snapshot widget
   Widget _snapshotCard() {
-    final pctCals = _pct(calories, caloriesGoal);
-    final pctSteps = _pct(steps, stepsGoal);
-    final pctWater = _pct(water, waterGoal);
+    final pctCals = _pct(_getCurrentValue('calories'), _getGoal('calories'));
+    final pctWater = _pct(_getCurrentValue('water'), _getGoal('water'));
 
     return Container(
       decoration: BoxDecoration(
@@ -320,11 +473,9 @@ class _TrackerScreenState extends State<TrackerScreen>
             ],
           ),
           const SizedBox(height: 12),
-          _miniProgressRow('Calories', '$calories / $caloriesGoal kcal', pctCals, Colors.deepOrange),
+          _miniProgressRow('Calories', '${_getCurrentValue('calories')} / ${_getGoal('calories')} kcal', pctCals, Colors.deepOrange),
           const SizedBox(height: 10),
-          _miniProgressRow('Steps', '$steps / $stepsGoal', pctSteps, Colors.teal),
-          const SizedBox(height: 10),
-          _miniProgressRow('Water', '$water / $waterGoal glasses', pctWater, Colors.blueAccent),
+          _miniProgressRow('Water', '${_getCurrentValue('water')} / ${_getGoal('water')} glasses', pctWater, Colors.blueAccent),
         ],
       ),
     );
@@ -364,7 +515,7 @@ class _TrackerScreenState extends State<TrackerScreen>
   Widget _metricsGrid() {
     return LayoutBuilder(builder: (context, constraints) {
       final isWide = constraints.maxWidth >= 700;
-      final crossAxisCount = isWide ? 3 : 2;
+      final crossAxisCount = isWide ? 2 : 2;
       final aspectRatio = isWide ? 1.1 : 0.9;
       
       return GridView.count(
@@ -378,28 +529,18 @@ class _TrackerScreenState extends State<TrackerScreen>
           _ringMetric(
             icon: Icons.local_fire_department,
             title: 'Calories',
-            value: calories,
-            goal: caloriesGoal,
+            value: _getCurrentValue('calories'),
+            goal: _getGoal('calories'),
             unit: 'kcal',
             color: Colors.deepOrange,
             onAdd: () => _updateMetric('calories', 50),
             onMinus: () => _updateMetric('calories', -50),
           ),
           _ringMetric(
-            icon: Icons.directions_walk,
-            title: 'Steps',
-            value: steps,
-            goal: stepsGoal,
-            unit: 'steps',
-            color: Colors.teal,
-            onAdd: () => _updateMetric('steps', 500),
-            onMinus: () => _updateMetric('steps', -500),
-          ),
-          _ringMetric(
             icon: Icons.opacity,
             title: 'Water',
-            value: water,
-            goal: waterGoal,
+            value: _getCurrentValue('water'),
+            goal: _getGoal('water'),
             unit: 'glasses',
             color: Colors.blueAccent,
             onAdd: () => _updateMetric('water', 1),
@@ -568,11 +709,11 @@ class _TrackerScreenState extends State<TrackerScreen>
             ],
           ),
           const SizedBox(height: 16),
-          _macroRow('Protein', protein, proteinGoal, Colors.green),
+          _macroRow('Protein', _getCurrentValue('protein'), _getGoal('protein'), Colors.green),
           const SizedBox(height: 12),
-          _macroRow('Carbs', carbs, carbsGoal, Colors.orange),
+          _macroRow('Carbs', _getCurrentValue('carbs'), _getGoal('carbs'), Colors.orange),
           const SizedBox(height: 12),
-          _macroRow('Fat', fat, fatGoal, Colors.redAccent),
+          _macroRow('Fat', _getCurrentValue('fat'), _getGoal('fat'), Colors.redAccent),
         ],
       ),
     );
@@ -610,107 +751,9 @@ class _TrackerScreenState extends State<TrackerScreen>
     );
   }
 
-  // Additional metrics row (sleep, workout)
-  Widget _additionalMetricsRow() {
-    return Row(
-      children: [
-        Expanded(
-          child: _additionalMetricCard(
-            icon: Icons.bedtime,
-            label: 'Sleep',
-            value: '$sleep hrs',
-            progress: _pct(sleep, sleepGoal),
-            color: Colors.indigo,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _additionalMetricCard(
-            icon: Icons.fitness_center,
-            label: 'Workout',
-            value: '$workoutMinutes min',
-            progress: _pct(workoutMinutes, workoutGoal),
-            color: Colors.purple,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _additionalMetricCard({
-    required IconData icon,
-    required String label,
-    required String value,
-    required double progress,
-    required Color color,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          )
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 16,
-                backgroundColor: color.withOpacity(0.1),
-                child: Icon(icon, color: color, size: 18),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(value,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      )),
-                    Text(label,
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      )),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              minHeight: 6,
-              value: progress,
-              backgroundColor: Colors.grey.shade300,
-              valueColor: AlwaysStoppedAnimation<Color>(color),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   // Habits and goals section
   Widget _habitsAndGoalsSection() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: _habitsCard()),
-        const SizedBox(width: 12),
-        Expanded(child: _remindersCard()),
-      ],
-    );
+    return _habitsCard();
   }
 
   Widget _habitsCard() {
@@ -795,81 +838,8 @@ class _TrackerScreenState extends State<TrackerScreen>
     );
   }
 
-  Widget _remindersCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          )
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.notifications_active, color: darkGreen),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text('Reminders', 
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w700, 
-                    fontSize: 16,
-                  )),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          _reminderTile(Icons.local_drink, 'Drink water', 'Every 2 hours'),
-          _reminderTile(Icons.restaurant, 'Lunch time', '12:30 PM'),
-          _reminderTile(Icons.directions_walk, 'Evening walk', '6:00 PM'),
-          _reminderTile(Icons.bedtime, 'Wind down', '10:00 PM'),
-        ],
-      ),
-    );
-  }
-
-  Widget _reminderTile(IconData icon, String title, String when) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 14,
-            backgroundColor: lightGreen,
-            child: Icon(icon, size: 14, color: darkGreen),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, 
-                  style: GoogleFonts.poppins(
-                    fontSize: 13, 
-                    fontWeight: FontWeight.w600,
-                  )),
-                Text(when, 
-                  style: GoogleFonts.poppins(
-                    fontSize: 11, 
-                    color: Colors.black54,
-                  )),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Quick add section
-  Widget _quickAddSection() {
+  // Goal reminders section
+  Widget _goalRemindersSection() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -886,53 +856,138 @@ class _TrackerScreenState extends State<TrackerScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Quick Add', 
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w700, 
-              fontSize: 16,
-            )),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
+          Row(
             children: [
-              _quickAddButton('Water', Icons.local_drink, () => _updateMetric('water', 1)),
-              _quickAddButton('100 Steps', Icons.directions_walk, () => _updateMetric('steps', 100)),
-              _quickAddButton('Snack', Icons.cookie, () => _updateMetric('calories', 150)),
-              _quickAddButton('Exercise', Icons.fitness_center, _showWorkoutDialog),
+              Icon(Icons.flag, color: darkGreen),
+              const SizedBox(width: 8),
+              Text('Today\'s Goal Reminders', 
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w700, 
+                  fontSize: 16,
+                )),
             ],
+          ),
+          const SizedBox(height: 16),
+          _goalReminderTile(
+            icon: Icons.local_fire_department,
+            title: 'Calorie Target',
+            goal: '${_getGoal('calories')} kcal',
+            current: _getCurrentValue('calories'),
+            goalValue: _getGoal('calories'),
+            color: Colors.deepOrange,
+          ),
+          const SizedBox(height: 12),
+          _goalReminderTile(
+            icon: Icons.opacity,
+            title: 'Water Intake',
+            goal: '${_getGoal('water')} glasses',
+            current: _getCurrentValue('water'),
+            goalValue: _getGoal('water'),
+            color: Colors.blueAccent,
+          ),
+          const SizedBox(height: 12),
+          _goalReminderTile(
+            icon: Icons.restaurant,
+            title: 'Protein Goal',
+            goal: '${_getGoal('protein')} g',
+            current: _getCurrentValue('protein'),
+            goalValue: _getGoal('protein'),
+            color: Colors.green,
+          ),
+          const SizedBox(height: 12),
+          _goalReminderTile(
+            icon: Icons.grain,
+            title: 'Carbs Goal',
+            goal: '${_getGoal('carbs')} g',
+            current: _getCurrentValue('carbs'),
+            goalValue: _getGoal('carbs'),
+            color: Colors.orange,
+          ),
+          const SizedBox(height: 12),
+          _goalReminderTile(
+            icon: Icons.water_drop,
+            title: 'Fat Goal',
+            goal: '${_getGoal('fat')} g',
+            current: _getCurrentValue('fat'),
+            goalValue: _getGoal('fat'),
+            color: Colors.redAccent,
           ),
         ],
       ),
     );
   }
 
-  Widget _quickAddButton(String label, IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: lightGreen,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: darkGreen.withOpacity(0.3)),
+  Widget _goalReminderTile({
+    required IconData icon,
+    required String title,
+    required String goal,
+    required int current,
+    required int goalValue,
+    required Color color,
+  }) {
+    final remaining = (goalValue - current).clamp(0, goalValue);
+    final isComplete = current >= goalValue;
+    
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isComplete ? color.withOpacity(0.1) : Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isComplete ? color : Colors.grey.shade300,
+          width: 1,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 16, color: darkGreen),
-            const SizedBox(width: 6),
-            Text(label, 
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: darkGreen,
-              )),
-          ],
-        ),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: color.withOpacity(0.2),
+            child: Icon(icon, color: color, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  )),
+                const SizedBox(height: 2),
+                Text(
+                  isComplete 
+                    ? 'Goal achieved! 🎉' 
+                    : 'Remaining: $remaining',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: isComplete ? color : Colors.black54,
+                    fontWeight: isComplete ? FontWeight.w600 : FontWeight.normal,
+                  )),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(goal,
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: color,
+                )),
+              Text('$current / $goalValue',
+                style: GoogleFonts.poppins(
+                  fontSize: 11,
+                  color: Colors.black54,
+                )),
+            ],
+          ),
+          const SizedBox(width: 8),
+          if (isComplete)
+            Icon(Icons.check_circle, color: color, size: 24),
+        ],
       ),
     );
   }
@@ -992,59 +1047,87 @@ class _TrackerScreenState extends State<TrackerScreen>
   }
 
   int _getCompletionPercentage() {
-    final totalMetrics = 6; // calories, steps, water, protein, carbs, fat
+    final totalMetrics = 5; // calories, water, protein, carbs, fat
     int completed = 0;
     
-    if (_pct(calories, caloriesGoal) >= 0.8) completed++;
-    if (_pct(steps, stepsGoal) >= 0.8) completed++;
-    if (_pct(water, waterGoal) >= 0.8) completed++;
-    if (_pct(protein, proteinGoal) >= 0.8) completed++;
-    if (_pct(carbs, carbsGoal) >= 0.8) completed++;
-    if (_pct(fat, fatGoal) >= 0.8) completed++;
+    if (_pct(_getCurrentValue('calories'), _getGoal('calories')) >= 0.8) completed++;
+    if (_pct(_getCurrentValue('water'), _getGoal('water')) >= 0.8) completed++;
+    if (_pct(_getCurrentValue('protein'), _getGoal('protein')) >= 0.8) completed++;
+    if (_pct(_getCurrentValue('carbs'), _getGoal('carbs')) >= 0.8) completed++;
+    if (_pct(_getCurrentValue('fat'), _getGoal('fat')) >= 0.8) completed++;
     
     return ((completed / totalMetrics) * 100).round();
   }
 
-  void _updateMetric(String metric, int delta) {
+  void _updateMetric(String metric, int delta) async {
+    final currentValue = _getCurrentValue(metric);
+    final newValue = (currentValue + delta).clamp(0, 9999);
+    
+    // Update local state immediately for responsive UI
     setState(() {
-      switch (metric) {
-        case 'calories':
-          calories = (calories + delta).clamp(0, 9999);
-          break;
-        case 'steps':
-          steps = (steps + delta).clamp(0, 50000);
-          break;
-        case 'water':
-          water = (water + delta).clamp(0, 20);
-          break;
-        case 'protein':
-          protein = (protein + delta).clamp(0, 300);
-          break;
-        case 'carbs':
-          carbs = (carbs + delta).clamp(0, 500);
-          break;
-        case 'fat':
-          fat = (fat + delta).clamp(0, 200);
-          break;
-      }
+      _currentValues[metric] = newValue;
     });
-
-    // Show feedback
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${metric.capitalize()} updated'),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 1),
-      ),
-    );
+    
+    // Save to nutrition tracking service
+    try {
+      Map<String, int> updateValues = {};
+      updateValues[metric] = newValue;
+      
+      await NutritionTrackingService.updateNutritionValues(
+        calories: metric == 'calories' ? newValue : null,
+        protein: metric == 'protein' ? newValue : null,
+        carbs: metric == 'carbs' ? newValue : null,
+        fat: metric == 'fat' ? newValue : null,
+        water: metric == 'water' ? newValue : null,
+      );
+      
+      // Sync with diet history and reload data
+      await NutritionIntegrationService.syncTodayWithDietHistory();
+      _todayLog = await NutritionIntegrationService.getCombinedTodayLog();
+      _updateCurrentValues();
+      
+      // Also refresh weekly data to show updated values
+      await _loadWeeklyData();
+      
+      // Recalculate streak
+      await _calculateStreak();
+      
+      // Show feedback
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${metric.capitalize()} updated'),
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 1),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error updating metric: $e');
+      // Revert local state on error
+      setState(() {
+        _currentValues[metric] = currentValue;
+      });
+    }
   }
 
   Future<void> _refreshData() async {
-    await Future.delayed(const Duration(seconds: 1));
+    // Sync with diet history first
+    await NutritionIntegrationService.syncTodayWithDietHistory();
+    
+    // Reload user data, weekly data, and streak
+    await _loadUserData();
+    await _loadWeeklyData();
+    await _calculateStreak();
+    
     if (mounted) {
-      setState(() {
-        // Refresh logic here - reload from storage/API
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Data refreshed'),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 1),
+        ),
+      );
     }
   }
 
@@ -1082,186 +1165,63 @@ class _TrackerScreenState extends State<TrackerScreen>
             const SizedBox(height: 20),
             
             Expanded(
-              child: ListView.builder(
-                itemCount: weeklyData.length,
-                itemBuilder: (context, index) {
-                  final data = weeklyData[index];
-                  final isToday = index == 4;
-                  
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isToday ? darkGreen.withOpacity(0.1) : Colors.grey.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                      border: isToday ? Border.all(color: darkGreen, width: 2) : null,
-                    ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                          child: Text(data.day,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              color: isToday ? darkGreen : Colors.black87,
-                            )),
+              child: weeklyData.isEmpty 
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: weeklyData.length,
+                    itemBuilder: (context, index) {
+                      final data = weeklyData[index];
+                      final now = DateTime.now();
+                      final todayWeekday = now.weekday; // 1 = Monday, 7 = Sunday
+                      final isToday = index == (todayWeekday - 1); // Convert to 0-based index
+                      
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isToday ? darkGreen.withOpacity(0.1) : Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: isToday ? Border.all(color: darkGreen, width: 2) : null,
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('${data.calories} kcal',
-                                style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-                              Text('${data.steps} steps â€¢ ${data.water} glasses',
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 40,
+                              child: Text(data.day,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 12, 
-                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w600,
+                                  color: isToday ? darkGreen : Colors.black87,
                                 )),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${data.calories} kcal',
+                                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                                  Text('${data.water} glasses water',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12, 
+                                      color: Colors.black54,
+                                    )),
+                                ],
+                              ),
+                            ),
+                            if (data.calories > 0)
+                              const Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                                size: 20,
+                              ),
+                          ],
                         ),
-                        if (data.calories > 0)
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 20,
-                          ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      );
+                    },
+                  ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showSettings() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Tracker Settings', 
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              )),
-            const SizedBox(height: 20),
-            
-            ListTile(
-              leading: Icon(Icons.edit_notifications, color: darkGreen),
-              title: Text('Notification Schedule', 
-                style: GoogleFonts.poppins()),
-              subtitle: Text('Manage reminder times',
-                style: GoogleFonts.poppins(fontSize: 12)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.pop(context),
-            ),
-            
-            ListTile(
-              leading: Icon(Icons.flag, color: darkGreen),
-              title: Text('Daily Goals', 
-                style: GoogleFonts.poppins()),
-              subtitle: Text('Adjust target values',
-                style: GoogleFonts.poppins(fontSize: 12)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.pop(context),
-            ),
-            
-            ListTile(
-              leading: Icon(Icons.import_export, color: darkGreen),
-              title: Text('Export Data', 
-                style: GoogleFonts.poppins()),
-              subtitle: Text('Download your progress',
-                style: GoogleFonts.poppins(fontSize: 12)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showAddEntryDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Quick Log', 
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('What would you like to log?',
-              style: GoogleFonts.poppins()),
-            const SizedBox(height: 16),
-            
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                _dialogButton('Meal', Icons.restaurant, () {
-                  Navigator.pop(context);
-                  _showAddFoodDialog();
-                }),
-                _dialogButton('Water', Icons.local_drink, () {
-                  Navigator.pop(context);
-                  _updateMetric('water', 1);
-                }),
-                _dialogButton('Exercise', Icons.fitness_center, () {
-                  Navigator.pop(context);
-                  _showWorkoutDialog();
-                }),
-                _dialogButton('Weight', Icons.monitor_weight, () {
-                  Navigator.pop(context);
-                  _showWeightDialog();
-                }),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', 
-              style: GoogleFonts.poppins(color: Colors.grey)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _dialogButton(String label, IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        height: 80,
-        decoration: BoxDecoration(
-          color: lightGreen,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: darkGreen, size: 28),
-            const SizedBox(height: 4),
-            Text(label,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: darkGreen,
-              )),
           ],
         ),
       ),
@@ -1339,162 +1299,41 @@ class _TrackerScreenState extends State<TrackerScreen>
             child: Text('Cancel', style: GoogleFonts.poppins(color: Colors.grey)),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               final cal = int.tryParse(caloriesController.text) ?? 0;
               final prot = int.tryParse(proteinController.text) ?? 0;
               final carb = int.tryParse(carbsController.text) ?? 0;
               final fatValue = int.tryParse(fatController.text) ?? 0;
 
-              setState(() {
-                calories += cal;
-                protein += prot;
-                carbs += carb;
-                fat += fatValue;
-              });
+              // Create nutrition entry
+              final entry = NutritionEntry(
+                id: DateTime.now().millisecondsSinceEpoch.toString(),
+                name: 'Custom Food',
+                mealType: 'snack',
+                calories: cal,
+                protein: prot,
+                carbs: carb,
+                fat: fatValue,
+                timestamp: DateTime.now(),
+                description: 'Manually added food',
+              );
+              
+              // Add to nutrition tracking
+              await NutritionTrackingService.addNutritionEntry(entry);
+              
+              // Sync with diet history to ensure consistency
+              await NutritionIntegrationService.syncTodayWithDietHistory();
+              
+              // Reload data to update UI
+              await _loadUserData();
+              await _loadWeeklyData();
+              await _calculateStreak();
 
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Food logged successfully'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: darkGreen,
-              foregroundColor: Colors.white,
-            ),
-            child: Text('Add', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showWorkoutDialog() {
-    final TextEditingController minutesController = TextEditingController();
-    String selectedType = 'Cardio';
-    
-    showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          title: Text('Log Workout', 
-            style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButtonFormField<String>(
-                value: selectedType,
-                decoration: InputDecoration(
-                  labelText: 'Workout Type',
-                  border: const OutlineInputBorder(),
-                  labelStyle: GoogleFonts.poppins(),
-                ),
-                items: ['Cardio', 'Strength', 'Yoga', 'Walking', 'Running']
-                    .map((type) => DropdownMenuItem(
-                          value: type,
-                          child: Text(type, style: GoogleFonts.poppins()),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setDialogState(() => selectedType = value);
-                  }
-                },
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: minutesController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Duration (minutes)',
-                  hintText: 'Enter minutes',
-                  border: const OutlineInputBorder(),
-                  labelStyle: GoogleFonts.poppins(),
-                ),
-                style: GoogleFonts.poppins(),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel', style: GoogleFonts.poppins(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final minutes = int.tryParse(minutesController.text) ?? 0;
-                if (minutes > 0) {
-                  setState(() {
-                    workoutMinutes += minutes;
-                  });
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('$selectedType workout logged: ${minutes}min'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: darkGreen,
-                foregroundColor: Colors.white,
-              ),
-              child: Text('Log', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showWeightDialog() {
-    final TextEditingController weightController = TextEditingController();
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Log Weight', 
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: weightController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: 'Weight (kg)',
-                hintText: 'Enter your weight',
-                border: const OutlineInputBorder(),
-                labelStyle: GoogleFonts.poppins(),
-              ),
-              style: GoogleFonts.poppins(),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Your weight will be saved and used for progress tracking.',
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                color: Colors.black54,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.poppins(color: Colors.grey)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final weight = double.tryParse(weightController.text);
-              if (weight != null && weight > 0) {
-                Navigator.pop(context);
+              if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Weight logged: ${weight.toStringAsFixed(1)}kg'),
+                  const SnackBar(
+                    content: Text('Food logged successfully'),
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
@@ -1504,7 +1343,7 @@ class _TrackerScreenState extends State<TrackerScreen>
               backgroundColor: darkGreen,
               foregroundColor: Colors.white,
             ),
-            child: Text('Log', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+            child: Text('Add', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
           ),
         ],
       ),

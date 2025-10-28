@@ -43,7 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (existingProfile == null) {
         print('No existing profile found, creating test profile...');
         
-        // Create a test profile
+        // Create a test profile with realistic health conditions and preferences
         final testProfile = UserProfile(
           name: 'Test User',
           email: 'test@example.com',
@@ -52,22 +52,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
           gender: 'Male',
           birthDate: DateTime.now().subtract(const Duration(days: 25 * 365)),
           activityLevel: 'Moderately active',
-          dietaryGoals: [],
-          healthConditions: [],
-          allergies: [],
-          mealPlans: [
-            MealPlan(
-              id: 'test-plan-1',
-              name: 'Auto Plan',
-              description: 'AI-recommended personalized plan',
+          dietaryGoals: [
+            DietaryGoal(
+              id: 'goal-1',
+              name: 'Weight Loss',
+              description: 'Lose 10kg in 6 months',
+              type: 'weight_loss',
+              targetWeight: 60.0,
+              targetCalories: 1800.0,
               startDate: DateTime.now(),
-              endDate: DateTime.now().add(const Duration(days: 30)),
+              endDate: DateTime.now().add(const Duration(days: 180)),
               isActive: true,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
             ),
           ],
-          preferences: ['Traditional Filipino', 'High protein', 'Quick & easy recipes'],
+          healthConditions: [
+            HealthCondition(
+              id: 'health-1',
+              name: 'Diabetes',
+              description: 'Type 2 diabetes',
+              severity: 'moderate',
+              diagnosedDate: DateTime.now().subtract(const Duration(days: 365)),
+              notes: 'Well controlled with diet',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
+          ],
+          allergies: [
+            Allergy(
+              id: 'allergy-1',
+              name: 'Nuts',
+              type: 'food',
+              severity: 'moderate',
+              symptoms: 'Mild rash and itching',
+              notes: 'Avoid all tree nuts',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
+          ],
+          mealPlans: [], // Don't create a test meal plan to avoid interference
+          preferences: ['Traditional Filipino', 'High protein', 'Quick & easy recipes', 'Low carb'],
           goal: 'Weight Loss',
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
@@ -91,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int get currentDayOfWeek => (selectedDate.weekday - 1) % 7;
   
   // Get personalized weekly meal plan
-  Map<int, Map<String, dynamic>> get weeklyMealPlan {
+  Future<Map<int, Map<String, dynamic>>> get weeklyMealPlan async {
     // Create cache key based on current state
     final currentCacheKey = _generateCacheKey();
     
@@ -105,10 +130,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Map<int, Map<String, dynamic>> newPlan;
     if (_recommendedRecipes.isNotEmpty) {
       print('Using personalized recommendations for weekly plan');
-      newPlan = _generatePersonalizedMealPlan();
+      newPlan = await _generatePersonalizedMealPlan();
     } else if (_userProfile != null) {
       print('No recommendations yet, but user profile exists - generating personalized plan');
-      newPlan = _generatePersonalizedMealPlan();
+      newPlan = await _generatePersonalizedMealPlan();
     } else {
       print('No user profile or recommendations, using default plan');
       newPlan = _getDefaultMealPlan();
@@ -125,16 +150,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final recipeCount = _recommendedRecipes.length;
     final userGoal = _userProfile?.goal ?? 'default';
     final userPreferences = _userProfile?.preferences.join(',') ?? '';
-    return '${recipeCount}_${userGoal}_${userPreferences}';
+    final userWeight = _userProfile?.weight?.toString() ?? '70';
+    final userHeight = _userProfile?.height?.toString() ?? '170';
+    final userGender = _userProfile?.gender ?? 'unknown';
+    
+    // Create a stable hash based on user characteristics
+    final userHash = '${userGoal}_${userPreferences}_${userWeight}_${userHeight}_${userGender}'.hashCode;
+    
+    return '${recipeCount}_${userHash}';
   }
 
   // Generate personalized meal plan based on recommendations
-  Map<int, Map<String, dynamic>> _generatePersonalizedMealPlan() {
+  Future<Map<int, Map<String, dynamic>>> _generatePersonalizedMealPlan() async {
     final Map<int, Map<String, dynamic>> personalizedPlan = {};
     
     // Get meal types based on user's plan preferences
-    final mealTypes = _getUserMealTypes();
+    final mealTypes = await _getUserMealTypes();
     print('Generating personalized meal plan with meal types: $mealTypes');
+    print('Number of meal types: ${mealTypes.length}');
     
     // Get recipes to use (either from recommendations or all recipes)
     List<Recipe> recipesToUse = _recommendedRecipes;
@@ -145,17 +178,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     
     print('Using ${recipesToUse.length} recipes for meal plan generation');
     
-    // Create a map to track recipe indices for each meal type to ensure cycling
-    final Map<String, int> recipeIndexPerMealType = {};
-    
-    // Initialize tracking for each meal type
-    for (String mealType in mealTypes) {
-      recipeIndexPerMealType[mealType] = 0;
-    }
-    
-    // Pre-shuffle recipes once for consistent results
+    // Use recipes in consistent order for stable meal plans
     final shuffledRecipes = List<Recipe>.from(recipesToUse);
-    shuffledRecipes.shuffle();
+    // Sort by name for consistent ordering instead of shuffling
+    shuffledRecipes.sort((a, b) => a.name.compareTo(b.name));
     
     for (int day = 0; day < 7; day++) {
       final dayMeals = <String, dynamic>{};
@@ -172,18 +198,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             !usedRecipeIdsToday.contains(recipe.id)).toList();
           
           Recipe selectedRecipe;
+          int? selectedIndex;
           if (availableRecipes.isNotEmpty) {
-            // Use cycling index to select different recipes each day
-            // Add day offset to ensure different recipes each day
-            final dayOffset = day * 2; // Different offset for each day
-            final currentIndex = (recipeIndexPerMealType[mealType]! + dayOffset) % availableRecipes.length;
-            selectedRecipe = availableRecipes[currentIndex];
-            recipeIndexPerMealType[mealType] = currentIndex + 1;
+            // Use consistent cycling based on day and meal type for stable selection
+            final baseIndex = (day * mealTypes.length + mealTypes.indexOf(mealType)) % availableRecipes.length;
+            selectedRecipe = availableRecipes[baseIndex];
+            selectedIndex = baseIndex;
             usedRecipeIdsToday.add(selectedRecipe.id);
-            print('Day $day, $mealType: Selected "${selectedRecipe.name}" (Index: $currentIndex, Available: ${availableRecipes.length})');
+            print('Day $day, $mealType: Selected "${selectedRecipe.name}" (Index: $baseIndex, Available: ${availableRecipes.length})');
           } else {
             // If all recipes are used today, use the first one
             selectedRecipe = mealRecipes.first;
+            selectedIndex = 0;
             usedRecipeIdsToday.add(selectedRecipe.id);
             print('Day $day, $mealType: Using first recipe "${selectedRecipe.name}" (all used today)');
           }
@@ -203,7 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             'category': selectedRecipe.category,
             'isFilipinoDish': selectedRecipe.isFilipinoDish,
           };
-          print('Day $day, $mealType: ${selectedRecipe.name} (Index: ${recipeIndexPerMealType[mealType]! - 1})');
+          print('Day $day, $mealType: ${selectedRecipe.name} (Index: $selectedIndex)');
         } else {
           // Fallback to default meal
           dayMeals[mealType] = _getDefaultMeal(mealType);
@@ -217,14 +243,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return personalizedPlan;
   }
 
-  // Get user's meal types based on their plan preferences
-  List<String> _getUserMealTypes() {
+  // Get user's meal types based on their meal plan
+  Future<List<String>> _getUserMealTypes() async {
     if (_userProfile == null) {
       print('No user profile, using default meal types');
       return ['breakfast', 'lunch', 'dinner', 'snack'];
     }
     
-    // Check if user has meal preferences that indicate frequency
+    // First, try to get meals per day from the active meal plan
+    try {
+      final activeMealPlan = await ProfileManagementService.getActiveMealPlan();
+      print('Active meal plan found: ${activeMealPlan != null}');
+      if (activeMealPlan != null) {
+        print('Meal plan details - ID: ${activeMealPlan.id}, Name: ${activeMealPlan.name}, MealsPerDay: ${activeMealPlan.mealsPerDay}');
+        if (activeMealPlan.mealsPerDay > 0) {
+          print('Using meals per day from meal plan: ${activeMealPlan.mealsPerDay}');
+          final mealTypes = _getMealTypesFromCount(activeMealPlan.mealsPerDay);
+          print('Generated meal types: $mealTypes');
+          return mealTypes;
+        }
+      } else {
+        print('No active meal plan found');
+      }
+    } catch (e) {
+      print('Error getting active meal plan: $e');
+    }
+    
+    // Fallback: Check if user has meal preferences that indicate frequency
     final preferences = _userProfile!.preferences;
     print('User preferences for meal types: $preferences');
     
@@ -241,26 +286,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
     } else if (preferences.contains('2 meals per day')) {
       print('Using 2 meals plan');
       return ['lunch', 'dinner'];
-    } else if (preferences.contains('5 meals per day')) {
-      print('Using 5 meals plan');
-      return ['breakfast', 'mid-morning snack', 'lunch', 'afternoon snack', 'dinner'];
-    } else if (preferences.contains('6 meals per day')) {
-      print('Using 6 meals plan');
-      return ['breakfast', 'mid-morning snack', 'lunch', 'afternoon snack', 'dinner', 'evening snack'];
+    } else if (preferences.contains('4 meals per day')) {
+      print('Using 4 meals plan');
+      return ['breakfast', 'lunch', 'afternoon snack', 'dinner'];
     } else {
       // Try to infer from other preferences
       if (preferences.contains('Weight loss') && !preferences.contains('Muscle gain')) {
         print('Inferring 3 meals for weight loss');
         return ['breakfast', 'lunch', 'dinner'];
       } else if (preferences.contains('Muscle gain') || preferences.contains('High protein')) {
-        print('Inferring 5 meals for muscle gain');
-        return ['breakfast', 'mid-morning snack', 'lunch', 'afternoon snack', 'dinner'];
+        print('Inferring 4 meals for muscle gain');
+        return ['breakfast', 'lunch', 'afternoon snack', 'dinner'];
       } else {
         print('Using default 4 meals plan');
         // Default to 4 meals (3 meals + 1 snack)
         return ['breakfast', 'lunch', 'dinner', 'snack'];
       }
     }
+  }
+
+  // Helper method to get meal types based on count
+  List<String> _getMealTypesFromCount(int mealsPerDay) {
+    print('_getMealTypesFromCount called with mealsPerDay: $mealsPerDay');
+    List<String> result;
+    switch (mealsPerDay) {
+      case 1:
+        result = ['lunch'];
+        break;
+      case 2:
+        result = ['lunch', 'dinner'];
+        break;
+      case 3:
+        result = ['breakfast', 'lunch', 'dinner'];
+        break;
+      case 4:
+        result = ['breakfast', 'lunch', 'afternoon snack', 'dinner'];
+        break;
+      case 5:
+        result = ['breakfast', 'mid-morning snack', 'lunch', 'afternoon snack', 'dinner'];
+        break;
+      case 6:
+        result = ['breakfast', 'mid-morning snack', 'lunch', 'afternoon snack', 'dinner', 'evening snack'];
+        break;
+      default:
+        result = ['breakfast', 'lunch', 'dinner', 'snack'];
+        break;
+    }
+    print('_getMealTypesFromCount returning: $result');
+    return result;
   }
 
   // Get user plan type for display
@@ -326,53 +399,368 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return filteredRecipes;
   }
 
-  // Check if recipe matches user preferences
+  // Enhanced user preference matching with comprehensive filtering
   bool _matchesUserPreferences(Recipe recipe) {
     if (_userProfile == null) return true;
     
-    final preferences = _userProfile!.preferences;
-    final healthConditions = _userProfile!.healthConditions;
-    final allergies = _userProfile!.allergies;
+    // Apply all filtering criteria
+    return _matchesAllergies(recipe) &&
+           _matchesHealthConditions(recipe) &&
+           _matchesDietaryGoals(recipe) &&
+           _matchesDietaryPreferences(recipe) &&
+           _matchesCalorieGoals(recipe);
+  }
+
+  // Check if recipe matches user allergies
+  bool _matchesAllergies(Recipe recipe) {
+    if (_userProfile == null || _userProfile!.allergies.isEmpty) return true;
     
-    // Check for allergies
-    if (allergies.isNotEmpty) {
-      for (Allergy allergy in allergies) {
-        if (recipe.allergens.any((allergen) => 
-            allergen.toLowerCase().contains(allergy.name.toLowerCase()))) {
-          return false;
-        }
+    final allergies = _userProfile!.allergies;
+    final recipeText = '${recipe.name} ${recipe.description} ${recipe.ingredients.join(' ')}'.toLowerCase();
+    
+    for (Allergy allergy in allergies) {
+      final allergyName = allergy.name.toLowerCase();
+      
+      // Check direct allergen match
+      if (recipe.allergens.any((allergen) => 
+          allergen.toLowerCase().contains(allergyName))) {
+        print('Recipe "${recipe.name}" excluded due to allergen: ${allergy.name}');
+        return false;
+      }
+      
+      // Check ingredient match for common allergens
+      if (recipe.ingredients.any((ingredient) => 
+          ingredient.toLowerCase().contains(allergyName))) {
+        print('Recipe "${recipe.name}" excluded due to ingredient: ${allergy.name}');
+        return false;
+      }
+      
+      // Check for common allergen keywords
+      final allergenKeywords = _getAllergenKeywords(allergy.name);
+      if (allergenKeywords.any((keyword) => recipeText.contains(keyword))) {
+        print('Recipe "${recipe.name}" excluded due to allergen keyword: ${allergy.name}');
+        return false;
       }
     }
     
-    // Check health conditions
-    if (healthConditions.any((condition) => condition.name == 'Diabetes') && 
-        recipe.caloriesPerServing > 500) {
-      return false; // Lower calorie options for diabetes
+    return true;
+  }
+
+  // Get common keywords for allergens
+  List<String> _getAllergenKeywords(String allergenName) {
+    final allergen = allergenName.toLowerCase();
+    switch (allergen) {
+      case 'nuts':
+      case 'tree nuts':
+        return ['almond', 'walnut', 'pecan', 'cashew', 'pistachio', 'hazelnut', 'macadamia', 'brazil nut'];
+      case 'peanuts':
+        return ['peanut', 'groundnut', 'monkey nut'];
+      case 'dairy':
+      case 'milk':
+        return ['milk', 'cheese', 'butter', 'cream', 'yogurt', 'whey', 'casein', 'lactose'];
+      case 'eggs':
+        return ['egg', 'albumin', 'lecithin'];
+      case 'soy':
+        return ['soy', 'soya', 'tofu', 'tempeh', 'miso', 'soy sauce'];
+      case 'wheat':
+      case 'gluten':
+        return ['wheat', 'gluten', 'flour', 'bread', 'pasta', 'noodles'];
+      case 'fish':
+        return ['fish', 'salmon', 'tuna', 'cod', 'mackerel', 'sardine', 'anchovy'];
+      case 'shellfish':
+        return ['shrimp', 'prawn', 'crab', 'lobster', 'scallop', 'mussel', 'oyster', 'clam'];
+      case 'sesame':
+        return ['sesame', 'tahini', 'halva'];
+      default:
+        return [allergen];
     }
+  }
+
+  // Check if recipe matches user health conditions
+  bool _matchesHealthConditions(Recipe recipe) {
+    if (_userProfile == null || _userProfile!.healthConditions.isEmpty) return true;
     
-    if (healthConditions.any((condition) => condition.name == 'Hypertension') && 
-        (recipe.name.toLowerCase().contains('salty') ||
-         recipe.description.toLowerCase().contains('high sodium'))) {
-      return false; // Avoid high sodium for hypertension
-    }
+    final healthConditions = _userProfile!.healthConditions;
+    final recipeText = '${recipe.name} ${recipe.description}'.toLowerCase();
     
-    // Check dietary preferences
-    if (preferences.contains('High protein') && 
-        recipe.proteinPerServing < 20) {
-      return false; // Prefer high protein recipes
-    }
-    
-    if (preferences.contains('Quick & easy recipes') && 
-        recipe.prepTime > 30) {
-      return false; // Prefer quick recipes
-    }
-    
-    if (preferences.contains('Traditional Filipino') && 
-        !recipe.isFilipinoDish) {
-      return false; // Prefer Filipino dishes
+    for (HealthCondition condition in healthConditions) {
+      switch (condition.name.toLowerCase()) {
+        case 'diabetes':
+          if (!_isDiabeticFriendly(recipe)) {
+            print('Recipe "${recipe.name}" excluded for diabetes');
+            return false;
+          }
+          break;
+        case 'hypertension':
+        case 'high blood pressure':
+          if (!_isHypertensionFriendly(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for hypertension');
+            return false;
+          }
+          break;
+        case 'heart disease':
+        case 'cardiovascular disease':
+          if (!_isHeartDiseaseFriendly(recipe)) {
+            print('Recipe "${recipe.name}" excluded for heart disease');
+            return false;
+          }
+          break;
+        case 'kidney disease':
+        case 'chronic kidney disease':
+          if (!_isKidneyDiseaseFriendly(recipe)) {
+            print('Recipe "${recipe.name}" excluded for kidney disease');
+            return false;
+          }
+          break;
+        case 'celiac disease':
+        case 'gluten intolerance':
+          if (!_isGlutenFree(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for celiac disease');
+            return false;
+          }
+          break;
+        case 'lactose intolerance':
+          if (!_isLactoseFree(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for lactose intolerance');
+            return false;
+          }
+          break;
+      }
     }
     
     return true;
+  }
+
+  // Check if recipe is diabetic-friendly
+  bool _isDiabeticFriendly(Recipe recipe) {
+    // Lower calorie and carb content for diabetes
+    return recipe.caloriesPerServing <= 600 && 
+           recipe.carbsPerServing <= 60;
+  }
+
+  // Check if recipe is hypertension-friendly
+  bool _isHypertensionFriendly(Recipe recipe, String recipeText) {
+    // Avoid high sodium foods
+    final highSodiumKeywords = ['salty', 'sodium', 'salt', 'cured', 'pickled', 'brined', 'salted'];
+    final hasHighSodium = highSodiumKeywords.any((keyword) => recipeText.contains(keyword));
+    
+    // Prefer foods with potassium and magnesium
+    final heartHealthyKeywords = ['fresh', 'steamed', 'grilled', 'baked', 'vegetables', 'fruits'];
+    final hasHeartHealthy = heartHealthyKeywords.any((keyword) => recipeText.contains(keyword));
+    
+    return !hasHighSodium && (hasHeartHealthy || recipe.caloriesPerServing <= 500);
+  }
+
+  // Check if recipe is heart disease-friendly
+  bool _isHeartDiseaseFriendly(Recipe recipe) {
+    // Lower fat content for heart health
+    return recipe.fatPerServing <= 20;
+  }
+
+  // Check if recipe is kidney disease-friendly
+  bool _isKidneyDiseaseFriendly(Recipe recipe) {
+    // Lower protein content for kidney health
+    return recipe.proteinPerServing <= 25;
+  }
+
+  // Check if recipe is gluten-free
+  bool _isGlutenFree(Recipe recipe, String recipeText) {
+    final glutenKeywords = ['wheat', 'gluten', 'flour', 'bread', 'pasta', 'noodles', 'soy sauce'];
+    return !glutenKeywords.any((keyword) => recipeText.contains(keyword));
+  }
+
+  // Check if recipe is lactose-free
+  bool _isLactoseFree(Recipe recipe, String recipeText) {
+    final lactoseKeywords = ['milk', 'cheese', 'butter', 'cream', 'yogurt', 'whey'];
+    return !lactoseKeywords.any((keyword) => recipeText.contains(keyword));
+  }
+
+  // Check if recipe matches dietary goals
+  bool _matchesDietaryGoals(Recipe recipe) {
+    if (_userProfile == null) return true;
+    
+    final goal = _userProfile!.goal.toLowerCase();
+    
+    switch (goal) {
+      case 'weight loss':
+        return _isWeightLossFriendly(recipe);
+      case 'weight gain':
+        return _isWeightGainFriendly(recipe);
+      case 'muscle gain':
+        return _isMuscleGainFriendly(recipe);
+      case 'maintenance':
+        return _isMaintenanceFriendly(recipe);
+      default:
+        return true;
+    }
+  }
+
+  // Check if recipe is weight loss-friendly
+  bool _isWeightLossFriendly(Recipe recipe) {
+    // Lower calories, higher protein, lower carbs
+    return recipe.caloriesPerServing <= 500 &&
+           recipe.proteinPerServing >= 15 &&
+           recipe.carbsPerServing <= 50 &&
+           recipe.fatPerServing <= 20;
+  }
+
+  // Check if recipe is weight gain-friendly
+  bool _isWeightGainFriendly(Recipe recipe) {
+    // Higher calories, balanced macros
+    return recipe.caloriesPerServing >= 400 &&
+           recipe.proteinPerServing >= 20 &&
+           recipe.carbsPerServing >= 30;
+  }
+
+  // Check if recipe is muscle gain-friendly
+  bool _isMuscleGainFriendly(Recipe recipe) {
+    // High protein, adequate calories
+    return recipe.proteinPerServing >= 25 &&
+           recipe.caloriesPerServing >= 350 &&
+           recipe.carbsPerServing >= 20;
+  }
+
+  // Check if recipe is maintenance-friendly
+  bool _isMaintenanceFriendly(Recipe recipe) {
+    // Balanced macros, moderate calories
+    return recipe.caloriesPerServing >= 300 &&
+           recipe.caloriesPerServing <= 600 &&
+           recipe.proteinPerServing >= 15;
+  }
+
+  // Check if recipe matches dietary preferences
+  bool _matchesDietaryPreferences(Recipe recipe) {
+    if (_userProfile == null || _userProfile!.preferences.isEmpty) return true;
+    
+    final preferences = _userProfile!.preferences;
+    final recipeText = '${recipe.name} ${recipe.description} ${recipe.category}'.toLowerCase();
+    
+    for (String preference in preferences) {
+      switch (preference.toLowerCase()) {
+        case 'vegetarian':
+          if (!_isVegetarian(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for vegetarian preference');
+            return false;
+          }
+          break;
+        case 'vegan':
+          if (!_isVegan(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for vegan preference');
+            return false;
+          }
+          break;
+        case 'keto':
+        case 'ketogenic':
+          if (!_isKeto(recipe)) {
+            print('Recipe "${recipe.name}" excluded for keto preference');
+            return false;
+          }
+          break;
+        case 'paleo':
+          if (!_isPaleo(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for paleo preference');
+            return false;
+          }
+          break;
+        case 'low carb':
+          if (!_isLowCarb(recipe)) {
+            print('Recipe "${recipe.name}" excluded for low carb preference');
+            return false;
+          }
+          break;
+        case 'high protein':
+          if (recipe.proteinPerServing < 20) {
+            print('Recipe "${recipe.name}" excluded for high protein preference');
+            return false;
+          }
+          break;
+        case 'quick & easy recipes':
+          if (recipe.prepTime > 30) {
+            print('Recipe "${recipe.name}" excluded for quick & easy preference');
+            return false;
+          }
+          break;
+        case 'traditional filipino':
+          if (!recipe.isFilipinoDish) {
+            print('Recipe "${recipe.name}" excluded for traditional filipino preference');
+            return false;
+          }
+          break;
+        case 'gluten free':
+          if (!_isGlutenFree(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for gluten free preference');
+            return false;
+          }
+          break;
+        case 'dairy free':
+          if (!_isLactoseFree(recipe, recipeText)) {
+            print('Recipe "${recipe.name}" excluded for dairy free preference');
+            return false;
+          }
+          break;
+      }
+    }
+    
+    return true;
+  }
+
+  // Check if recipe is vegetarian
+  bool _isVegetarian(Recipe recipe, String recipeText) {
+    final meatKeywords = ['chicken', 'beef', 'pork', 'fish', 'meat', 'bacon', 'ham', 'sausage', 'turkey', 'lamb'];
+    return !meatKeywords.any((keyword) => recipeText.contains(keyword));
+  }
+
+  // Check if recipe is vegan
+  bool _isVegan(Recipe recipe, String recipeText) {
+    final nonVeganKeywords = ['chicken', 'beef', 'pork', 'fish', 'meat', 'milk', 'cheese', 'butter', 'cream', 'yogurt', 'egg', 'honey'];
+    return !nonVeganKeywords.any((keyword) => recipeText.contains(keyword));
+  }
+
+  // Check if recipe is keto-friendly
+  bool _isKeto(Recipe recipe) {
+    // Very low carbs, high fat
+    return recipe.carbsPerServing <= 10 && recipe.fatPerServing >= 15;
+  }
+
+  // Check if recipe is paleo-friendly
+  bool _isPaleo(Recipe recipe, String recipeText) {
+    final nonPaleoKeywords = ['grain', 'wheat', 'rice', 'bread', 'pasta', 'dairy', 'milk', 'cheese', 'processed', 'sugar'];
+    return !nonPaleoKeywords.any((keyword) => recipeText.contains(keyword));
+  }
+
+  // Check if recipe is low carb
+  bool _isLowCarb(Recipe recipe) {
+    return recipe.carbsPerServing <= 25;
+  }
+
+  // Check if recipe matches calorie goals for meal type
+  bool _matchesCalorieGoals(Recipe recipe) {
+    if (_userProfile == null) return true;
+    
+    final goal = _userProfile!.goal.toLowerCase();
+    final userWeight = _userProfile!.weight ?? 70.0;
+    
+    // Calculate appropriate calorie ranges based on goal and weight
+    double baseCaloriesPerKg;
+    switch (goal) {
+      case 'weight loss':
+        baseCaloriesPerKg = 25.0;
+        break;
+      case 'weight gain':
+        baseCaloriesPerKg = 35.0;
+        break;
+      case 'muscle gain':
+        baseCaloriesPerKg = 32.0;
+        break;
+      default:
+        baseCaloriesPerKg = 30.0;
+    }
+    
+    final dailyCalorieGoal = (userWeight * baseCaloriesPerKg).round();
+    
+    // Check if recipe fits within appropriate calorie range
+    // This is a general check - specific meal type filtering happens in meal type methods
+    return recipe.caloriesPerServing <= dailyCalorieGoal; // Use daily goal as upper limit
   }
 
   // Check if recipe is appropriate for breakfast
@@ -391,15 +779,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       'egg', 'scrambled', 'fried', 'boiled', 'oats', 'porridge'
     ];
     
-    // STRICT: Must have breakfast keywords AND appropriate calories
+    // STRICT: Must have breakfast keywords
     final hasBreakfastKeywords = breakfastKeywords.any((keyword) => 
         recipeText.contains(keyword)) ||
         filipinoBreakfastKeywords.any((keyword) => 
         recipeText.contains(keyword));
     
-    // Check calorie range for breakfast (200-500 calories)
-    final hasAppropriateCalories = recipe.caloriesPerServing >= 200 && 
-                                  recipe.caloriesPerServing <= 500;
+    // Get goal-appropriate calorie range for breakfast
+    final calorieRange = _getBreakfastCalorieRange();
+    final hasAppropriateCalories = recipe.caloriesPerServing >= calorieRange['min']! && 
+                                  recipe.caloriesPerServing <= calorieRange['max']!;
     
     // Exclude lunch/dinner keywords
     final excludesOtherMeals = !recipeText.contains('lunch') && 
@@ -439,9 +828,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         filipinoLunchKeywords.any((keyword) => 
         recipeText.contains(keyword));
     
-    // Check calorie range for lunch (300-700 calories)
-    final hasAppropriateCalories = recipe.caloriesPerServing >= 300 && 
-                                  recipe.caloriesPerServing <= 700;
+    // Get goal-appropriate calorie range for lunch
+    final calorieRange = _getLunchCalorieRange();
+    final hasAppropriateCalories = recipe.caloriesPerServing >= calorieRange['min']! && 
+                                  recipe.caloriesPerServing <= calorieRange['max']!;
     
     // Exclude breakfast/dinner keywords
     final excludesOtherMeals = !recipeText.contains('breakfast') && 
@@ -476,8 +866,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         filipinoDinnerKeywords.any((keyword) => 
         recipeText.contains(keyword));
     
-    // Check calorie range for dinner (400+ calories)
-    final hasAppropriateCalories = recipe.caloriesPerServing >= 400;
+    // Get goal-appropriate calorie range for dinner
+    final calorieRange = _getDinnerCalorieRange();
+    final hasAppropriateCalories = recipe.caloriesPerServing >= calorieRange['min']! && 
+                                  recipe.caloriesPerServing <= calorieRange['max']!;
     
     // Exclude breakfast/lunch keywords
     final excludesOtherMeals = !recipeText.contains('breakfast') && 
@@ -515,8 +907,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         filipinoSnackKeywords.any((keyword) => 
         recipeText.contains(keyword));
     
-    // Check calorie range for snacks (≤300 calories)
-    final hasAppropriateCalories = recipe.caloriesPerServing <= 300;
+    // Get goal-appropriate calorie range for snacks
+    final calorieRange = _getSnackCalorieRange();
+    final hasAppropriateCalories = recipe.caloriesPerServing >= calorieRange['min']! && 
+                                  recipe.caloriesPerServing <= calorieRange['max']!;
     
     // Exclude main meal keywords
     final excludesMainMeals = !recipeText.contains('breakfast') && 
@@ -538,6 +932,83 @@ class _DashboardScreenState extends State<DashboardScreen> {
     
     // STRICT: Must have snack keywords AND appropriate calories AND exclude main meals
     return hasSnackKeywords && hasAppropriateCalories && excludesMainMeals;
+  }
+
+  // Get goal-appropriate calorie ranges for different meal types
+  Map<String, int> _getBreakfastCalorieRange() {
+    if (_userProfile == null) return {'min': 200, 'max': 500};
+    
+    final goal = _userProfile!.goal.toLowerCase();
+    
+    switch (goal) {
+      case 'weight loss':
+        return {'min': 150, 'max': 350}; // Lower calories for weight loss
+      case 'weight gain':
+        return {'min': 300, 'max': 600}; // Higher calories for weight gain
+      case 'muscle gain':
+        return {'min': 250, 'max': 500}; // Moderate calories with focus on protein
+      case 'maintenance':
+        return {'min': 200, 'max': 500}; // Standard range
+      default:
+        return {'min': 200, 'max': 500};
+    }
+  }
+
+  Map<String, int> _getLunchCalorieRange() {
+    if (_userProfile == null) return {'min': 300, 'max': 700};
+    
+    final goal = _userProfile!.goal.toLowerCase();
+    
+    switch (goal) {
+      case 'weight loss':
+        return {'min': 250, 'max': 500}; // Lower calories for weight loss
+      case 'weight gain':
+        return {'min': 400, 'max': 800}; // Higher calories for weight gain
+      case 'muscle gain':
+        return {'min': 350, 'max': 650}; // Moderate calories with focus on protein
+      case 'maintenance':
+        return {'min': 300, 'max': 700}; // Standard range
+      default:
+        return {'min': 300, 'max': 700};
+    }
+  }
+
+  Map<String, int> _getDinnerCalorieRange() {
+    if (_userProfile == null) return {'min': 400, 'max': 800};
+    
+    final goal = _userProfile!.goal.toLowerCase();
+    
+    switch (goal) {
+      case 'weight loss':
+        return {'min': 300, 'max': 600}; // Lower calories for weight loss
+      case 'weight gain':
+        return {'min': 500, 'max': 900}; // Higher calories for weight gain
+      case 'muscle gain':
+        return {'min': 400, 'max': 750}; // Moderate calories with focus on protein
+      case 'maintenance':
+        return {'min': 400, 'max': 800}; // Standard range
+      default:
+        return {'min': 400, 'max': 800};
+    }
+  }
+
+  Map<String, int> _getSnackCalorieRange() {
+    if (_userProfile == null) return {'min': 50, 'max': 300};
+    
+    final goal = _userProfile!.goal.toLowerCase();
+    
+    switch (goal) {
+      case 'weight loss':
+        return {'min': 50, 'max': 200}; // Lower calories for weight loss
+      case 'weight gain':
+        return {'min': 100, 'max': 400}; // Higher calories for weight gain
+      case 'muscle gain':
+        return {'min': 75, 'max': 300}; // Moderate calories with focus on protein
+      case 'maintenance':
+        return {'min': 50, 'max': 300}; // Standard range
+      default:
+        return {'min': 50, 'max': 300};
+    }
   }
 
   // Get default meal plan (fallback)
@@ -618,8 +1089,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int get dailyFatGoal => _getPersonalizedFatGoal();
 
   // Get current day's meals
-  Map<String, dynamic> get todaysMeals {
-    final meals = weeklyMealPlan[currentDayOfWeek] ?? {};
+  Future<Map<String, dynamic>> get todaysMeals async {
+    final plan = await weeklyMealPlan;
+    final meals = plan[currentDayOfWeek] ?? {};
     print('Today\'s meals (day $currentDayOfWeek): ${meals.keys.toList()}');
     return meals;
   }
@@ -722,6 +1194,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _userProfile = await ProfileManagementService.getProfile();
       
       // Debug: Print user profile data
+      print('=== USER PROFILE DEBUG ===');
       print('User Profile: $_userProfile');
       if (_userProfile != null) {
         print('User Preferences: ${_userProfile!.preferences}');
@@ -732,73 +1205,118 @@ class _DashboardScreenState extends State<DashboardScreen> {
       
       // Get sample recipes for recommendations
       final sampleRecipes = RecipeService().getAllRecipes();
+      print('Total recipes available: ${sampleRecipes.length}');
       
       if (_userProfile != null && sampleRecipes.isNotEmpty) {
+        // Test filtering with a few sample recipes
+        print('\n=== FILTERING TEST ===');
+        for (var recipe in sampleRecipes.take(5)) {
+          final matches = _matchesUserPreferences(recipe);
+          print('Recipe "${recipe.name}": ${matches ? "PASSES" : "FILTERED OUT"}');
+          if (!matches) {
+            print('  - Calories: ${recipe.caloriesPerServing}');
+            print('  - Protein: ${recipe.proteinPerServing}g');
+            print('  - Carbs: ${recipe.carbsPerServing}g');
+            print('  - Fat: ${recipe.fatPerServing}g');
+          }
+        }
+        
         // Get personalized recommendations based on user profile and plan
         final recommendations = await RecommendationService.getPersonalizedRecommendations(
           allRecipes: sampleRecipes,
           limit: 20,
         );
         
+        print('\n=== RECOMMENDATIONS ===');
         print('Recommended recipes count: ${recommendations.length}');
         for (var recipe in recommendations.take(5)) {
-          print('Recommended: ${recipe.name}');
+          print('Recommended: ${recipe.name} (${recipe.caloriesPerServing} cal, ${recipe.proteinPerServing}g protein)');
         }
         
         setState(() {
           _recommendedRecipes = recommendations;
-          // Clear cached plan to force regeneration
-          _cachedMealPlan = null;
+          // Only clear cache if recommendations actually changed
+          if (_cachedMealPlan != null) {
+            final newCacheKey = _generateCacheKey();
+            if (_lastCacheKey != newCacheKey) {
+              _cachedMealPlan = null;
+              _lastCacheKey = null;
+            }
+          }
         });
       } else {
         print('No user profile or recipes found, using default');
         setState(() {
           _recommendedRecipes = sampleRecipes.take(10).toList();
-          // Clear cached plan to force regeneration
-          _cachedMealPlan = null;
+          // Only clear cache if recommendations actually changed
+          if (_cachedMealPlan != null) {
+            final newCacheKey = _generateCacheKey();
+            if (_lastCacheKey != newCacheKey) {
+              _cachedMealPlan = null;
+              _lastCacheKey = null;
+            }
+          }
         });
       }
     } catch (e) {
       print('Error loading personalized recommendations: $e');
       setState(() {
         _recommendedRecipes = RecipeService().getAllRecipes().take(10).toList();
-        // Clear cached plan to force regeneration
-        _cachedMealPlan = null;
+        // Only clear cache if recommendations actually changed
+        if (_cachedMealPlan != null) {
+          final newCacheKey = _generateCacheKey();
+          if (_lastCacheKey != newCacheKey) {
+            _cachedMealPlan = null;
+            _lastCacheKey = null;
+          }
+        }
       });
     }
   }
 
   
-  // Calculate daily totals
+  // Calculate daily totals from cached meal plan
   int get totalCalories {
     int total = 0;
-    todaysMeals.forEach((key, meal) {
-      if (meal is Map) total += (meal['calories'] as int? ?? 0);
-    });
+    if (_cachedMealPlan != null) {
+      final dayMeals = _cachedMealPlan![currentDayOfWeek] ?? {};
+      dayMeals.forEach((key, meal) {
+        if (meal is Map) total += (meal['calories'] as int? ?? 0);
+      });
+    }
     return total;
   }
 
   int get totalProtein {
     int total = 0;
-    todaysMeals.forEach((key, meal) {
-      if (meal is Map) total += (meal['protein'] as int? ?? 0);
-    });
+    if (_cachedMealPlan != null) {
+      final dayMeals = _cachedMealPlan![currentDayOfWeek] ?? {};
+      dayMeals.forEach((key, meal) {
+        if (meal is Map) total += (meal['protein'] as int? ?? 0);
+      });
+    }
     return total;
   }
 
   int get totalCarbs {
     int total = 0;
-    todaysMeals.forEach((key, meal) {
-      if (meal is Map) total += (meal['carbs'] as int? ?? 0);
-    });
+    if (_cachedMealPlan != null) {
+      final dayMeals = _cachedMealPlan![currentDayOfWeek] ?? {};
+      dayMeals.forEach((key, meal) {
+        if (meal is Map) total += (meal['carbs'] as int? ?? 0);
+      });
+    }
     return total;
   }
 
   int get totalFat {
     int total = 0;
-    todaysMeals.forEach((key, meal) {
-      if (meal is Map) total += (meal['fat'] as int? ?? 0);
-    });
+    if (_cachedMealPlan != null) {
+      final dayMeals = _cachedMealPlan![currentDayOfWeek] ?? {};
+      dayMeals.forEach((key, meal) {
+        if (meal is Map) total += (meal['fat'] as int? ?? 0);
+      });
+    }
     return total;
   }
 
@@ -896,11 +1414,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Text('Weekly Overview', 
               style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18)),
             const Spacer(),
-            IconButton(
-              icon: Icon(Icons.refresh, color: darkGreen, size: 20),
-              onPressed: _refreshMealPlan,
-              tooltip: 'Refresh meal plan',
-            ),
             if (_userProfile != null) ...[
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -922,84 +1435,101 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const SizedBox(height: 12),
         
-        // Weekly summary cards
-        ...List.generate(7, (index) {
-          final dayMeals = weeklyMealPlan[index]!;
-          int dayTotal = 0;
-          dayMeals.forEach((key, meal) {
-            if (meal is Map) dayTotal += (meal['calories'] as int? ?? 0);
-          });
-          
-          final isToday = index == currentDayOfWeek;
-          
-          return Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: isToday ? darkGreen.withOpacity(0.08) : Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isToday ? darkGreen : Colors.grey.shade300,
-                width: isToday ? 2 : 1,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: isToday ? darkGreen : Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        days[index],
-                        style: GoogleFonts.poppins(
-                          color: isToday ? Colors.white : Colors.black87,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                        ),
-                      ),
+        // Weekly summary cards with FutureBuilder
+        FutureBuilder<Map<int, Map<String, dynamic>>>(
+          future: weeklyMealPlan,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            
+            final mealPlan = snapshot.data ?? {};
+            
+            return Column(
+              children: List.generate(7, (index) {
+                final dayMeals = mealPlan[index] ?? {};
+                int dayTotal = 0;
+                dayMeals.forEach((key, meal) {
+                  if (meal is Map) dayTotal += (meal['calories'] as int? ?? 0);
+                });
+                
+                final isToday = index == currentDayOfWeek;
+                
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: isToday ? darkGreen.withOpacity(0.08) : Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isToday ? darkGreen : Colors.grey.shade300,
+                      width: isToday ? 2 : 1,
                     ),
-                    if (isToday) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: darkGreen,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          'Today',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: isToday ? darkGreen : Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              days[index],
+                              style: GoogleFonts.poppins(
+                                color: isToday ? Colors.white : Colors.black87,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                              ),
+                            ),
                           ),
-                        ),
+                          if (isToday) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: darkGreen,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                'Today',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                          const Spacer(),
+                          Text(
+                            '$dayTotal kcal',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.orange.shade700,
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 12),
+                      _buildMealRow('Breakfast', dayMeals['breakfast']),
+                      _buildMealRow('Lunch', dayMeals['lunch']),
+                      _buildMealRow('Dinner', dayMeals['dinner']),
+                      _buildMealRow('Snack', dayMeals['snack']),
                     ],
-                    const Spacer(),
-                    Text(
-                      '$dayTotal kcal',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.orange.shade700,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                _buildMealRow('Breakfast', dayMeals['breakfast']),
-                _buildMealRow('Lunch', dayMeals['lunch']),
-                _buildMealRow('Dinner', dayMeals['dinner']),
-                _buildMealRow('Snack', dayMeals['snack']),
-              ],
-            ),
-          );
-        }),
+                  ),
+                );
+              }),
+            );
+          },
+        ),
       ],
     );
   }
@@ -1080,20 +1610,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
           style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 17)),
         const SizedBox(height: 12),
 
-        // Breakfast
-        _mealCard('Breakfast', todaysMeals['breakfast'], Icons.breakfast_dining, Colors.orange),
-        const SizedBox(height: 10),
+        // Meals with FutureBuilder
+        FutureBuilder<Map<String, dynamic>>(
+          future: todaysMeals,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            
+            final meals = snapshot.data ?? {};
+            
+            return Column(
+              children: [
+                // Breakfast
+                _mealCard('Breakfast', meals['breakfast'], Icons.breakfast_dining, Colors.orange),
+                const SizedBox(height: 10),
 
-        // Lunch
-        _mealCard('Lunch', todaysMeals['lunch'], Icons.lunch_dining, Colors.green),
-        const SizedBox(height: 10),
+                // Lunch
+                _mealCard('Lunch', meals['lunch'], Icons.lunch_dining, Colors.green),
+                const SizedBox(height: 10),
 
-        // Dinner
-        _mealCard('Dinner', todaysMeals['dinner'], Icons.dinner_dining, Colors.blue),
-        const SizedBox(height: 10),
+                // Dinner
+                _mealCard('Dinner', meals['dinner'], Icons.dinner_dining, Colors.blue),
+                const SizedBox(height: 10),
 
-        // Snack
-        _mealCard('Snack', todaysMeals['snack'], Icons.cookie, Colors.purple),
+                // Snack
+                _mealCard('Snack', meals['snack'], Icons.cookie, Colors.purple),
+              ],
+            );
+          },
+        ),
       ],
     );
   }
@@ -1434,13 +1984,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  // Method to manually refresh meal plan
-  void _refreshMealPlan() {
-    setState(() {
-      _cachedMealPlan = null;
-      _lastCacheKey = null;
-    });
-  }
 
   // Find recipe by name from available recipes
   Recipe? _findRecipeByName(String recipeName) {
@@ -1466,10 +2009,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             mealType: mealType,
           ),
         ),
-      ).then((_) {
-        // Refresh the dashboard when returning from recipe detail
-        _refreshData();
-      });
+      );
     } else {
       // Show a simple dialog for default meals
       _showDefaultMealDialog(mealType, meal);

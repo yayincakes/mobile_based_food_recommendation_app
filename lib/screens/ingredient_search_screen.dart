@@ -377,33 +377,14 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            recipe['name'],
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.star, color: Colors.amber, size: 16),
-                            Text(
-                              '${recipe['rating']}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    Text(
+                      recipe['name'],
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     
@@ -417,6 +398,13 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen>
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    
+                    // Allergen warnings below description
+                    if ((recipe['allergens'] as List).isNotEmpty) ...[
+                      const SizedBox(height: 6),
+                      _buildAllergenWarnings(recipe['allergens'] as List<String>),
+                    ],
+                    
                     const SizedBox(height: 8),
                     
                     Wrap(
@@ -500,32 +488,6 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen>
                         size: 48,
                       ),
                     ),
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.star, color: Colors.amber, size: 14),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${recipe['rating']}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -547,6 +509,13 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen>
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    
+                    // Allergen warnings below recipe name
+                    if ((recipe['allergens'] as List).isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      _buildAllergenWarnings(recipe['allergens'] as List<String>, isCompact: true),
+                    ],
+                    
                     const SizedBox(height: 8),
                     
                     Row(
@@ -638,6 +607,94 @@ class _IngredientSearchScreenState extends State<IngredientSearchScreen>
       ),
     );
   }
+
+  Widget _buildAllergenWarnings(List<String> allergens, {bool isCompact = false}) {
+    if (allergens.isEmpty) return const SizedBox();
+    
+    // Define allergen severity and colors
+    final allergenInfo = _getAllergenInfo(allergens);
+    
+    return Container(
+      padding: EdgeInsets.all(isCompact ? 4 : 6),
+      decoration: BoxDecoration(
+        color: allergenInfo['color'].withOpacity(0.08),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: allergenInfo['color'].withOpacity(0.2),
+          width: 0.5,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.warning_amber_rounded,
+            size: isCompact ? 10 : 12,
+            color: allergenInfo['color'],
+          ),
+          const SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              isCompact 
+                ? 'Contains: ${allergens.take(2).join(', ')}${allergens.length > 2 ? '...' : ''}'
+                : 'Contains: ${allergens.join(', ')}',
+              style: GoogleFonts.poppins(
+                fontSize: isCompact ? 8 : 9,
+                color: allergenInfo['color'],
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: isCompact ? 1 : 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Map<String, dynamic> _getAllergenInfo(List<String> allergens) {
+    // Define allergen severity levels
+    const severeAllergens = ['nuts', 'peanuts', 'tree nuts', 'shellfish', 'fish'];
+    const moderateAllergens = ['dairy', 'milk', 'eggs', 'soy', 'wheat', 'gluten'];
+    
+    // Check for severe allergens first
+    final hasSevere = allergens.any((allergen) => 
+      severeAllergens.any((severe) => 
+        allergen.toLowerCase().contains(severe.toLowerCase())
+      )
+    );
+    
+    if (hasSevere) {
+      return {
+        'color': Colors.red.shade600,
+        'severity': 'Severe',
+        'icon': Icons.dangerous,
+      };
+    }
+    
+    // Check for moderate allergens
+    final hasModerate = allergens.any((allergen) => 
+      moderateAllergens.any((moderate) => 
+        allergen.toLowerCase().contains(moderate.toLowerCase())
+      )
+    );
+    
+    if (hasModerate) {
+      return {
+        'color': Colors.orange.shade600,
+        'severity': 'Moderate',
+        'icon': Icons.warning_amber_rounded,
+      };
+    }
+    
+    // Default to mild
+    return {
+      'color': Colors.amber.shade600,
+      'severity': 'Mild',
+      'icon': Icons.info_outline,
+    };
+  }
+
 
 
   // Helper method to convert Map to Recipe object

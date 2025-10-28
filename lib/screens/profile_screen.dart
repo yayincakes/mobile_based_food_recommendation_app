@@ -5,11 +5,11 @@ import 'dart:convert';
 
 import 'favorites_manager.dart';
 import '../models/user_profile.dart';
-import '../models/diet_history.dart';
 import '../services/profile_management_service.dart';
 import '../services/user_data_service.dart';
+import '../models/diet_history.dart';
 import '../services/diet_history_service.dart';
-import '../widgets/diet_history_widgets.dart';
+import 'health_dictionary_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -30,13 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Allergy> _allergies = [];
   List<MealPlan> _mealPlans = [];
 
-  // Settings persisted locally
-  bool _notifEnabled = true;
-  bool _useMetric = true; // true: cm/kg, false: ft/lbs
 
-  // Diet history data
-  List<DailyNutritionSummary> _recentNutritionSummaries = [];
-  DietAdherenceScore? _currentAdherenceScore;
+  // Diet history tracking
+  List<DietHistoryEntry> _dietHistoryEntries = [];
   bool _isLoadingDietHistory = false;
   
   // Loading states for management sections
@@ -52,13 +48,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _loadData();
-    _loadDietHistory();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh diet history when screen becomes visible
     _loadDietHistory();
   }
 
@@ -144,8 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _healthConditions = conditions;
         _allergies = allergies;
         _mealPlans = activeMealPlans;
-        _notifEnabled = p.getBool('notifEnabled') ?? true;
-        _useMetric = p.getBool('useMetric') ?? true;
         _isLoadingGoals = false;
         _isLoadingHealthConditions = false;
         _isLoadingAllergies = false;
@@ -165,11 +152,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> _savePrefs() async {
-    final p = await SharedPreferences.getInstance();
-    await p.setBool('notifEnabled', _notifEnabled);
-    await p.setBool('useMetric', _useMetric);
-  }
 
   Future<void> _loadDietHistory() async {
     if (!mounted) return;
@@ -177,50 +159,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _isLoadingDietHistory = true);
     
     try {
-      // Load recent nutrition summaries (last 7 days)
+      // Load recent diet history entries (last 7 days)
       final endDate = DateTime.now();
-      final summaries = <DailyNutritionSummary>[];
+      final startDate = endDate.subtract(const Duration(days: 7));
       
-      for (int i = 0; i < 7; i++) {
-        final date = endDate.subtract(Duration(days: i));
-        try {
-          final summary = await DietHistoryService.getDailyNutritionSummary(date);
-          if (summary != null) {
-            summaries.add(summary);
-          }
-        } catch (e) {
-          debugPrint('Error loading summary for date $date: $e');
-          // Continue with other dates
-        }
-      }
+      final entries = await DietHistoryService.getDietHistoryForRange(startDate, endDate);
+      _dietHistoryEntries = entries;
       
-      // Get today's adherence score
-      DietAdherenceScore? adherenceScore;
-      try {
-        adherenceScore = await DietHistoryService.calculateAdherenceScore(endDate);
-      } catch (e) {
-        debugPrint('Error calculating adherence score: $e');
-        // Continue without adherence score
-      }
       
-      if (mounted) {
-        setState(() {
-          _recentNutritionSummaries = summaries;
-          _currentAdherenceScore = adherenceScore;
-          _isLoadingDietHistory = false;
-        });
-      }
     } catch (e) {
       debugPrint('Error loading diet history: $e');
+    } finally {
       if (mounted) {
-        setState(() {
-          _isLoadingDietHistory = false;
-        });
-        // Show error message to user
-        _snack('Failed to load diet history. Please try again.', isError: true);
+        setState(() => _isLoadingDietHistory = false);
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -253,21 +208,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               PopupMenuItem(
-                value: 'notifications',
+                value: 'health_dictionary',
                 child: Row(
                   children: [
-                    const Icon(Icons.notifications_active, size: 20),
+                    const Icon(Icons.medical_information, size: 20),
                     const SizedBox(width: 12),
-                    Text('Notifications', style: GoogleFonts.poppins()),
+                    Text('Health Dictionary', style: GoogleFonts.poppins()),
                     const Spacer(),
-                    Switch(
-                      value: _notifEnabled,
-                      onChanged: (v) async {
-                        setState(() => _notifEnabled = v);
-                        await _savePrefs();
-                      },
-                      activeColor: darkGreen,
-                    ),
+                    const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                   ],
                 ),
               ),
@@ -756,8 +704,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   separatorBuilder: (_, __) => const Divider(height: 0),
                   itemBuilder: (_, i) {
                     final plan = _mealPlans[i];
+                    final hasPreferences = plan.mealPreferences.isNotEmpty;
                     return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       leading: CircleAvatar(
                         backgroundColor: plan.isActive ? darkGreen : Colors.grey.shade300,
                         child: Icon(
@@ -766,30 +715,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       title: Text(plan.name, style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-                      subtitle: Text('${plan.startDate.day}/${plan.startDate.month}/${plan.startDate.year} - ${plan.endDate.day}/${plan.endDate.month}/${plan.endDate.year}', 
-                          style: GoogleFonts.poppins(fontSize: 12, color: Colors.black54)),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 4),
+                          Text('${plan.startDate.day}/${plan.startDate.month}/${plan.startDate.year} - ${plan.endDate.day}/${plan.endDate.month}/${plan.endDate.year}', 
+                              style: GoogleFonts.poppins(fontSize: 12, color: Colors.black54)),
+                          if (hasPreferences) ...[
+                            const SizedBox(height: 6),
+                            Wrap(
+                              spacing: 4,
+                              runSpacing: 4,
+                              children: plan.mealPreferences.take(3).map((pref) {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: darkGreen.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: darkGreen.withOpacity(0.3)),
+                                  ),
+                                  child: Text(
+                                    pref,
+                                    style: GoogleFonts.poppins(fontSize: 10, color: darkGreen),
+                                  ),
+                                );
+                              }).toList()
+                                ..addAll(plan.mealPreferences.length > 3 
+                                  ? [Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      child: Text(
+                                        '+${plan.mealPreferences.length - 3} more',
+                                        style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey.shade600),
+                                      ),
+                                    )]
+                                  : []),
+                            ),
+                          ],
+                        ],
+                      ),
                       trailing: PopupMenuButton(
                         itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 'edit',
-                            child: Row(
-                              children: [
-                                const Icon(Icons.edit, size: 16),
-                                const SizedBox(width: 8),
-                                Text('Edit', style: GoogleFonts.poppins()),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 'activate',
-                            child: Row(
-                              children: [
-                                const Icon(Icons.check, size: 16),
-                                const SizedBox(width: 8),
-                                Text('Set Active', style: GoogleFonts.poppins()),
-                              ],
-                            ),
-                          ),
                           PopupMenuItem(
                             value: 'delete',
                             child: Row(
@@ -811,100 +776,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 18),
 
-            // Diet History Section
-            _buildDietHistoryHeader(),
+            // Diet History Tracking Section
+            _buildSectionHeader('Diet History', Icons.timeline, () => _showDietHistoryDetails()),
             const SizedBox(height: 8),
-            if (_isLoadingDietHistory)
-              _card(
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(32),
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              )
-            else if (_recentNutritionSummaries.isEmpty)
-              _card(
-                child: Column(
-                  children: [
-                    Icon(Icons.timeline_outlined, size: 48, color: Colors.grey.shade400),
-                    const SizedBox(height: 8),
-                    Text('No diet history yet', style: GoogleFonts.poppins(color: Colors.grey.shade600)),
-                    const SizedBox(height: 4),
-                    Text('Start logging your meals to see nutritional insights', 
-                        style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey.shade500)),
-                    const SizedBox(height: 12),
-                    ElevatedButton.icon(
-                      onPressed: () => Navigator.pushNamed(context, '/log_meal'),
-                      icon: const Icon(Icons.add, size: 16),
-                      label: const Text('Log Meal'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: darkGreen,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            else ...[
-              // Diet History Overview
-              _card(
-                child: const DietHistoryOverview(),
-              ),
-              const SizedBox(height: 12),
-              
-              // Recent Nutrition Summaries
-              _card(
-                padding: EdgeInsets.zero,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        'Recent Nutrition',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    if (_recentNutritionSummaries.isNotEmpty)
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _recentNutritionSummaries.length,
-                        separatorBuilder: (_, __) => const Divider(height: 1),
-                        itemBuilder: (_, i) {
-                          final summary = _recentNutritionSummaries[i];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            child: DailyNutritionCard(summary: summary),
-                          );
-                        },
-                      )
-                    else
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          'No recent nutrition data',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              
-              // Diet Adherence Card
-              if (_currentAdherenceScore != null)
-                _card(
-                  child: DietAdherenceCard(score: _currentAdherenceScore!),
-                ),
-            ],
+            _card(
+              child: _buildDietHistoryDisplay(),
+            ),
 
           ],
         ),
@@ -947,8 +824,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       case 'edit_profile':
         _openEditSheet(context);
         break;
-      case 'notifications':
-        // Toggle is handled directly in the switch widget
+      case 'health_dictionary':
+        _openHealthDictionary(context);
         break;
       case 'privacy':
         _snack('Privacy settings coming soon');
@@ -960,6 +837,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _handleLogout();
         break;
     }
+  }
+
+  void _openHealthDictionary(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HealthDictionaryScreen(),
+      ),
+    );
   }
 
   // ======================= UI HELPERS =======================
@@ -1069,24 +955,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildDietHistoryHeader() {
-    return Row(
-      children: [
-        Icon(Icons.analytics, color: darkGreen, size: 20),
-        const SizedBox(width: 8),
-        Text('Diet History & Analytics', style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 16)),
-        const Spacer(),
-        IconButton(
-          onPressed: _loadDietHistory,
-          icon: const Icon(Icons.refresh, size: 20),
-          tooltip: 'Refresh Diet History',
-          style: IconButton.styleFrom(
-            foregroundColor: darkGreen,
-          ),
-        ),
-      ],
-    );
-  }
 
   Color _getSeverityColor(String severity) {
     switch (severity.toLowerCase()) {
@@ -1708,35 +1576,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _handleMealPlanAction(String planId, String action) async {
     try {
-      switch (action) {
-        case 'edit':
-          final plan = _mealPlans.firstWhere((p) => p.id == planId);
-          await _editMealPlan(plan);
-          break;
-        case 'activate':
+      if (action == 'delete') {
+        final confirmed = await _showDeleteConfirmation('meal plan');
+        if (confirmed == true) {
           setState(() => _isLoadingMealPlans = true);
-          // Set meal plan as active
-          final success = await ProfileManagementService.setActiveMealPlan(planId);
+          final success = await ProfileManagementService.deleteMealPlan(planId);
           if (success) {
             await _loadData();
-            _snack('Meal plan activated');
+            _snack('Meal plan deleted');
           } else {
-            _snack('Failed to activate meal plan');
+            _snack('Failed to delete meal plan');
           }
-          break;
-        case 'delete':
-          final confirmed = await _showDeleteConfirmation('meal plan');
-          if (confirmed == true) {
-            setState(() => _isLoadingMealPlans = true);
-            final success = await ProfileManagementService.deleteMealPlan(planId);
-            if (success) {
-              await _loadData();
-              _snack('Meal plan deleted');
-            } else {
-              _snack('Failed to delete meal plan');
-            }
-          }
-          break;
+        }
       }
     } catch (e) {
       debugPrint('Error handling meal plan action: $e');
@@ -1746,8 +1597,278 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  // ======================= DIET HISTORY METHODS =======================
 
+  Widget _buildDietHistoryDisplay() {
+    if (_isLoadingDietHistory) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
+    if (_dietHistoryEntries.isEmpty) {
+      return Column(
+        children: [
+          Icon(Icons.timeline_outlined, size: 48, color: Colors.grey.shade400),
+          const SizedBox(height: 8),
+          Text('No meals logged yet', style: GoogleFonts.poppins(color: Colors.grey.shade600)),
+          const SizedBox(height: 4),
+          Text('Start logging your meals from recipes to track your eating habits', 
+              style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey.shade500)),
+          const SizedBox(height: 12),
+          ElevatedButton.icon(
+            onPressed: () => _loadDietHistory(),
+            icon: const Icon(Icons.refresh, size: 16),
+            label: const Text('Refresh'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: darkGreen,
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ],
+      );
+    }
+
+    // Show recent meals (last 5)
+    final recentMeals = _dietHistoryEntries.take(5).toList();
+    final todayMeals = _dietHistoryEntries.where((entry) => 
+        entry.date.day == DateTime.now().day &&
+        entry.date.month == DateTime.now().month &&
+        entry.date.year == DateTime.now().year).toList();
+    final todayCalories = todayMeals.fold(0.0, (sum, entry) => sum + entry.calories);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Summary stats
+        Row(
+          children: [
+            Expanded(
+              child: _buildStatCard(
+                'Today\'s Meals',
+                todayMeals.length.toString(),
+                Icons.restaurant,
+                Colors.blue,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildStatCard(
+                'Today\'s Calories',
+                '${todayCalories.toInt()}',
+                Icons.local_fire_department,
+                Colors.orange,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        
+        // Recent meals
+        Row(
+          children: [
+            Icon(Icons.history, color: darkGreen, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              'Recent Meals',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: darkGreen,
+              ),
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: () => _loadDietHistory(),
+              child: Text(
+                'Refresh',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  color: darkGreen,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        
+        // Meal list
+        ...recentMeals.map((entry) => _buildMealEntryItem(entry)).toList(),
+        
+        if (_dietHistoryEntries.length > 5)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Center(
+              child: TextButton(
+                onPressed: () => _showDietHistoryDetails(),
+                child: Text(
+                  'View All (${_dietHistoryEntries.length} meals)',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    color: darkGreen,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: 10,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMealEntryItem(DietHistoryEntry entry) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: _getMealTypeColor(entry.mealType).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(
+              _getMealTypeIcon(entry.mealType),
+              color: _getMealTypeColor(entry.mealType),
+              size: 16,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  entry.foodName,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  '${entry.mealType.toUpperCase()} • ${_formatTime(entry.loggedAt)}',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '${entry.calories.toInt()} cal',
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: darkGreen,
+                ),
+              ),
+              Text(
+                '${entry.quantity} ${entry.unit}',
+                style: GoogleFonts.poppins(
+                  fontSize: 10,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getMealTypeColor(String mealType) {
+    switch (mealType.toLowerCase()) {
+      case 'breakfast':
+        return Colors.orange;
+      case 'lunch':
+        return Colors.blue;
+      case 'dinner':
+        return Colors.purple;
+      case 'snack':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  IconData _getMealTypeIcon(String mealType) {
+    switch (mealType.toLowerCase()) {
+      case 'breakfast':
+        return Icons.wb_sunny;
+      case 'lunch':
+        return Icons.wb_sunny_outlined;
+      case 'dinner':
+        return Icons.nightlight_round;
+      case 'snack':
+        return Icons.cookie;
+      default:
+        return Icons.restaurant;
+    }
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+    
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
+  Future<void> _showDietHistoryDetails() async {
+    // Navigate to detailed diet history screen
+    _snack('Detailed diet history coming soon!');
+  }
 
   Future<MealPlan?> _showMealPlanForm({MealPlan? plan}) async {
     final nameCtl = TextEditingController(text: plan?.name ?? '');
@@ -1755,6 +1876,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     
     DateTime startDate = plan?.startDate ?? DateTime.now();
     DateTime endDate = plan?.endDate ?? DateTime.now().add(const Duration(days: 7));
+    final Set<String> selectedPreferences = Set.from(plan?.mealPreferences ?? []);
+    int mealsPerDay = plan?.mealsPerDay ?? 3;
 
     return await showModalBottomSheet<MealPlan>(
       context: context,
@@ -1764,114 +1887,331 @@ class _ProfileScreenState extends State<ProfileScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + 16,
-            left: 16,
-            right: 16,
-            top: 8,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(plan == null ? 'Add Meal Plan' : 'Edit Meal Plan',
-                  style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 12),
-              TextField(
-                controller: nameCtl,
-                decoration: const InputDecoration(
-                  labelText: 'Plan Name',
-                  border: OutlineInputBorder(),
-                ),
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(ctx).viewInsets.bottom + 16,
+                left: 16,
+                right: 16,
+                top: 8,
               ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: descCtl,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 2,
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      title: Text('Start Date', style: GoogleFonts.poppins(fontSize: 12)),
-                      subtitle: Text('${startDate.day}/${startDate.month}/${startDate.year}'),
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: startDate,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(const Duration(days: 365)),
-                        );
-                        if (date != null) {
-                          setState(() => startDate = date);
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ListTile(
-                      title: Text('End Date', style: GoogleFonts.poppins(fontSize: 12)),
-                      subtitle: Text('${endDate.day}/${endDate.month}/${endDate.year}'),
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: endDate,
-                          firstDate: startDate,
-                          lastDate: DateTime.now().add(const Duration(days: 365)),
-                        );
-                        if (date != null) {
-                          setState(() => endDate = date);
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.pop(ctx),
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final newPlan = MealPlan(
-                          id: plan?.id ?? ProfileManagementService.generateId(),
-                          name: nameCtl.text.trim(),
-                          description: descCtl.text.trim(),
-                          startDate: startDate,
-                          endDate: endDate,
-                          isActive: plan?.isActive ?? true,
-                          createdAt: plan?.createdAt ?? DateTime.now(),
-                          updatedAt: DateTime.now(),
-                        );
-                        Navigator.pop(ctx, newPlan);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: darkGreen,
-                        foregroundColor: Colors.white,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(plan == null ? 'Add Meal Plan' : 'Edit Meal Plan',
+                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: nameCtl,
+                      decoration: const InputDecoration(
+                        labelText: 'Plan Name',
+                        border: OutlineInputBorder(),
                       ),
-                      child: const Text('Save'),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: descCtl,
+                      decoration: const InputDecoration(
+                        labelText: 'Description',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 12),
+                    
+                    // Meal Preferences Section
+                    Text(
+                      'Meal Preferences',
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Select preferred meal types for this plan',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      constraints: const BoxConstraints(maxHeight: 200),
+                      child: SingleChildScrollView(
+                        child: _buildMealPreferencesSelector(
+                          selectedPreferences: selectedPreferences,
+                          onToggle: (pref) {
+                            setModalState(() {
+                              if (selectedPreferences.contains(pref)) {
+                                selectedPreferences.remove(pref);
+                              } else {
+                                selectedPreferences.add(pref);
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    
+                    // Meals Per Day Section
+                    Text(
+                      'Meals Per Day',
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        _buildMealCountOption(2, mealsPerDay, (value) {
+                          setModalState(() => mealsPerDay = value);
+                        }),
+                        const SizedBox(width: 8),
+                        _buildMealCountOption(3, mealsPerDay, (value) {
+                          setModalState(() => mealsPerDay = value);
+                        }),
+                        const SizedBox(width: 8),
+                        _buildMealCountOption(4, mealsPerDay, (value) {
+                          setModalState(() => mealsPerDay = value);
+                        }),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    
+                    // Date Range Section
+                    Text(
+                      'Plan Duration',
+                      style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () async {
+                              final date = await showDatePicker(
+                                context: context,
+                                initialDate: startDate,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(const Duration(days: 365)),
+                              );
+                              if (date != null) {
+                                setModalState(() => startDate = date);
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Start Date',
+                                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey.shade600),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '${startDate.day}/${startDate.month}/${startDate.year}',
+                                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () async {
+                              final date = await showDatePicker(
+                                context: context,
+                                initialDate: endDate,
+                                firstDate: startDate,
+                                lastDate: DateTime.now().add(const Duration(days: 365)),
+                              );
+                              if (date != null) {
+                                setModalState(() => endDate = date);
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'End Date',
+                                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey.shade600),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '${endDate.day}/${endDate.month}/${endDate.year}',
+                                    style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 14),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: const Text('Cancel'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              final newPlan = MealPlan(
+                                id: plan?.id ?? ProfileManagementService.generateId(),
+                                name: nameCtl.text.trim(),
+                                description: descCtl.text.trim(),
+                                startDate: startDate,
+                                endDate: endDate,
+                                isActive: plan?.isActive ?? true,
+                                mealPreferences: selectedPreferences.toList(),
+                                mealsPerDay: mealsPerDay,
+                                createdAt: plan?.createdAt ?? DateTime.now(),
+                                updatedAt: DateTime.now(),
+                              );
+                              Navigator.pop(ctx, newPlan);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: darkGreen,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Save'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
               ),
-              const SizedBox(height: 8),
-            ],
-          ),
+            );
+          }
         );
       },
+    );
+  }
+
+  Widget _buildMealPreferencesSelector({
+    required Set<String> selectedPreferences,
+    required Function(String) onToggle,
+  }) {
+    final availablePreferences = [
+      'Home-cooked meals',
+      'Quick & easy recipes',
+      'Meal prep friendly',
+      'Restaurant-style',
+      'Traditional Filipino',
+      'International cuisine',
+      'Budget-friendly',
+      'High protein',
+      'Low carb',
+      'Vegetarian',
+      'Vegan',
+      'Gluten-free',
+      'Dairy-free',
+      'Spicy food',
+      'Mild flavors',
+      'Comfort food',
+      'Healthy options',
+      'Indulgent treats',
+    ];
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: availablePreferences.map((pref) {
+        final isSelected = selectedPreferences.contains(pref);
+        return GestureDetector(
+          onTap: () => onToggle(pref),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected ? darkGreen : Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected ? darkGreen : Colors.grey.shade300,
+                width: 1.5,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isSelected)
+                  Icon(Icons.check, color: Colors.white, size: 16)
+                else
+                  const SizedBox(width: 16),
+                Text(
+                  pref,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: isSelected ? Colors.white : Colors.grey.shade700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildMealCountOption(int count, int selectedCount, Function(int) onTap) {
+    final isSelected = selectedCount == count;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => onTap(count),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected ? darkGreen : Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? darkGreen : Colors.grey.shade300,
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            children: [
+              Icon(
+                Icons.restaurant,
+                color: isSelected ? Colors.white : darkGreen,
+                size: 20,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '$count',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? Colors.white : Colors.grey.shade700,
+                ),
+              ),
+              Text(
+                'meals',
+                style: GoogleFonts.poppins(
+                  fontSize: 10,
+                  color: isSelected ? Colors.white70 : Colors.grey.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

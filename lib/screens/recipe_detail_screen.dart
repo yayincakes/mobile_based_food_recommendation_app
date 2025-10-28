@@ -79,6 +79,14 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                     const SizedBox(height: 24),
                   ],
 
+                  // Allergen Warnings
+                  if (widget.recipe.allergens.isNotEmpty) ...[
+                    _buildSectionTitle('Allergen Information'),
+                    const SizedBox(height: 12),
+                    _buildAllergenWarningsCard(),
+                    const SizedBox(height: 24),
+                  ],
+
                   // Nutrition Information
                   _buildSectionTitle('Nutrition Information'),
                   const SizedBox(height: 12),
@@ -116,17 +124,97 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   Widget _buildRecipeHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [darkGreen, darkGreen.withOpacity(0.8)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      height: 280,
+      child: Stack(
+        fit: StackFit.expand,
         children: [
+          // Background Image
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+            child: Image.network(
+              widget.recipe.imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                // Fallback to gradient background if image fails
+                return Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [darkGreen, darkGreen.withOpacity(0.8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.restaurant,
+                          size: 64,
+                          color: Colors.white.withOpacity(0.7),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Recipe Image',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white.withOpacity(0.7),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [darkGreen, darkGreen.withOpacity(0.8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      strokeWidth: 3,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          
+          // Dark overlay for better text readability
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0.2),
+                  Colors.black.withOpacity(0.6),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(24),
+                bottomRight: Radius.circular(24),
+              ),
+            ),
+          ),
+          
+          // Content
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
           // Meal Type Badge
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -182,15 +270,18 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             const SizedBox(height: 16),
           ],
           
-          // Quick Info Row
-          Row(
-            children: [
-              _quickInfoItem(Icons.access_time, '${widget.recipe.prepTime + widget.recipe.cookTime} min'),
-              const SizedBox(width: 16),
-              _quickInfoItem(Icons.people, '${widget.recipe.servings} servings'),
-              const SizedBox(width: 16),
-              _quickInfoItem(Icons.star, '${widget.recipe.rating}'),
-            ],
+                // Quick Info Row
+                Row(
+                  children: [
+                    _quickInfoItem(Icons.access_time, '${widget.recipe.prepTime + widget.recipe.cookTime} min'),
+                    const SizedBox(width: 16),
+                    _quickInfoItem(Icons.people, '${widget.recipe.servings} servings'),
+                    const SizedBox(width: 16),
+                    _quickInfoItem(Icons.star, '${widget.recipe.rating}'),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -727,6 +818,167 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+    }
+  }
+
+  Widget _buildAllergenWarningsCard() {
+    final allergenInfo = _getAllergenInfo(widget.recipe.allergens);
+    
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: allergenInfo['color'].withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: allergenInfo['color'].withOpacity(0.3),
+          width: 1.5,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: allergenInfo['color'],
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Contains Allergens',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: allergenInfo['color'],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          
+          // Allergen list
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: widget.recipe.allergens.map((allergen) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: allergenInfo['color'].withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: allergenInfo['color'].withOpacity(0.4),
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  allergen,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: allergenInfo['color'],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Severity information
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  _getSeverityIcon(allergenInfo['severity']),
+                  size: 16,
+                  color: allergenInfo['color'],
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    _getSeverityMessage(allergenInfo['severity']),
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Map<String, dynamic> _getAllergenInfo(List<String> allergens) {
+    // Define allergen severity levels
+    const severeAllergens = ['nuts', 'peanuts', 'tree nuts', 'shellfish', 'fish'];
+    const moderateAllergens = ['dairy', 'milk', 'eggs', 'soy', 'wheat', 'gluten'];
+    
+    // Check for severe allergens first
+    final hasSevere = allergens.any((allergen) => 
+      severeAllergens.any((severe) => 
+        allergen.toLowerCase().contains(severe.toLowerCase())
+      )
+    );
+    
+    if (hasSevere) {
+      return {
+        'color': Colors.red.shade600,
+        'severity': 'Severe',
+      };
+    }
+    
+    // Check for moderate allergens
+    final hasModerate = allergens.any((allergen) => 
+      moderateAllergens.any((moderate) => 
+        allergen.toLowerCase().contains(moderate.toLowerCase())
+      )
+    );
+    
+    if (hasModerate) {
+      return {
+        'color': Colors.orange.shade600,
+        'severity': 'Moderate',
+      };
+    }
+    
+    // Default to mild
+    return {
+      'color': Colors.amber.shade600,
+      'severity': 'Mild',
+    };
+  }
+
+  IconData _getSeverityIcon(String severity) {
+    switch (severity) {
+      case 'Severe':
+        return Icons.dangerous;
+      case 'Moderate':
+        return Icons.warning_amber_rounded;
+      default:
+        return Icons.info_outline;
+    }
+  }
+
+  String _getSeverityMessage(String severity) {
+    switch (severity) {
+      case 'Severe':
+        return 'This recipe contains allergens that may cause severe allergic reactions. Please avoid if you have known allergies to these ingredients.';
+      case 'Moderate':
+        return 'This recipe contains common allergens. Check with your healthcare provider if you have food sensitivities.';
+      default:
+        return 'This recipe contains ingredients that some people may be sensitive to.';
     }
   }
 }

@@ -35,7 +35,7 @@ class RecipeService {
         rating: 4.8,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/tapsilog.jpg',
+        imageUrl: 'assets/images/Tapsilog.jpg',
       ),
       Recipe(
         id: 2,
@@ -63,7 +63,7 @@ class RecipeService {
         rating: 4.5,
         cookTimeFormatted: '25 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/champorado.jpg',
+        imageUrl: 'assets/images/ChamporadoWithTuyo.jpg',
       ),
       Recipe(
         id: 3,
@@ -92,7 +92,7 @@ class RecipeService {
         rating: 4.3,
         cookTimeFormatted: '10 min',
         prepTimeFormatted: '5 min',
-        imageUrl: 'https://example.com/pandesal.jpg',
+        imageUrl: 'assets/images/PandesalWithScrambledEgg.jpg',
       ),
       Recipe(
         id: 4,
@@ -124,7 +124,7 @@ class RecipeService {
         rating: 4.4,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/lugaw.jpg',
+        imageUrl: 'assets/images/LugawWithEgg.jpg',
       ),
 
       // Filipino Lunch Dishes
@@ -184,39 +184,36 @@ class RecipeService {
         rating: 4.6,
         cookTimeFormatted: '45 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd',
+        imageUrl: 'assets/images/SinigangNaBaboy.jpg',
       ),
-      Recipe(
+       Recipe(
         id: 7,
-        name: 'Beef Nilaga',
-        description: 'Boiled beef with vegetables',
-        prepTime: 15,
-        cookTime: 60,
-        servings: 6,
-        difficulty: 'Medium',
-        category: 'Filipino',
-        caloriesPerServing: 450,
-        proteinPerServing: 32,
-        carbsPerServing: 38,
-        fatPerServing: 18,
-        instructions: '''1. Cut 1 kg beef into 2-inch cubes and rinse under cold water
-2. In a large pot, place beef with 8 cups water, 2 bay leaves, and 1 tsp salt
-3. Bring to a boil, then reduce heat and simmer for 1.5-2 hours until beef is tender
-4. Skim off any foam that rises to the surface during cooking
-5. Add 2 large potatoes (quartered) and 2 carrots (cut in chunks)
-6. Continue simmering for 15 minutes
-7. Add 1 small cabbage (quartered) and 1 bunch bok choy
-8. Season with fish sauce, salt, and pepper to taste
-9. Simmer for another 5-10 minutes until vegetables are tender
-10. Serve hot with steamed rice and fish sauce on the side''',
+        name: 'Ensaladang Pipino',
+        description: 'Cucumber salad with tomatoes - refreshing',
+        prepTime: 10,
+        cookTime: 0,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Healthy',
+        caloriesPerServing: 35,
+        proteinPerServing: 1,
+        carbsPerServing: 7,
+        fatPerServing: 0,
+        instructions: '''1. Slice cucumbers thinly
+2. Add diced tomatoes and onions
+3. Make dressing: vinegar, calamansi, salt
+4. Add a touch of stevia instead of sugar
+5. Toss vegetables with dressing
+6. Chill for 10 minutes
+7. Serve cold as side dish''',
         isFilipinoDish: true,
-        ingredients: ['beef', 'potatoes', 'carrots', 'cabbage', 'onion'],
-        tags: ['filipino', 'lunch', 'comfort food'],
+        ingredients: ['cucumber', 'tomatoes', 'onions', 'vinegar', 'calamansi'],
+        tags: ['healthy', 'salad', 'zero-fat', 'refreshing'],
         allergens: [],
-        rating: 4.5,
-        cookTimeFormatted: '60 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/nilaga.jpg',
+        rating: 4.3,
+        cookTimeFormatted: '0 min',
+        prepTimeFormatted: '10 min',
+        imageUrl: 'assets/images/EnsaladangPipino.jpg',
       ),
       Recipe(
         id: 8,
@@ -250,7 +247,7 @@ class RecipeService {
         rating: 4.4,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/fish-sinigang.jpg',
+        imageUrl: 'assets/images/FishSinigang.jpg',
       ),
       Recipe(
         id: 9,
@@ -283,7 +280,7 @@ class RecipeService {
         rating: 4.7,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624',
+        imageUrl: 'assets/images/PancitCanton.jpg',
       ),
       Recipe(
         id: 10,
@@ -316,7 +313,7 @@ class RecipeService {
         rating: 4.8,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd',
+        imageUrl: 'assets/images/TinolangManok.jpg',
       ),
 
       // Filipino Dinner Dishes
@@ -351,7 +348,7 @@ class RecipeService {
         rating: 4.7,
         cookTimeFormatted: '120 min',
         prepTimeFormatted: '30 min',
-        imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1',
+        imageUrl: 'assets/images/KareKare.jpg',
       ),
       Recipe(
         id: 12,
@@ -385,7 +382,7 @@ class RecipeService {
         rating: 4.6,
         cookTimeFormatted: '45 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b',
+        imageUrl: 'assets/images/LechonKawali.jpg',
       ),
       Recipe(
         id: 13,
@@ -420,7 +417,7 @@ class RecipeService {
         rating: 4.5,
         cookTimeFormatted: '40 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/afritada.jpg',
+        imageUrl: 'assets/images/ChickenAfritada.jpg',
       ),
       Recipe(
         id: 14,
@@ -454,7 +451,7 @@ class RecipeService {
         rating: 4.4,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '25 min',
-        imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d',
+        imageUrl: 'assets/images/Laing.jpg',
       ),
       Recipe(
         id: 15,
@@ -488,7 +485,7 @@ class RecipeService {
         rating: 4.7,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624',
+        imageUrl: 'assets/images/BicolExpress.jpg',
       ),
       Recipe(
         id: 16,
@@ -503,16 +500,26 @@ class RecipeService {
         proteinPerServing: 30,
         carbsPerServing: 5,
         fatPerServing: 28,
-        instructions: 'Cook pork and liver, mix with vegetables and seasonings',
+        instructions: '''1. Boil 500g pork face or belly and 200g pork liver in salted water until tender
+2. Drain and let it cool, then chop into small pieces
+3. In a pan, heat 2 tablespoons oil over medium heat
+4. Sauté 1 chopped onion and 3 cloves minced garlic until fragrant
+5. Add the chopped pork and liver, and cook until lightly crispy
+6. Season with salt, pepper, and soy sauce to taste
+7. Add 2 chopped chili peppers and mix well
+8. Squeeze in juice from 2 calamansi (or 1 tablespoon lemon juice)
+9. Crack 1 egg on top (optional) and stir quickly while still hot
+10. Serve sizzling on a hot plate with extra calamansi and chili on the side''',
         isFilipinoDish: true,
-        ingredients: ['pork', 'liver', 'onion', 'chili', 'calamansi'],
+        ingredients: ['pork', 'liver', 'onion', 'chili', 'calamansi', 'egg'],
         tags: ['filipino', 'dinner', 'spicy'],
         allergens: ['egg'],
         rating: 4.9,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '30 min',
-        imageUrl: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe',
+        imageUrl: 'assets/images/Sisig.jpg',
       ),
+
       Recipe(
         id: 17,
         name: 'Pinakbet',
@@ -534,7 +541,7 @@ class RecipeService {
         rating: 4.3,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d',
+        imageUrl: 'assets/images/Pinakbet.jpg',
       ),
       Recipe(
         id: 18,
@@ -557,7 +564,7 @@ class RecipeService {
         rating: 4.8,
         cookTimeFormatted: '90 min',
         prepTimeFormatted: '30 min',
-        imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1',
+        imageUrl: 'assets/images/BeefCaldereta.jpg',
       ),
       Recipe(
         id: 19,
@@ -591,7 +598,7 @@ class RecipeService {
         rating: 4.7,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd',
+        imageUrl: 'assets/images/ChickenCurry.jpg',
       ),
       Recipe(
         id: 20,
@@ -606,7 +613,16 @@ class RecipeService {
         proteinPerServing: 12,
         carbsPerServing: 25,
         fatPerServing: 5,
-        instructions: 'Cook mung beans, sauté with vegetables',
+        instructions: '''1. Rinse 1 cup mung beans (munggo) and place in a pot with 4 cups water
+2. Bring to a boil, then lower heat and simmer for 20–25 minutes until beans are soft
+3. In a separate pan, heat 2 tablespoons oil over medium heat
+4. Sauté 1 chopped onion and 3 cloves minced garlic until fragrant
+5. Add 1 chopped tomato and cook until softened
+6. Add the cooked mung beans with some of the broth and stir well
+7. Season with 1 tablespoon fish sauce, salt, and pepper to taste
+8. Add 1 cup leafy greens (like ampalaya leaves or spinach) and stir until wilted
+9. Optional: Add fried or boiled pork, chicharon, or shrimp for extra flavor
+10. Serve hot with steamed rice''',
         isFilipinoDish: true,
         ingredients: ['mung beans', 'vegetables', 'garlic', 'onion', 'fish sauce'],
         tags: ['filipino', 'dinner', 'vegetarian', 'healthy'],
@@ -616,6 +632,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d',
       ),
+
       Recipe(
         id: 21,
         name: 'Crispy Pata',
@@ -629,7 +646,16 @@ class RecipeService {
         proteinPerServing: 45,
         carbsPerServing: 5,
         fatPerServing: 35,
-        instructions: 'Boil pork knuckle, deep fry until crispy',
+        instructions: '''1. Clean 1 whole pork knuckle (pata) thoroughly and pat dry
+2. Place pork knuckle in a large pot with enough water to cover
+3. Add 1 tablespoon salt, 1 teaspoon peppercorns, 5 cloves garlic, and 2 tablespoons vinegar
+4. Bring to a boil, then simmer for 1 to 1½ hours until tender
+5. Remove from the pot and let it cool completely
+6. Pat dry the pork skin with paper towels and refrigerate uncovered for several hours or overnight to help dry the skin
+7. Heat enough oil in a deep fryer or large pot for deep frying
+8. Carefully lower the pork knuckle into the hot oil and fry until golden brown and crispy (about 10–15 minutes)
+9. Remove and drain excess oil on paper towels
+10. Serve hot with a dipping sauce made of soy sauce, vinegar, chopped onion, garlic, and chili''',
         isFilipinoDish: true,
         ingredients: ['pork knuckle', 'salt', 'pepper', 'garlic', 'vinegar'],
         tags: ['filipino', 'dinner', 'special occasion'],
@@ -637,8 +663,9 @@ class RecipeService {
         rating: 4.9,
         cookTimeFormatted: '120 min',
         prepTimeFormatted: '30 min',
-        imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b',
+        imageUrl: 'assets/images/CrispyPata.jpg',
       ),
+
       Recipe(
         id: 22,
         name: 'Dinuguan',
@@ -652,7 +679,18 @@ class RecipeService {
         proteinPerServing: 30,
         carbsPerServing: 15,
         fatPerServing: 25,
-        instructions: 'Cook pork, add blood and seasonings',
+        instructions: '''1. Cut 1 kg pork belly or pork shoulder into small cubes
+2. In a pot, heat 2 tablespoons oil over medium heat
+3. Sauté 1 chopped onion and 4 cloves minced garlic until fragrant
+4. Add the pork and cook until lightly browned
+5. Pour in 1 cup water and 1 cup vinegar, then bring to a boil without stirring
+6. Lower the heat and simmer until pork is tender (about 30–40 minutes)
+7. In a separate bowl, strain 1 cup fresh pig’s blood to remove clots
+8. Slowly pour the blood into the pot while stirring continuously to prevent curdling
+9. Add 2–3 chopped chili peppers (optional for spice)
+10. Season with salt, pepper, and fish sauce to taste
+11. Continue to simmer for another 10–15 minutes until the sauce thickens
+12. Serve hot with steamed rice or puto (rice cakes)''',
         isFilipinoDish: true,
         ingredients: ['pork', 'pig blood', 'vinegar', 'garlic', 'chili'],
         tags: ['filipino', 'dinner', 'special occasion'],
@@ -660,8 +698,9 @@ class RecipeService {
         rating: 4.6,
         cookTimeFormatted: '60 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624',
+        imageUrl: 'assets/images/Dinuguan.jpg',
       ),
+
       Recipe(
         id: 23,
         name: 'Paksiw na Isda',
@@ -694,7 +733,7 @@ class RecipeService {
         rating: 4.5,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://images.unsplash.com/photo-1544943910-4c1dc44aab44',
+        imageUrl: 'assets/images/PaksiwnaIsda.jpg',
       ),
       Recipe(
         id: 24,
@@ -728,7 +767,7 @@ class RecipeService {
         rating: 4.8,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://images.unsplash.com/photo-1544943910-4c1dc44aab44',
+        imageUrl: 'assets/images/GinatangAlimango.jpg',
       ),
       Recipe(
         id: 25,
@@ -743,7 +782,16 @@ class RecipeService {
         proteinPerServing: 15,
         carbsPerServing: 45,
         fatPerServing: 12,
-        instructions: 'Cook rice noodles, stir-fry with vegetables and meat',
+        instructions: '''1. Soak 400g rice noodles (bihon) in warm water for 10 minutes, then drain and set aside
+2. In a large pan or wok, heat 2 tablespoons oil over medium heat
+3. Sauté 3 cloves minced garlic and 1 chopped onion until fragrant
+4. Add 200g sliced chicken (or pork) and cook until lightly browned
+5. Pour in 2 cups chicken broth and 2 tablespoons soy sauce, then bring to a boil
+6. Add sliced carrots, cabbage, and any other desired vegetables
+7. Stir in the soaked bihon noodles and mix well to absorb the sauce
+8. Continue cooking, tossing gently until noodles are tender and evenly coated
+9. Season with salt, pepper, and a bit more soy sauce if needed
+10. Garnish with sliced calamansi, green onions, and serve hot''',
         isFilipinoDish: true,
         ingredients: ['rice noodles', 'chicken', 'cabbage', 'carrots', 'soy sauce'],
         tags: ['filipino', 'dinner', 'noodles'],
@@ -751,8 +799,9 @@ class RecipeService {
         rating: 4.7,
         cookTimeFormatted: '15 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624',
+        imageUrl: 'assets/images/PancitBihon.jpg',
       ),
+
       Recipe(
         id: 26,
         name: 'Tortang Talong',
@@ -766,7 +815,16 @@ class RecipeService {
         proteinPerServing: 12,
         carbsPerServing: 8,
         fatPerServing: 12,
-        instructions: 'Grill eggplant, dip in egg mixture, fry',
+        instructions: '''1. Grill or broil 4 medium-sized eggplants until the skin is charred and the flesh is soft
+2. Let the eggplants cool slightly, then peel off the charred skin carefully
+3. Flatten each eggplant gently using a fork
+4. In a bowl, beat 4 eggs and season with salt and pepper
+5. Optional: Add finely chopped onion and garlic to the egg mixture for extra flavor
+6. Dip each flattened eggplant into the egg mixture, making sure it’s fully coated
+7. Heat 2 tablespoons oil in a pan over medium heat
+8. Fry each eggplant omelet until golden brown on both sides
+9. Remove from pan and drain excess oil on paper towels
+10. Serve hot with steamed rice and ketchup or soy sauce with calamansi''',
         isFilipinoDish: true,
         ingredients: ['eggplant', 'eggs', 'onion', 'garlic', 'salt'],
         tags: ['filipino', 'dinner', 'vegetarian'],
@@ -774,8 +832,9 @@ class RecipeService {
         rating: 4.5,
         cookTimeFormatted: '15 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d',
+        imageUrl: 'assets/images/TortangTalong.jpg',
       ),
+
       Recipe(
         id: 27,
         name: 'Chicken Inasal',
@@ -789,7 +848,15 @@ class RecipeService {
         proteinPerServing: 38,
         carbsPerServing: 12,
         fatPerServing: 16,
-        instructions: 'Marinate chicken, grill with lemongrass and annatto',
+        instructions: '''1. Clean and cut 1 kg chicken (preferably leg quarters or breast with bone)
+2. In a bowl, combine 3 cloves minced garlic, 1 thumb-sized ginger (grated), 1 stalk lemongrass (finely chopped), 3 tablespoons vinegar, 2 tablespoons soy sauce, 1 tablespoon calamansi or lemon juice, salt, and pepper
+3. Mix well and marinate the chicken in this mixture for at least 2 hours or overnight for best flavor
+4. In a small saucepan, melt 2 tablespoons butter or margarine with 1 tablespoon annatto (atsuete) oil and a pinch of salt — this will be the basting sauce
+5. Preheat grill over medium heat and lightly oil the grates
+6. Grill the chicken, turning occasionally, and baste with the annatto oil mixture for color and flavor
+7. Continue grilling for 25–30 minutes or until the chicken is fully cooked and slightly charred
+8. Remove from the grill and brush with a bit more annatto oil before serving
+9. Serve hot with steamed rice, pickled papaya (atchara), and calamansi with soy sauce on the side''',
         isFilipinoDish: true,
         ingredients: ['chicken', 'lemongrass', 'annatto', 'garlic', 'soy sauce'],
         tags: ['filipino', 'dinner', 'grilled'],
@@ -797,9 +864,10 @@ class RecipeService {
         rating: 4.9,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '30 min',
-        imageUrl: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6',
+        imageUrl: 'assets/images/ChickenInasal.jpg',
       ),
-      Recipe(
+
+     Recipe(
         id: 28,
         name: 'Bulalo',
         description: 'Beef shank soup with vegetables',
@@ -812,7 +880,16 @@ class RecipeService {
         proteinPerServing: 35,
         carbsPerServing: 20,
         fatPerServing: 18,
-        instructions: 'Boil beef shank until tender, add vegetables',
+        instructions: '''1. In a large pot, place 1.5 kg beef shank with bone marrow and cover with water
+2. Bring to a boil and skim off any scum or impurities that rise to the surface
+3. Lower the heat, cover, and simmer for 2½ to 3 hours or until the meat is very tender
+4. Add water as needed to keep the meat submerged during cooking
+5. Once tender, season with 2 tablespoons fish sauce and 1 teaspoon ground pepper
+6. Add 2 pieces corn on the cob (cut into sections) and cook for 10–15 minutes
+7. Add 1 onion (quartered) and continue to simmer until the corn is cooked
+8. Add vegetables such as pechay or cabbage, and cook for another 3–5 minutes
+9. Taste and adjust seasoning with more fish sauce or salt if needed
+10. Serve hot with steamed rice and a dipping sauce of fish sauce, calamansi, and chili''',
         isFilipinoDish: true,
         ingredients: ['beef shank', 'corn', 'cabbage', 'fish sauce', 'pepper'],
         tags: ['filipino', 'dinner', 'soup'],
@@ -820,8 +897,9 @@ class RecipeService {
         rating: 4.9,
         cookTimeFormatted: '180 min',
         prepTimeFormatted: '30 min',
-        imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554',
+        imageUrl: 'assets/images/Bulalo.jpg',
       ),
+
 
       // Filipino Snacks
       Recipe(
@@ -854,7 +932,7 @@ class RecipeService {
         rating: 4.3,
         cookTimeFormatted: '10 min',
         prepTimeFormatted: '5 min',
-        imageUrl: 'https://example.com/banana-cue.jpg',
+        imageUrl: 'assets/images/BananaCue.jpg',
       ),
       Recipe(
         id: 30,
@@ -901,7 +979,15 @@ class RecipeService {
         proteinPerServing: 2,
         carbsPerServing: 35,
         fatPerServing: 7,
-        instructions: 'Wrap banana in spring roll wrapper, fry',
+        instructions: '''1. Peel and slice 6 ripe saba bananas in half lengthwise
+2. Place each banana slice on a spring roll wrapper
+3. Sprinkle 1 teaspoon brown sugar over each banana and add a strip of jackfruit (optional)
+4. Roll the wrapper tightly, folding the sides to seal, and brush the edge with a bit of water to close
+5. Heat oil in a pan over medium heat
+6. Once hot, fry the wrapped bananas until golden brown and crispy
+7. Sprinkle additional brown sugar into the oil to create a caramelized coating (optional)
+8. Remove and drain excess oil on paper towels
+9. Serve warm as a sweet snack or dessert''',
         isFilipinoDish: true,
         ingredients: ['saba banana', 'spring roll wrapper', 'brown sugar', 'oil'],
         tags: ['filipino', 'snack', 'sweet'],
@@ -926,7 +1012,15 @@ class RecipeService {
         proteinPerServing: 30,
         carbsPerServing: 8,
         fatPerServing: 12,
-        instructions: 'Season and grill bangus, serve with vegetables',
+        instructions: '''1. Clean and butterfly 1 whole bangus (milkfish), removing the scales and innards
+2. In a small bowl, combine 3 cloves minced garlic, juice of 1 lemon (or calamansi), 1 tablespoon olive oil, salt, and pepper
+3. Rub the mixture evenly on both sides of the fish and marinate for 15–20 minutes
+4. Prepare foil or banana leaves and place sliced tomatoes, onions, and a bit of garlic inside the fish cavity
+5. Wrap the bangus securely in the foil or banana leaves
+6. Preheat grill to medium heat
+7. Grill the fish for about 8–10 minutes on each side or until fully cooked and slightly charred
+8. Remove from the grill and carefully unwrap
+9. Serve hot with grilled or steamed vegetables and a side of vinegar dipping sauce''',
         isFilipinoDish: true,
         ingredients: ['bangus', 'lemon', 'garlic', 'vegetables', 'olive oil'],
         tags: ['healthy', 'protein', 'low-carb'],
@@ -936,6 +1030,7 @@ class RecipeService {
         prepTimeFormatted: '15 min',
         imageUrl: 'https://example.com/grilled-bangus.jpg',
       ),
+
       Recipe(
         id: 33,
         name: 'Ensaladang Talong',
@@ -949,7 +1044,14 @@ class RecipeService {
         proteinPerServing: 3,
         carbsPerServing: 12,
         fatPerServing: 2,
-        instructions: 'Grill eggplant, mix with tomatoes and onions',
+        instructions: '''1. Grill 2 medium-sized eggplants over an open flame or on a pan until the skin is charred and the flesh becomes soft
+2. Allow the eggplants to cool slightly, then peel off the charred skin
+3. Gently flatten the eggplants using a fork and place them on a serving plate
+4. In a bowl, combine 2 chopped tomatoes and 1 small red onion (thinly sliced)
+5. Add 2 tablespoons vinegar, a pinch of salt, and pepper to taste, then mix well
+6. Pour the tomato-onion mixture over the grilled eggplants
+7. Optional: drizzle with a bit of fish sauce or calamansi juice for added flavor
+8. Serve as a side dish with grilled or fried dishes like pork, fish, or chicken''',
         isFilipinoDish: true,
         ingredients: ['eggplant', 'tomatoes', 'onion', 'vinegar', 'salt'],
         tags: ['healthy', 'vegetarian', 'low-calorie'],
@@ -959,7 +1061,8 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/ensaladang-talong.jpg',
       ),
-      Recipe(
+
+     Recipe(
         id: 34,
         name: 'Atchara',
         description: 'Pickled papaya and vegetables',
@@ -972,7 +1075,14 @@ class RecipeService {
         proteinPerServing: 1,
         carbsPerServing: 6,
         fatPerServing: 0,
-        instructions: 'Mix papaya with vinegar, sugar, and spices',
+        instructions: '''1. Peel and grate 1 medium green papaya, then sprinkle with 1 tablespoon salt
+2. Let it sit for 30 minutes to draw out moisture, then rinse and squeeze dry
+3. In a saucepan, combine 1 cup vinegar, 1/2 cup sugar, and 1 teaspoon salt
+4. Heat the mixture just until the sugar dissolves, then let it cool
+5. In a large bowl, mix the papaya with thinly sliced carrots, red bell pepper, and ginger strips
+6. Pour the cooled vinegar mixture over the vegetables and mix well
+7. Transfer to clean glass jars and refrigerate for at least 1 day before serving
+8. Serve as a side dish with grilled or fried Filipino dishes''',
         isFilipinoDish: true,
         ingredients: ['green papaya', 'vinegar', 'sugar', 'ginger', 'carrots'],
         tags: ['healthy', 'vegetarian', 'low-calorie'],
@@ -982,6 +1092,7 @@ class RecipeService {
         prepTimeFormatted: '20 min',
         imageUrl: 'https://example.com/atchara.jpg',
       ),
+
 
       // Additional Healthy Filipino Dishes
       Recipe(
@@ -997,7 +1108,14 @@ class RecipeService {
         proteinPerServing: 6,
         carbsPerServing: 8,
         fatPerServing: 3,
-        instructions: 'Sauté bitter gourd with garlic and onions, add beaten eggs',
+        instructions: '''1. Slice the bitter gourd thinly and remove the seeds.
+2. Rub the slices with salt and let sit for 10 minutes to reduce bitterness, then rinse and drain.
+3. Heat oil in a pan and sauté garlic and onion until fragrant.
+4. Add the bitter gourd and cook for 3–5 minutes.
+5. Season with fish sauce and pepper.
+6. Pour in beaten eggs and let them set slightly before stirring gently.
+7. Cook for another 2 minutes until eggs are fully cooked.
+8. Serve hot with steamed rice.''',
         isFilipinoDish: true,
         ingredients: ['bitter gourd', 'eggs', 'garlic', 'onion', 'fish sauce', 'oil'],
         tags: ['healthy', 'low-calorie', 'vegetarian option', 'bitter melon'],
@@ -1007,6 +1125,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/ampalaya.jpg',
       ),
+
       Recipe(
         id: 36,
         name: 'Chopsuey',
@@ -1020,7 +1139,14 @@ class RecipeService {
         proteinPerServing: 4,
         carbsPerServing: 12,
         fatPerServing: 3,
-        instructions: 'Stir-fry mixed vegetables with light sauce',
+        instructions: '''1. Heat oil in a wok or large pan.
+2. Sauté garlic and onion until fragrant.
+3. Add mixed vegetables such as carrots, cabbage, bell peppers, and cauliflower.
+4. Stir-fry for 3–4 minutes.
+5. Mix soy sauce and cornstarch in a small bowl with a little water to make a light sauce.
+6. Pour the sauce into the pan and toss until vegetables are evenly coated and slightly tender.
+7. Season with salt and pepper to taste.
+8. Serve hot as a side dish or main meal with rice.''',
         isFilipinoDish: true,
         ingredients: ['mixed vegetables', 'garlic', 'onion', 'soy sauce', 'cornstarch', 'oil'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'mixed vegetables'],
@@ -1030,6 +1156,7 @@ class RecipeService {
         prepTimeFormatted: '15 min',
         imageUrl: 'https://example.com/chopsuey.jpg',
       ),
+
       Recipe(
         id: 37,
         name: 'Kinilaw na Isda',
@@ -1043,7 +1170,12 @@ class RecipeService {
         proteinPerServing: 20,
         carbsPerServing: 5,
         fatPerServing: 2,
-        instructions: 'Marinate raw fish in vinegar with ginger, onions, and chili',
+        instructions: '''1. Clean and cube the fresh fish (such as tuna or tanigue).
+2. Rinse with vinegar briefly, then drain to remove any fishy odor.
+3. In a bowl, combine vinegar, ginger, onions, and chopped chili.
+4. Add the fish cubes and mix gently until evenly coated.
+5. Season with salt and let it marinate for 10–15 minutes.
+6. Serve immediately while fresh.''',
         isFilipinoDish: true,
         ingredients: ['fresh fish', 'vinegar', 'ginger', 'onion', 'chili', 'salt'],
         tags: ['healthy', 'raw', 'protein', 'low-carb', 'fresh'],
@@ -1053,6 +1185,7 @@ class RecipeService {
         prepTimeFormatted: '20 min',
         imageUrl: 'https://example.com/kinilaw.jpg',
       ),
+
       Recipe(
         id: 38,
         name: 'Grilled Tilapia',
@@ -1066,7 +1199,12 @@ class RecipeService {
         proteinPerServing: 35,
         carbsPerServing: 2,
         fatPerServing: 4,
-        instructions: 'Season fish with lemon, herbs, and grill until cooked',
+        instructions: '''1. Clean and score the tilapia on both sides.
+2. Rub with salt, pepper, minced garlic, and your choice of herbs.
+3. Squeeze lemon juice over the fish and let it marinate for 5–10 minutes.
+4. Preheat the grill and lightly brush with oil.
+5. Grill the tilapia for about 6–8 minutes per side, or until cooked through and flaky.
+6. Serve hot with lemon wedges or a side of vegetables.''',
         isFilipinoDish: true,
         ingredients: ['tilapia', 'lemon', 'garlic', 'herbs', 'salt', 'pepper'],
         tags: ['healthy', 'grilled', 'protein', 'low-carb', 'lean'],
@@ -1076,6 +1214,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/grilled-tilapia.jpg',
       ),
+
       Recipe(
         id: 39,
         name: 'Steamed Lapu-Lapu',
@@ -1089,7 +1228,14 @@ class RecipeService {
         proteinPerServing: 32,
         carbsPerServing: 3,
         fatPerServing: 2,
-        instructions: 'Steam fish with ginger, garlic, and light soy sauce',
+        instructions: '''1. Clean the lapu-lapu thoroughly and pat dry with paper towels.
+2. Place slices of ginger inside the fish cavity and on top of the fish.
+3. Arrange the fish on a heatproof plate that fits inside your steamer.
+4. In a separate bowl, mix 2 tablespoons of light soy sauce and 1 tablespoon of sesame oil.
+5. Steam the fish over medium heat for 15–20 minutes, or until the fish flakes easily.
+6. Carefully remove from the steamer and pour the soy sauce mixture over the fish.
+7. Garnish with sliced spring onions and additional ginger if desired.
+8. Serve hot with steamed rice.''',
         isFilipinoDish: true,
         ingredients: ['lapu-lapu', 'ginger', 'garlic', 'light soy sauce', 'spring onions'],
         tags: ['healthy', 'steamed', 'protein', 'low-fat', 'lean'],
@@ -1099,7 +1245,8 @@ class RecipeService {
         prepTimeFormatted: '15 min',
         imageUrl: 'https://example.com/steamed-lapu-lapu.jpg',
       ),
-      Recipe(
+
+     Recipe(
         id: 40,
         name: 'Adobong Kangkong',
         description: 'Water spinach cooked in vinegar and soy sauce',
@@ -1112,7 +1259,15 @@ class RecipeService {
         proteinPerServing: 3,
         carbsPerServing: 6,
         fatPerServing: 1,
-        instructions: 'Sauté water spinach with garlic, vinegar, and soy sauce',
+        instructions: '''1. Separate the kangkong leaves and tender stems, then wash thoroughly.
+2. Heat 1 tablespoon of oil in a pan over medium heat.
+3. Sauté 3 cloves of minced garlic until lightly golden.
+4. Add 1–2 tablespoons of soy sauce and 1 tablespoon of vinegar.
+5. Let it simmer for about 1 minute without stirring.
+6. Add the kangkong stems first and cook for 1–2 minutes.
+7. Add the kangkong leaves and toss until wilted.
+8. Season with salt and pepper to taste.
+9. Serve immediately as a healthy side dish or over steamed rice.''',
         isFilipinoDish: true,
         ingredients: ['kangkong', 'garlic', 'vinegar', 'soy sauce', 'oil'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'leafy greens'],
@@ -1122,6 +1277,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/adobong-kangkong.jpg',
       ),
+
       Recipe(
         id: 41,
         name: 'Ginisang Togue',
@@ -1135,7 +1291,14 @@ class RecipeService {
         proteinPerServing: 3,
         carbsPerServing: 5,
         fatPerServing: 1,
-        instructions: 'Sauté bean sprouts with garlic and light seasoning',
+        instructions: '''1. Rinse the mung bean sprouts thoroughly and drain well.
+2. Heat 1 tablespoon of oil in a pan over medium heat.
+3. Sauté 3 cloves of minced garlic and 1 chopped onion until fragrant.
+4. Add a splash of fish sauce and let it cook for about 30 seconds.
+5. Add the mung bean sprouts and toss gently for 2–3 minutes.
+6. Optionally, add sliced carrots or tofu for added flavor and texture.
+7. Season with salt and pepper to taste.
+8. Remove from heat and serve immediately while crisp and fresh.''',
         isFilipinoDish: true,
         ingredients: ['mung bean sprouts', 'garlic', 'onion', 'fish sauce', 'oil'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'sprouts'],
@@ -1145,6 +1308,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/togue.jpg',
       ),
+
       Recipe(
         id: 42,
         name: 'Ensaladang Mangga',
@@ -1158,7 +1322,13 @@ class RecipeService {
         proteinPerServing: 1,
         carbsPerServing: 8,
         fatPerServing: 0,
-        instructions: 'Mix green mango, tomatoes, and onions with light dressing',
+        instructions: '''1. Peel and slice 2 green mangoes into thin strips.
+2. Dice 2 tomatoes and finely chop 1 small onion.
+3. Combine mangoes, tomatoes, and onion in a mixing bowl.
+4. Add 2 tablespoons of vinegar and a pinch of salt.
+5. Toss gently to mix and balance the flavors.
+6. Optionally, add chopped chili for a spicy kick.
+7. Serve chilled as a refreshing side dish.''',
         isFilipinoDish: true,
         ingredients: ['green mango', 'tomatoes', 'onion', 'vinegar', 'salt'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'fresh', 'salad'],
@@ -1168,7 +1338,8 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/ensaladang-mangga.jpg',
       ),
-      Recipe(
+
+Recipe(
         id: 43,
         name: 'Tinolang Isda',
         description: 'Fish soup with vegetables and ginger',
@@ -1181,7 +1352,14 @@ class RecipeService {
         proteinPerServing: 22,
         carbsPerServing: 8,
         fatPerServing: 3,
-        instructions: 'Boil fish with ginger, vegetables, and light seasoning',
+        instructions: '''1. Heat 1 tablespoon of oil in a pot over medium heat.
+2. Sauté 1 chopped onion and 3 slices of ginger until fragrant.
+3. Add 4 cups of water and bring to a boil.
+4. Add your chosen fish (e.g., tilapia or bangus) and simmer for 8–10 minutes.
+5. Add vegetables such as malunggay leaves, pechay, or green papaya.
+6. Season with 1 tablespoon of fish sauce, salt, and pepper to taste.
+7. Simmer for another 5 minutes until vegetables are tender.
+8. Serve hot as a comforting soup.''',
         isFilipinoDish: true,
         ingredients: ['fish', 'ginger', 'vegetables', 'fish sauce', 'onion'],
         tags: ['healthy', 'soup', 'protein', 'low-fat', 'warming'],
@@ -1191,7 +1369,8 @@ class RecipeService {
         prepTimeFormatted: '15 min',
         imageUrl: 'https://example.com/tinolang-isda.jpg',
       ),
-      Recipe(
+
+Recipe(
         id: 44,
         name: 'Ginisang Sayote',
         description: 'Sautéed chayote with shrimp',
@@ -1204,7 +1383,14 @@ class RecipeService {
         proteinPerServing: 4,
         carbsPerServing: 8,
         fatPerServing: 1,
-        instructions: 'Sauté chayote with shrimp and light seasoning',
+        instructions: '''1. Peel and slice 2 medium sayote (chayote) into thin strips.
+2. Heat 1 tablespoon of oil in a pan over medium heat.
+3. Sauté 2 cloves of minced garlic and 1 chopped onion until fragrant.
+4. Add a handful of small shrimp and cook until they turn pink.
+5. Add the sliced sayote and stir-fry for 3–5 minutes.
+6. Season with 1 tablespoon of fish sauce and a pinch of pepper.
+7. Add a small amount of water, cover, and cook until tender but not mushy.
+8. Serve warm as a healthy side dish.''',
         isFilipinoDish: true,
         ingredients: ['chayote', 'shrimp', 'garlic', 'onion', 'fish sauce'],
         tags: ['healthy', 'vegetarian option', 'low-calorie', 'chayote'],
@@ -1214,6 +1400,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/sayote.jpg',
       ),
+
       Recipe(
         id: 45,
         name: 'Paksiw na Bangus',
@@ -1261,7 +1448,14 @@ class RecipeService {
         proteinPerServing: 3,
         carbsPerServing: 6,
         fatPerServing: 1,
-        instructions: 'Sauté bottle gourd with shrimp and light seasoning',
+        instructions: '''1. Peel and slice 1 medium bottle gourd (upo) into thin strips or cubes.
+2. Heat 1 tablespoon of oil in a pan over medium heat.
+3. Sauté 2 cloves of minced garlic and 1 chopped onion until fragrant.
+4. Add a handful of shrimp and cook until they turn pink.
+5. Add the sliced upo and stir-fry for 3–4 minutes.
+6. Season with 1 tablespoon of fish sauce and a pinch of pepper.
+7. Add about 1/4 cup of water, cover, and let it simmer until the upo becomes tender but not mushy.
+8. Serve hot with steamed rice.''',
         isFilipinoDish: true,
         ingredients: ['bottle gourd', 'shrimp', 'garlic', 'onion', 'fish sauce'],
         tags: ['healthy', 'vegetarian option', 'low-calorie', 'gourd'],
@@ -1271,7 +1465,8 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/upo.jpg',
       ),
-      Recipe(
+
+Recipe(
         id: 47,
         name: 'Ensaladang Talong at Kamatis',
         description: 'Grilled eggplant and tomato salad',
@@ -1284,7 +1479,14 @@ class RecipeService {
         proteinPerServing: 2,
         carbsPerServing: 10,
         fatPerServing: 1,
-        instructions: 'Grill eggplant, mix with tomatoes and light dressing',
+        instructions: '''1. Grill or roast 3 eggplants until the skin is charred and the flesh is soft.
+2. Let the eggplants cool, then peel off the burnt skin.
+3. Slice 2 tomatoes and 1 small onion.
+4. Combine eggplant, tomatoes, and onion in a bowl.
+5. Add 2 tablespoons of vinegar and a pinch of salt to taste.
+6. Toss gently until well mixed.
+7. Optionally, drizzle with a bit of oil or add chili for extra flavor.
+8. Serve as a refreshing side dish or appetizer.''',
         isFilipinoDish: true,
         ingredients: ['eggplant', 'tomatoes', 'onion', 'vinegar', 'salt'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'grilled', 'salad'],
@@ -1294,6 +1496,7 @@ class RecipeService {
         prepTimeFormatted: '15 min',
         imageUrl: 'https://example.com/ensaladang-talong-kamatis.jpg',
       ),
+
       Recipe(
         id: 48,
         name: 'Sinigang na Hipon',
@@ -1331,7 +1534,7 @@ class RecipeService {
       Recipe(
         id: 49,
         name: 'Ginisang Repolyo',
-        description: 'Sautéed cabbage with carrots',
+        description: 'Sautéed cabbage with carrots and light seasoning',
         prepTime: 10,
         cookTime: 8,
         servings: 4,
@@ -1341,7 +1544,14 @@ class RecipeService {
         proteinPerServing: 2,
         carbsPerServing: 6,
         fatPerServing: 1,
-        instructions: 'Sauté cabbage and carrots with garlic',
+        instructions: '''1. Slice half a head of cabbage and one medium carrot into thin strips.
+2. Heat 1 tablespoon of oil in a pan over medium heat.
+3. Sauté 2 cloves of minced garlic and 1 chopped onion until fragrant.
+4. Add the sliced carrots and cook for about 2 minutes.
+5. Add the cabbage and stir-fry for another 3–4 minutes until slightly tender.
+6. Season with 1 tablespoon of fish sauce and a pinch of pepper.
+7. Mix well and cook for another minute, then remove from heat.
+8. Serve warm as a side dish or light meal.''',
         isFilipinoDish: true,
         ingredients: ['cabbage', 'carrots', 'garlic', 'onion', 'fish sauce'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'cabbage'],
@@ -1351,6 +1561,7 @@ class RecipeService {
         prepTimeFormatted: '10 min',
         imageUrl: 'https://example.com/repolyo.jpg',
       ),
+
       Recipe(
         id: 50,
         name: 'Inihaw na Pusit',
@@ -1387,7 +1598,7 @@ class RecipeService {
       Recipe(
         id: 51,
         name: 'Ginisang Pechay',
-        description: 'Sautéed bok choy with garlic',
+        description: 'Sautéed bok choy with garlic and light seasoning',
         prepTime: 8,
         cookTime: 6,
         servings: 4,
@@ -1397,7 +1608,13 @@ class RecipeService {
         proteinPerServing: 2,
         carbsPerServing: 4,
         fatPerServing: 1,
-        instructions: 'Sauté bok choy with garlic and light seasoning',
+        instructions: '''1. Wash and chop the pechay (bok choy) into bite-sized pieces.
+2. Heat 1 tablespoon of oil in a pan over medium heat.
+3. Sauté 2 cloves of minced garlic until golden and fragrant.
+4. Add the pechay stems first and cook for about 2 minutes.
+5. Add the pechay leaves and season with 1 tablespoon of fish sauce and a pinch of pepper.
+6. Stir well and cook for another 2–3 minutes, or until the leaves are wilted and tender.
+7. Remove from heat and serve warm as a side dish or light meal.''',
         isFilipinoDish: true,
         ingredients: ['pechay', 'garlic', 'fish sauce', 'oil'],
         tags: ['healthy', 'vegetarian', 'low-calorie', 'leafy greens'],
@@ -1407,6 +1624,7 @@ class RecipeService {
         prepTimeFormatted: '8 min',
         imageUrl: 'https://example.com/pechay.jpg',
       ),
+
       Recipe(
         id: 52,
         name: 'Steamed Okra',
@@ -1441,191 +1659,164 @@ class RecipeService {
         imageUrl: 'https://example.com/steamed-okra.jpg',
       ),
       Recipe(
-        id: 53,
-        name: 'Ginisang Saluyot',
-        description: 'Sautéed jute leaves with shrimp',
-        prepTime: 10,
-        cookTime: 10,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Healthy',
-        caloriesPerServing: 40,
-        proteinPerServing: 3,
-        carbsPerServing: 5,
-        fatPerServing: 1,
-        instructions: 'Sauté jute leaves with shrimp and light seasoning',
-        isFilipinoDish: true,
-        ingredients: ['saluyot', 'shrimp', 'garlic', 'onion', 'fish sauce'],
-        tags: ['healthy', 'vegetarian option', 'low-calorie', 'leafy greens'],
-        allergens: ['shellfish', 'fish'],
-        rating: 4.1,
-        cookTimeFormatted: '10 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/saluyot.jpg',
-      ),
-      Recipe(
-        id: 54,
-        name: 'Inihaw na Bangus',
-        description: 'Grilled milkfish with tomatoes and onions',
-        prepTime: 15,
-        cookTime: 20,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Healthy',
-        caloriesPerServing: 200,
-        proteinPerServing: 30,
-        carbsPerServing: 5,
-        fatPerServing: 7,
-        instructions: '''1. Clean 1 whole milkfish and make a slit along the belly
-2. Stuff fish with 2 large tomatoes (sliced) and 1 onion (sliced)
-3. Season fish with salt, pepper, and calamansi juice
-4. Marinate for 30 minutes
-5. Heat grill or grill pan over medium-high heat
-6. Brush fish with oil and grill for 6-8 minutes on each side
-7. Baste with remaining marinade while grilling
-8. Grill until fish is cooked through and skin is crispy
-9. Remove from grill and serve hot
-10. Garnish with calamansi wedges and chopped spring onions
-11. Serve with fish sauce dipping sauce on the side''',
-        isFilipinoDish: true,
-        ingredients: ['bangus', 'tomatoes', 'onions', 'salt', 'pepper'],
-        tags: ['healthy', 'grilled', 'protein', 'low-carb', 'stuffed'],
-        allergens: ['fish'],
-        rating: 4.5,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/inihaw-bangus.jpg',
-      ),
-      Recipe(
-        id: 55,
-        name: 'Ginisang Kamote Tops',
-        description: 'Sautéed sweet potato leaves',
-        prepTime: 10,
-        cookTime: 8,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Healthy',
-        caloriesPerServing: 30,
-        proteinPerServing: 2,
-        carbsPerServing: 5,
-        fatPerServing: 1,
-        instructions: 'Sauté sweet potato leaves with garlic',
-        isFilipinoDish: true,
-        ingredients: ['kamote tops', 'garlic', 'onion', 'fish sauce', 'oil'],
-        tags: ['healthy', 'vegetarian', 'low-calorie', 'leafy greens'],
-        allergens: ['fish'],
-        rating: 4.0,
-        cookTimeFormatted: '8 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/kamote-tops.jpg',
-      ),
-      Recipe(
-        id: 56,
-        name: 'Sinigang na Bangus',
-        description: 'Milkfish sinigang with vegetables',
-        prepTime: 15,
-        cookTime: 20,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Healthy',
-        caloriesPerServing: 150,
-        proteinPerServing: 25,
-        carbsPerServing: 8,
-        fatPerServing: 3,
-        instructions: '''1. Clean and cut 1 kg milkfish into serving pieces
-2. In a large pot, heat 2 tablespoons oil and sauté 1 chopped onion
-3. Add 4 cloves minced garlic and cook until golden
-4. Add 2 large tomatoes (quartered) and cook until soft
-5. Pour in 6 cups water and bring to a boil
-6. Add 3-4 tablespoons tamarind paste or 1 cup tamarind juice
-7. Season with fish sauce, salt, and pepper to taste
-8. Add milkfish pieces and simmer for 10 minutes
-9. Add 1 bunch kangkong (water spinach) and 1 bunch string beans
-10. Add 2-3 pieces green chili peppers
-11. Simmer for 5 more minutes until vegetables are tender
-12. Serve hot with steamed rice and fish sauce on the side''',
-        isFilipinoDish: true,
-        ingredients: ['bangus', 'tamarind', 'vegetables', 'fish sauce', 'onion'],
-        tags: ['healthy', 'soup', 'protein', 'low-fat', 'sinigang'],
-        allergens: ['fish'],
-        rating: 4.4,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/sinigang-bangus.jpg',
-      ),
-      Recipe(
-        id: 57,
-        name: 'Ginisang Labanos',
-        description: 'Sautéed radish with carrots',
-        prepTime: 10,
-        cookTime: 10,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Healthy',
-        caloriesPerServing: 35,
-        proteinPerServing: 1,
-        carbsPerServing: 6,
-        fatPerServing: 1,
-        instructions: 'Sauté radish and carrots with garlic',
-        isFilipinoDish: true,
-        ingredients: ['radish', 'carrots', 'garlic', 'onion', 'fish sauce'],
-        tags: ['healthy', 'vegetarian', 'low-calorie', 'root vegetables'],
-        allergens: ['fish'],
-        rating: 4.0,
-        cookTimeFormatted: '10 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/labanos.jpg',
-      ),
+  id: 53,
+  name: 'Ginisang Saluyot',
+  description: 'Sautéed jute leaves with shrimp',
+  prepTime: 10,
+  cookTime: 10,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Healthy',
+  caloriesPerServing: 40,
+  proteinPerServing: 3,
+  carbsPerServing: 5,
+  fatPerServing: 1,
+  instructions: '''
+1. Wash the saluyot leaves thoroughly and remove any tough stems. 
+2. In a pan, heat oil and sauté garlic and onion until fragrant. 
+3. Add the shrimp and cook until they turn pink. 
+4. Pour in a small amount of fish sauce and stir well. 
+5. Add the saluyot leaves and sauté for 2–3 minutes until wilted. 
+6. Adjust seasoning with salt and pepper to taste. 
+7. Serve warm with steamed rice.
+''',
+  isFilipinoDish: true,
+  ingredients: ['saluyot', 'shrimp', 'garlic', 'onion', 'fish sauce'],
+  tags: ['healthy', 'vegetarian option', 'low-calorie', 'leafy greens'],
+  allergens: ['shellfish', 'fish'],
+  rating: 4.1,
+  cookTimeFormatted: '10 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/saluyot.jpg',
+),
+
+Recipe(
+  id: 54,
+  name: 'Ginisang Kamote Tops',
+  description: 'Sautéed sweet potato leaves',
+  prepTime: 10,
+  cookTime: 8,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Healthy',
+  caloriesPerServing: 30,
+  proteinPerServing: 2,
+  carbsPerServing: 5,
+  fatPerServing: 1,
+  instructions: '''
+1. Wash the kamote tops thoroughly and remove tough stems. 
+2. Heat oil in a pan and sauté garlic and onion until fragrant. 
+3. Add a splash of fish sauce and stir. 
+4. Add the kamote tops and cook for 2–3 minutes or until wilted. 
+5. Adjust seasoning with salt and pepper as desired. 
+6. Serve hot as a healthy side dish.
+''',
+  isFilipinoDish: true,
+  ingredients: ['kamote tops', 'garlic', 'onion', 'fish sauce', 'oil'],
+  tags: ['healthy', 'vegetarian', 'low-calorie', 'leafy greens'],
+  allergens: ['fish'],
+  rating: 4.0,
+  cookTimeFormatted: '8 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/kamote-tops.jpg',
+),
+
+Recipe(
+  id: 55,
+  name: 'Ginisang Labanos',
+  description: 'Sautéed radish with carrots',
+  prepTime: 10,
+  cookTime: 10,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Healthy',
+  caloriesPerServing: 35,
+  proteinPerServing: 1,
+  carbsPerServing: 6,
+  fatPerServing: 1,
+  instructions: '''
+1. Peel and slice the radish and carrots thinly. 
+2. Heat oil in a pan and sauté garlic and onion until golden. 
+3. Add the sliced radish and carrots and stir-fry for 2–3 minutes. 
+4. Pour in fish sauce and a small amount of water. 
+5. Cover and cook for another 3–4 minutes until vegetables are tender. 
+6. Season with salt and pepper to taste. 
+7. Serve warm with rice.
+''',
+  isFilipinoDish: true,
+  ingredients: ['radish', 'carrots', 'garlic', 'onion', 'fish sauce'],
+  tags: ['healthy', 'vegetarian', 'low-calorie', 'root vegetables'],
+  allergens: ['fish'],
+  rating: 4.0,
+  cookTimeFormatted: '10 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/labanos.jpg',
+),
+
+Recipe(
+  id: 56,
+  name: 'Steamed Lapu-Lapu with Tofu',
+  description: 'Steamed grouper with tofu and vegetables',
+  prepTime: 15,
+  cookTime: 20,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Healthy',
+  caloriesPerServing: 140,
+  proteinPerServing: 25,
+  carbsPerServing: 4,
+  fatPerServing: 3,
+  instructions: '''
+1. Clean the lapu-lapu and pat dry. Season lightly with salt and pepper. 
+2. Arrange slices of tofu and vegetables (like bell pepper and carrots) on a steaming plate. 
+3. Place the fish on top and add ginger slices and spring onions. 
+4. Drizzle with light soy sauce. 
+5. Steam for about 15–20 minutes, or until the fish is cooked through. 
+6. Carefully transfer to a serving plate, pour the sauce over, and serve hot.
+''',
+  isFilipinoDish: true,
+  ingredients: ['lapu-lapu', 'tofu', 'vegetables', 'ginger', 'light soy sauce'],
+  tags: ['healthy', 'steamed', 'protein', 'low-fat', 'tofu'],
+  allergens: ['fish', 'soy'],
+  rating: 4.3,
+  cookTimeFormatted: '20 min',
+  prepTimeFormatted: '15 min',
+  imageUrl: 'https://example.com/steamed-lapu-lapu-tofu.jpg',
+),
+
+Recipe(
+  id: 57,
+  name: 'Pork Adobo',
+  description: 'Classic Filipino pork braised in soy sauce and vinegar',
+  prepTime: 15,
+  cookTime: 30,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Filipino',
+  caloriesPerServing: 310,
+  proteinPerServing: 22,
+  carbsPerServing: 6,
+  fatPerServing: 20,
+  instructions: '''
+1. Cut pork into cubes and place in a pot. 
+2. Add soy sauce, vinegar, garlic, bay leaves, and peppercorns. Marinate for at least 30 minutes. 
+3. Place the pot over medium heat and bring to a boil. Do not stir. 
+4. Once boiling, reduce the heat and simmer until the pork is tender, about 25–30 minutes. 
+5. Adjust seasoning with salt or a bit of sugar if desired. 
+6. Serve with hot steamed rice and enjoy!
+''',
+  isFilipinoDish: true,
+  ingredients: ['pork', 'soy sauce', 'vinegar', 'garlic', 'bay leaves'],
+  tags: ['filipino', 'traditional', 'pork'],
+  allergens: ['soy'],
+  rating: 4.8,
+  cookTimeFormatted: '30 min',
+  prepTimeFormatted: '15 min',
+  imageUrl: 'https://example.com/pork-adobo.jpg',
+),
+
       Recipe(
         id: 58,
-        name: 'Steamed Lapu-Lapu with Tofu',
-        description: 'Steamed grouper with tofu and vegetables',
-        prepTime: 15,
-        cookTime: 20,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Healthy',
-        caloriesPerServing: 140,
-        proteinPerServing: 25,
-        carbsPerServing: 4,
-        fatPerServing: 3,
-        instructions: 'Steam fish with tofu, vegetables, and light sauce',
-        isFilipinoDish: true,
-        ingredients: ['lapu-lapu', 'tofu', 'vegetables', 'ginger', 'light soy sauce'],
-        tags: ['healthy', 'steamed', 'protein', 'low-fat', 'tofu'],
-        allergens: ['fish', 'soy'],
-        rating: 4.3,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/steamed-lapu-lapu-tofu.jpg',
-      ),
-
-      // Additional Filipino Recipes with Accurate Nutritional Data
-      Recipe(
-        id: 59,
-        name: 'Pork Adobo',
-        description: 'Classic Filipino pork in soy sauce and vinegar',
-        prepTime: 15,
-        cookTime: 30,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 310,
-        proteinPerServing: 22,
-        carbsPerServing: 6,
-        fatPerServing: 20,
-        instructions: 'Marinate pork, cook in soy sauce and vinegar',
-        isFilipinoDish: true,
-        ingredients: ['pork', 'soy sauce', 'vinegar', 'garlic', 'bay leaves'],
-        tags: ['filipino', 'traditional', 'pork'],
-        allergens: ['soy'],
-        rating: 4.8,
-        cookTimeFormatted: '30 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/pork-adobo.jpg',
-      ),
-      Recipe(
-        id: 60,
         name: 'Adobong Sitaw',
         description: 'String beans cooked in adobo style',
         prepTime: 10,
@@ -1658,7 +1849,7 @@ class RecipeService {
         imageUrl: 'https://example.com/adobong-sitaw.jpg',
       ),
       Recipe(
-        id: 61,
+        id: 59,
         name: 'Pares (Beef Stew)',
         description: 'Tender beef stew with soy sauce and spices',
         prepTime: 20,
@@ -1693,7 +1884,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pares.jpg',
       ),
       Recipe(
-        id: 62,
+        id: 60,
         name: 'Tinola',
         description: 'Filipino chicken soup with ginger and vegetables',
         prepTime: 15,
@@ -1726,7 +1917,7 @@ class RecipeService {
         imageUrl: 'https://example.com/tinola.jpg',
       ),
       Recipe(
-        id: 63,
+        id: 61,
         name: 'Kaldereta',
         description: 'Beef stew with tomato sauce and vegetables',
         prepTime: 20,
@@ -1761,7 +1952,7 @@ class RecipeService {
         imageUrl: 'https://example.com/kaldereta.jpg',
       ),
       Recipe(
-        id: 64,
+        id: 62,
         name: 'Menudo',
         description: 'Pork and liver stew with vegetables',
         prepTime: 20,
@@ -1796,7 +1987,7 @@ class RecipeService {
         imageUrl: 'https://example.com/menudo.jpg',
       ),
       Recipe(
-        id: 65,
+        id: 63,
         name: 'Afritada',
         description: 'Chicken stew with potatoes and carrots',
         prepTime: 15,
@@ -1831,7 +2022,7 @@ class RecipeService {
         imageUrl: 'https://example.com/afritada.jpg',
       ),
       Recipe(
-        id: 66,
+        id: 64,
         name: 'Ginataang Langka',
         description: 'Jackfruit in coconut milk',
         prepTime: 15,
@@ -1865,7 +2056,7 @@ class RecipeService {
         imageUrl: 'https://example.com/ginataang-langka.jpg',
       ),
       Recipe(
-        id: 67,
+        id: 65,
         name: 'Lumpiang Shanghai',
         description: 'Filipino spring rolls with pork filling',
         prepTime: 30,
@@ -1899,31 +2090,9 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/lumpiang-shanghai.jpg',
       ),
+      
       Recipe(
-        id: 68,
-        name: 'Bulalo',
-        description: 'Beef shank soup with vegetables',
-        prepTime: 30,
-        cookTime: 180,
-        servings: 8,
-        difficulty: 'Hard',
-        category: 'Filipino',
-        caloriesPerServing: 450,
-        proteinPerServing: 28,
-        carbsPerServing: 5,
-        fatPerServing: 32,
-        instructions: 'Boil beef shank until tender, add vegetables',
-        isFilipinoDish: true,
-        ingredients: ['beef shank', 'corn', 'cabbage', 'fish sauce', 'pepper'],
-        tags: ['filipino', 'soup', 'special occasion'],
-        allergens: ['fish'],
-        rating: 4.9,
-        cookTimeFormatted: '180 min',
-        prepTimeFormatted: '30 min',
-        imageUrl: 'https://example.com/bulalo.jpg',
-      ),
-      Recipe(
-        id: 69,
+        id: 66,
         name: 'Pochero',
         description: 'Beef and vegetable stew',
         prepTime: 20,
@@ -1957,31 +2126,39 @@ class RecipeService {
         prepTimeFormatted: '20 min',
         imageUrl: 'https://example.com/pochero.jpg',
       ),
+          Recipe(
+      id: 67,
+      name: 'Bistek Tagalog',
+      description: 'Filipino beef steak with onions',
+      prepTime: 15,
+      cookTime: 20,
+      servings: 4,
+      difficulty: 'Easy',
+      category: 'Filipino',
+      caloriesPerServing: 310,
+      proteinPerServing: 25,
+      carbsPerServing: 6,
+      fatPerServing: 18,
+      instructions: '''
+    1. Slice the beef thinly and place it in a bowl. Add soy sauce, lemon juice (or calamansi), minced garlic, and ground black pepper. Mix well and marinate for at least 30 minutes.  
+    2. Heat oil in a pan over medium heat. Sauté the onions until soft, then remove and set aside.  
+    3. In the same pan, add the marinated beef (reserve the marinade). Cook until the meat browns on both sides.  
+    4. Pour in the reserved marinade and a small amount of water. Simmer for 10–15 minutes or until the beef is tender.  
+    5. Add the sautéed onions back into the pan and mix gently. Adjust seasoning with soy sauce or lemon juice as needed.  
+    6. Serve hot with steamed rice.
+    ''',
+      isFilipinoDish: true,
+      ingredients: ['beef', 'onions', 'soy sauce', 'lemon', 'garlic'],
+      tags: ['filipino', 'steak', 'quick'],
+      allergens: ['soy'],
+      rating: 4.6,
+      cookTimeFormatted: '20 min',
+      prepTimeFormatted: '15 min',
+      imageUrl: 'https://example.com/bistek-tagalog.jpg',
+    ),
+
       Recipe(
-        id: 70,
-        name: 'Bistek Tagalog',
-        description: 'Filipino beef steak with onions',
-        prepTime: 15,
-        cookTime: 20,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 310,
-        proteinPerServing: 25,
-        carbsPerServing: 6,
-        fatPerServing: 18,
-        instructions: 'Marinate beef, cook with onions and soy sauce',
-        isFilipinoDish: true,
-        ingredients: ['beef', 'onions', 'soy sauce', 'lemon', 'garlic'],
-        tags: ['filipino', 'steak', 'quick'],
-        allergens: ['soy'],
-        rating: 4.6,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/bistek-tagalog.jpg',
-      ),
-      Recipe(
-        id: 71,
+        id: 68,
         name: 'Arroz Caldo',
         description: 'Filipino rice porridge with chicken',
         prepTime: 10,
@@ -2012,56 +2189,71 @@ class RecipeService {
         rating: 4.4,
         cookTimeFormatted: '30 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/arroz-caldo.jpg',
+        imageUrl: 'assets/images/ArrozCaldo.jpg',
       ),
       Recipe(
-        id: 72,
-        name: 'Tocilog',
-        description: 'Tocino, Sinangag, at Itlog - Sweet cured pork with garlic rice and egg',
-        prepTime: 10,
-        cookTime: 20,
-        servings: 2,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 450,
-        proteinPerServing: 25,
-        carbsPerServing: 20,
-        fatPerServing: 28,
-        instructions: 'Cook tocino, garlic rice, and fried egg',
-        isFilipinoDish: true,
-        ingredients: ['tocino', 'garlic rice', 'egg', 'garlic', 'soy sauce'],
-        tags: ['filipino', 'breakfast', 'protein'],
-        allergens: ['soy', 'egg'],
-        rating: 4.7,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/tocilog.jpg',
-      ),
+  id: 69,
+  name: 'Tocilog',
+  description: 'Tocino, Sinangag, at Itlog - Sweet cured pork with garlic rice and egg',
+  prepTime: 10,
+  cookTime: 20,
+  servings: 2,
+  difficulty: 'Easy',
+  category: 'Filipino',
+  caloriesPerServing: 450,
+  proteinPerServing: 25,
+  carbsPerServing: 20,
+  fatPerServing: 28,
+  instructions: '''
+1. In a pan over medium heat, cook the tocino with a little water. Allow the water to evaporate, then let the tocino cook in its own rendered fat until caramelized and slightly sticky. Set aside.  
+2. For the garlic rice (sinangag), heat a small amount of oil in a pan. Add minced garlic and sauté until golden brown.  
+3. Add cooked rice, breaking up any clumps. Stir-fry until well mixed and fragrant. Season lightly with salt or soy sauce if desired.  
+4. In a separate pan, fry eggs sunny-side up or as preferred.  
+5. Serve the tocino with garlic rice and fried egg on a plate. Optionally, garnish with sliced tomatoes or atchara (pickled papaya).
+''',
+  isFilipinoDish: true,
+  ingredients: ['tocino', 'garlic rice', 'egg', 'garlic', 'soy sauce'],
+  tags: ['filipino', 'breakfast', 'protein'],
+  allergens: ['soy', 'egg'],
+  rating: 4.7,
+  cookTimeFormatted: '20 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'assets/images/Tocilog.jpg',
+),
+
+     Recipe(
+  id: 70,
+  name: 'Longsilog',
+  description: 'Longganisa, Sinangag, at Itlog - Filipino sausage with garlic rice and egg',
+  prepTime: 10,
+  cookTime: 20,
+  servings: 2,
+  difficulty: 'Easy',
+  category: 'Filipino',
+  caloriesPerServing: 480,
+  proteinPerServing: 24,
+  carbsPerServing: 22,
+  fatPerServing: 32,
+  instructions: '''
+1. In a pan over medium heat, add the longganisa sausages with a small amount of water. Cover and let simmer until the water evaporates.  
+2. Once dry, allow the longganisa to cook in its own oil until browned and fully cooked. Set aside.  
+3. For the garlic rice (sinangag), heat oil in a pan and sauté minced garlic until golden brown.  
+4. Add leftover cooked rice, stirring until evenly coated and fragrant. Season lightly with salt or soy sauce.  
+5. In a separate pan, fry eggs sunny-side up or as preferred.  
+6. Plate the longganisa with garlic rice and fried egg. Add optional sides like sliced tomatoes or vinegar dipping sauce.
+''',
+  isFilipinoDish: true,
+  ingredients: ['longganisa', 'garlic rice', 'egg', 'garlic', 'soy sauce'],
+  tags: ['filipino', 'breakfast', 'protein'],
+  allergens: ['soy', 'egg'],
+  rating: 4.8,
+  cookTimeFormatted: '20 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'assets/images/Longsilog.jpg',
+),
+
       Recipe(
-        id: 73,
-        name: 'Longsilog',
-        description: 'Longganisa, Sinangag, at Itlog - Filipino sausage with garlic rice and egg',
-        prepTime: 10,
-        cookTime: 20,
-        servings: 2,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 480,
-        proteinPerServing: 24,
-        carbsPerServing: 22,
-        fatPerServing: 32,
-        instructions: 'Cook longganisa, garlic rice, and fried egg',
-        isFilipinoDish: true,
-        ingredients: ['longganisa', 'garlic rice', 'egg', 'garlic', 'soy sauce'],
-        tags: ['filipino', 'breakfast', 'protein'],
-        allergens: ['soy', 'egg'],
-        rating: 4.8,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/longsilog.jpg',
-      ),
-      Recipe(
-        id: 74,
+        id: 71,
         name: 'Lechon (Roast Pork)',
         description: 'Traditional Filipino roasted whole pig',
         prepTime: 60,
@@ -2095,30 +2287,39 @@ class RecipeService {
         imageUrl: 'https://example.com/lechon.jpg',
       ),
       Recipe(
-        id: 75,
-        name: 'La Paz Batchoy',
-        description: 'Filipino noodle soup with pork and liver',
-        prepTime: 20,
-        cookTime: 30,
-        servings: 4,
-        difficulty: 'Medium',
-        category: 'Filipino',
-        caloriesPerServing: 430,
-        proteinPerServing: 18,
-        carbsPerServing: 50,
-        fatPerServing: 16,
-        instructions: 'Cook noodles with pork, liver, and rich broth',
-        isFilipinoDish: true,
-        ingredients: ['noodles', 'pork', 'liver', 'broth', 'garlic'],
-        tags: ['filipino', 'noodle soup', 'comfort food'],
-        allergens: ['wheat'],
-        rating: 4.7,
-        cookTimeFormatted: '30 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/la-paz-batchoy.jpg',
-      ),
+  id: 72,
+  name: 'La Paz Batchoy',
+  description: 'Filipino noodle soup with pork, liver, and rich broth',
+  prepTime: 20,
+  cookTime: 30,
+  servings: 4,
+  difficulty: 'Medium',
+  category: 'Filipino',
+  caloriesPerServing: 430,
+  proteinPerServing: 18,
+  carbsPerServing: 50,
+  fatPerServing: 16,
+  instructions: '''
+1. In a pot, boil pork bones and pork meat in water for about 15–20 minutes to create a rich broth. Skim off any impurities that rise to the top.  
+2. Add garlic, onion, and fish sauce or salt to season the broth. Simmer for another 10–15 minutes until the flavor deepens.  
+3. In a separate pan, sauté minced garlic until golden brown, then add sliced pork and liver. Cook until the meat is browned and liver is just done.  
+4. Prepare the noodles by blanching them in boiling water until soft, then drain.  
+5. Place noodles into serving bowls. Pour the hot broth over the noodles and top with the cooked pork and liver mixture.  
+6. Garnish with crushed chicharon (pork cracklings), sliced green onions, and a hard-boiled egg if desired.  
+7. Serve hot with a side of calamansi or soy-fish sauce for dipping.
+''',
+  isFilipinoDish: true,
+  ingredients: ['noodles', 'pork', 'liver', 'broth', 'garlic', 'onion', 'fish sauce', 'chicharon', 'egg', 'green onions'],
+  tags: ['filipino', 'noodle soup', 'comfort food', 'savory'],
+  allergens: ['wheat'],
+  rating: 4.7,
+  cookTimeFormatted: '30 min',
+  prepTimeFormatted: '20 min',
+  imageUrl: 'https://example.com/la-paz-batchoy.jpg',
+),
+
       Recipe(
-        id: 76,
+        id: 73,
         name: 'Pancit Malabon',
         description: 'Filipino noodle dish with seafood and thick sauce',
         prepTime: 20,
@@ -2152,7 +2353,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pancit-malabon.jpg',
       ),
       Recipe(
-        id: 77,
+        id: 74,
         name: 'Pancit Palabok',
         description: 'Filipino noodle dish with shrimp sauce and toppings',
         prepTime: 20,
@@ -2187,7 +2388,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pancit-palabok.jpg',
       ),
       Recipe(
-        id: 78,
+        id: 75,
         name: 'Monggo Guisado',
         description: 'Sautéed mung beans with vegetables and meat',
         prepTime: 10,
@@ -2221,7 +2422,7 @@ class RecipeService {
         imageUrl: 'https://example.com/monggo-guisado.jpg',
       ),
       Recipe(
-        id: 79,
+        id: 76,
         name: 'Nilaga na Baka',
         description: 'Boiled beef with vegetables',
         prepTime: 15,
@@ -2253,30 +2454,48 @@ class RecipeService {
         imageUrl: 'https://example.com/nilaga-baka.jpg',
       ),
       Recipe(
-        id: 80,
-        name: 'Nilagang Baboy',
-        description: 'Boiled pork with vegetables',
-        prepTime: 15,
-        cookTime: 45,
-        servings: 6,
-        difficulty: 'Medium',
-        category: 'Filipino',
-        caloriesPerServing: 320,
-        proteinPerServing: 26,
-        carbsPerServing: 14,
-        fatPerServing: 16,
-        instructions: 'Boil pork until tender, add vegetables',
-        isFilipinoDish: true,
-        ingredients: ['pork', 'potatoes', 'carrots', 'cabbage', 'onion'],
-        tags: ['filipino', 'soup', 'comfort food'],
-        allergens: [],
-        rating: 4.4,
-        cookTimeFormatted: '45 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/nilaga-baboy.jpg',
-      ),
+  id: 77,
+  name: 'Nilagang Baboy',
+  description: 'Classic Filipino boiled pork soup with vegetables',
+  prepTime: 15,
+  cookTime: 45,
+  servings: 6,
+  difficulty: 'Medium',
+  category: 'Filipino',
+  caloriesPerServing: 320,
+  proteinPerServing: 26,
+  carbsPerServing: 14,
+  fatPerServing: 16,
+  instructions: '''
+1. In a large pot, bring water to a boil. Add pork chunks and simmer for 5–10 minutes. Skim off any scum that floats to the surface to keep the broth clear.  
+2. Add onion, peppercorns, and a little salt. Continue simmering over low heat for about 30–40 minutes or until the pork becomes tender.  
+3. Add potatoes and carrots. Cook until the vegetables start to soften.  
+4. Add cabbage (and optional pechay or green beans) and cook for another 3–5 minutes until all vegetables are tender.  
+5. Taste and adjust seasoning with salt or fish sauce.  
+6. Serve hot in bowls with steamed rice and a side of fish sauce with calamansi for dipping.
+''',
+  isFilipinoDish: true,
+  ingredients: [
+    'pork',
+    'potatoes',
+    'carrots',
+    'cabbage',
+    'onion',
+    'peppercorns',
+    'salt',
+    'fish sauce',
+    'water'
+  ],
+  tags: ['filipino', 'soup', 'comfort food', 'boiled', 'hearty'],
+  allergens: [],
+  rating: 4.4,
+  cookTimeFormatted: '45 min',
+  prepTimeFormatted: '15 min',
+  imageUrl: 'https://example.com/nilaga-baboy.jpg',
+),
+
       Recipe(
-        id: 81,
+        id: 78,
         name: 'Lomi',
         description: 'Filipino thick noodle soup',
         prepTime: 15,
@@ -2310,7 +2529,7 @@ class RecipeService {
         imageUrl: 'https://example.com/lomi.jpg',
       ),
       Recipe(
-        id: 82,
+        id: 79,
         name: 'Mami (Chicken Noodle)',
         description: 'Filipino chicken noodle soup',
         prepTime: 15,
@@ -2344,7 +2563,7 @@ class RecipeService {
         imageUrl: 'https://example.com/mami.jpg',
       ),
       Recipe(
-        id: 83,
+        id: 80,
         name: 'Suam na Mais',
         description: 'Filipino corn soup',
         prepTime: 10,
@@ -2378,7 +2597,7 @@ class RecipeService {
         imageUrl: 'https://example.com/suam-na-mais.jpg',
       ),
       Recipe(
-        id: 84,
+        id: 81,
         name: 'Ginataang Kalabasa',
         description: 'Squash in coconut milk',
         prepTime: 15,
@@ -2412,7 +2631,7 @@ class RecipeService {
         imageUrl: 'https://example.com/ginataang-kalabasa.jpg',
       ),
       Recipe(
-        id: 85,
+        id: 82,
         name: 'Inihaw na Liempo',
         description: 'Grilled pork belly',
         prepTime: 20,
@@ -2446,7 +2665,7 @@ class RecipeService {
         imageUrl: 'https://example.com/inihaw-liempo.jpg',
       ),
       Recipe(
-        id: 86,
+        id: 83,
         name: 'Inihaw na Bangus',
         description: 'Grilled milkfish',
         prepTime: 15,
@@ -2479,7 +2698,7 @@ class RecipeService {
         imageUrl: 'https://example.com/inihaw-bangus.jpg',
       ),
       Recipe(
-        id: 87,
+        id: 84,
         name: 'Inihaw na Manok',
         description: 'Grilled chicken',
         prepTime: 20,
@@ -2513,7 +2732,7 @@ class RecipeService {
         imageUrl: 'https://example.com/inihaw-manok.jpg',
       ),
       Recipe(
-        id: 88,
+        id: 85,
         name: 'Pritong Tilapia',
         description: 'Fried tilapia fish',
         prepTime: 10,
@@ -2547,7 +2766,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pritong-tilapia.jpg',
       ),
       Recipe(
-        id: 89,
+        id: 86,
         name: 'Daing na Bangus',
         description: 'Dried and fried milkfish',
         prepTime: 10,
@@ -2581,7 +2800,7 @@ class RecipeService {
         imageUrl: 'https://example.com/daing-bangus.jpg',
       ),
       Recipe(
-        id: 90,
+        id: 87,
         name: 'Escabeche',
         description: 'Sweet and sour fish',
         prepTime: 15,
@@ -2615,7 +2834,7 @@ class RecipeService {
         imageUrl: 'https://example.com/escabeche.jpg',
       ),
       Recipe(
-        id: 91,
+        id: 88,
         name: 'Ginataang Hipon',
         description: 'Shrimp in coconut milk',
         prepTime: 15,
@@ -2649,7 +2868,7 @@ class RecipeService {
         imageUrl: 'https://example.com/ginataang-hipon.jpg',
       ),
       Recipe(
-        id: 92,
+        id: 89,
         name: 'Tinolang Tahong',
         description: 'Mussel soup with ginger',
         prepTime: 15,
@@ -2683,7 +2902,7 @@ class RecipeService {
         imageUrl: 'https://example.com/tinolang-tahong.jpg',
       ),
       Recipe(
-        id: 93,
+        id: 90,
         name: 'Sinigang na Bangus',
         description: 'Milkfish sinigang with vegetables',
         prepTime: 15,
@@ -2717,7 +2936,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinigang-bangus.jpg',
       ),
       Recipe(
-        id: 94,
+        id: 91,
         name: 'Sinigang na Salmon',
         description: 'Salmon sinigang with vegetables',
         prepTime: 15,
@@ -2751,7 +2970,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinigang-salmon.jpg',
       ),
       Recipe(
-        id: 95,
+        id: 92,
         name: 'Papaitan',
         description: 'Filipino bitter soup with goat innards',
         prepTime: 30,
@@ -2785,7 +3004,7 @@ class RecipeService {
         imageUrl: 'https://example.com/papaitan.jpg',
       ),
       Recipe(
-        id: 96,
+        id: 93,
         name: 'Pesa',
         description: 'Clear fish soup with ginger',
         prepTime: 15,
@@ -2819,7 +3038,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pesa.jpg',
       ),
       Recipe(
-        id: 97,
+        id: 94,
         name: 'Balbacua',
         description: 'Filipino oxtail soup',
         prepTime: 30,
@@ -2853,7 +3072,7 @@ class RecipeService {
         imageUrl: 'https://example.com/balbacua.jpg',
       ),
       Recipe(
-        id: 98,
+        id: 95,
         name: 'Sinampalukang Manok',
         description: 'Chicken soup with tamarind leaves',
         prepTime: 15,
@@ -2887,7 +3106,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinampalukang-manok.jpg',
       ),
       Recipe(
-        id: 99,
+        id: 96,
         name: 'Sinabawang Tahong',
         description: 'Mussel soup with vegetables',
         prepTime: 15,
@@ -2921,7 +3140,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinabawang-tahong.jpg',
       ),
       Recipe(
-        id: 100,
+        id: 97,
         name: 'Sinabawang Baboy',
         description: 'Pork soup with vegetables',
         prepTime: 15,
@@ -2955,7 +3174,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinabawang-baboy.jpg',
       ),
       Recipe(
-        id: 101,
+        id: 98,
         name: 'KBL (Kadyos, Baboy, Langka)',
         description: 'Filipino stew with pigeon peas, pork, and jackfruit',
         prepTime: 20,
@@ -2989,7 +3208,7 @@ class RecipeService {
         imageUrl: 'https://example.com/kbl.jpg',
       ),
       Recipe(
-        id: 102,
+            id: 99,
         name: 'Laswa',
         description: 'Filipino vegetable soup',
         prepTime: 15,
@@ -3023,7 +3242,7 @@ class RecipeService {
         imageUrl: 'https://example.com/laswa.jpg',
       ),
       Recipe(
-        id: 103,
+        id: 100,
         name: 'Bulanglang',
         description: 'Filipino vegetable stew',
         prepTime: 15,
@@ -3057,7 +3276,7 @@ class RecipeService {
         imageUrl: 'https://example.com/bulanglang.jpg',
       ),
       Recipe(
-        id: 104,
+        id: 101,
         name: 'Pinangat na Isda',
         description: 'Fish cooked in coconut milk',
         prepTime: 15,
@@ -3091,7 +3310,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pinangat-isda.jpg',
       ),
       Recipe(
-        id: 105,
+        id: 102,
         name: 'Pangat na Bangus',
         description: 'Milkfish cooked in coconut milk',
         prepTime: 15,
@@ -3125,7 +3344,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pangat-bangus.jpg',
       ),
       Recipe(
-        id: 106,
+            id: 103,
         name: 'Sinanglay na Tilapia',
         description: 'Tilapia wrapped in taro leaves',
         prepTime: 20,
@@ -3159,7 +3378,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinanglay-tilapia.jpg',
       ),
       Recipe(
-        id: 107,
+        id: 104,
         name: 'Nilagang Manok',
         description: 'Boiled chicken with vegetables',
         prepTime: 15,
@@ -3193,7 +3412,7 @@ class RecipeService {
         imageUrl: 'https://example.com/nilagang-manok.jpg',
       ),
       Recipe(
-        id: 108,
+        id: 105,
         name: 'Sinampalukang Isda',
         description: 'Fish soup with tamarind leaves',
         prepTime: 15,
@@ -3227,7 +3446,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinampalukang-isda.jpg',
       ),
       Recipe(
-        id: 109,
+        id: 106,
         name: 'Sinabawang Labong',
         description: 'Bamboo shoot soup',
         prepTime: 15,
@@ -3261,7 +3480,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinabawang-labong.jpg',
       ),
       Recipe(
-        id: 110,
+        id: 107,
         name: 'Sinabawang Labanosa',
         description: 'Radish soup with vegetables',
         prepTime: 15,
@@ -3295,7 +3514,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sinabawang-labanosa.jpg',
       ),
       Recipe(
-        id: 111,
+                    id: 108,
         name: 'Sinigang sa Bayabas',
         description: 'Sour soup with guava',
         prepTime: 15,
@@ -3331,7 +3550,7 @@ class RecipeService {
 
       // Filipino Dessert Recipes with Accurate Nutritional Data
       Recipe(
-        id: 112,
+        id: 109,
         name: 'Bibingka',
         description: 'Traditional Filipino rice cake with coconut milk',
         prepTime: 15,
@@ -3354,7 +3573,7 @@ class RecipeService {
         imageUrl: 'https://example.com/bibingka.jpg',
       ),
       Recipe(
-        id: 113,
+        id: 110,
         name: 'Biko',
         description: 'Sweet sticky rice cake with coconut milk',
         prepTime: 20,
@@ -3388,7 +3607,7 @@ class RecipeService {
         imageUrl: 'https://example.com/biko.jpg',
       ),
       Recipe(
-        id: 114,
+        id: 111,
         name: 'Halo-Halo',
         description: 'Filipino mixed dessert with shaved ice and various toppings',
         prepTime: 30,
@@ -3422,7 +3641,7 @@ class RecipeService {
         imageUrl: 'https://example.com/halo-halo.jpg',
       ),
       Recipe(
-        id: 115,
+        id: 112,
         name: 'Leche Flan',
         description: 'Filipino caramel custard dessert',
         prepTime: 20,
@@ -3445,7 +3664,7 @@ class RecipeService {
         imageUrl: 'https://example.com/leche-flan.jpg',
       ),
       Recipe(
-        id: 116,
+            id: 113,
         name: 'Ube Halaya',
         description: 'Purple yam jam dessert',
         prepTime: 15,
@@ -3479,7 +3698,7 @@ class RecipeService {
         imageUrl: 'https://example.com/ube-halaya.jpg',
       ),
       Recipe(
-        id: 117,
+        id: 114,
         name: 'Sans Rival',
         description: 'Filipino layered cake with cashew meringue',
         prepTime: 45,
@@ -3502,7 +3721,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sans-rival.jpg',
       ),
       Recipe(
-        id: 118,
+        id: 115,
         name: 'Polvoron',
         description: 'Filipino powdered milk candy',
         prepTime: 20,
@@ -3525,7 +3744,7 @@ class RecipeService {
         imageUrl: 'https://example.com/polvoron.jpg',
       ),
       Recipe(
-        id: 119,
+        id: 116,
         name: 'Yema',
         description: 'Filipino milk candy balls',
         prepTime: 15,
@@ -3548,30 +3767,7 @@ class RecipeService {
         imageUrl: 'https://example.com/yema.jpg',
       ),
       Recipe(
-        id: 120,
-        name: 'Turon',
-        description: 'Filipino banana spring roll dessert',
-        prepTime: 20,
-        cookTime: 15,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 180,
-        proteinPerServing: 3,
-        carbsPerServing: 35,
-        fatPerServing: 4,
-        instructions: 'Wrap banana and jackfruit in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['saging', 'langka', 'spring roll wrapper', 'brown sugar', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'fried'],
-        allergens: ['wheat'],
-        rating: 4.6,
-        cookTimeFormatted: '15 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/turon.jpg',
-      ),
-      Recipe(
-        id: 121,
+        id: 117,
         name: 'Puto',
         description: 'Filipino steamed rice cake',
         prepTime: 15,
@@ -3594,7 +3790,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto.jpg',
       ),
       Recipe(
-        id: 122,
+        id: 118,
         name: 'Kutsinta',
         description: 'Filipino brown rice cake',
         prepTime: 10,
@@ -3617,7 +3813,7 @@ class RecipeService {
         imageUrl: 'https://example.com/kutsinta.jpg',
       ),
       Recipe(
-        id: 123,
+        id: 119,
         name: 'Pichi-Pichi',
         description: 'Filipino cassava cake with coconut',
         prepTime: 15,
@@ -3640,7 +3836,7 @@ class RecipeService {
         imageUrl: 'https://example.com/pichi-pichi.jpg',
       ),
       Recipe(
-        id: 124,
+                id: 120,
         name: 'Sapin-Sapin',
         description: 'Filipino layered glutinous rice cake',
         prepTime: 30,
@@ -3663,7 +3859,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sapin-sapin.jpg',
       ),
       Recipe(
-        id: 125,
+        id: 121,
         name: 'Maja Blanca',
         description: 'Filipino coconut pudding',
         prepTime: 15,
@@ -3697,7 +3893,7 @@ class RecipeService {
         imageUrl: 'https://example.com/maja-blanca.jpg',
       ),
       Recipe(
-        id: 126,
+        id: 122,
         name: 'Ginataang Bilo-Bilo',
         description: 'Filipino sweet soup with glutinous rice balls',
         prepTime: 20,
@@ -3720,7 +3916,7 @@ class RecipeService {
         imageUrl: 'https://example.com/ginataang-bilo-bilo.jpg',
       ),
       Recipe(
-        id: 127,
+        id: 123,
         name: 'Taho',
         description: 'Filipino silken tofu dessert',
         prepTime: 5,
@@ -3743,7 +3939,7 @@ class RecipeService {
         imageUrl: 'https://example.com/taho.jpg',
       ),
       Recipe(
-        id: 128,
+        id: 124,
         name: 'Buko Pandan',
         description: 'Filipino coconut and pandan jelly dessert',
         prepTime: 20,
@@ -3766,7 +3962,7 @@ class RecipeService {
         imageUrl: 'https://example.com/buko-pandan.jpg',
       ),
       Recipe(
-        id: 129,
+        id: 125,
         name: 'Mais Con Yelo',
         description: 'Filipino corn and ice dessert',
         prepTime: 10,
@@ -3789,7 +3985,7 @@ class RecipeService {
         imageUrl: 'https://example.com/mais-con-yelo.jpg',
       ),
       Recipe(
-        id: 130,
+        id: 126,
         name: 'Gulaman',
         description: 'Filipino agar jelly dessert',
         prepTime: 15,
@@ -3812,7 +4008,7 @@ class RecipeService {
         imageUrl: 'https://example.com/gulaman.jpg',
       ),
       Recipe(
-        id: 131,
+            id: 127,
         name: 'Sago at Gulaman',
         description: 'Filipino sago and jelly drink',
         prepTime: 20,
@@ -3835,7 +4031,7 @@ class RecipeService {
         imageUrl: 'https://example.com/sago-gulaman.jpg',
       ),
       Recipe(
-        id: 132,
+        id: 128,
         name: 'Puto Bumbong',
         description: 'Filipino purple rice cake steamed in bamboo',
         prepTime: 30,
@@ -3857,65 +4053,10 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/puto-bumbong.jpg',
       ),
+      
+      
       Recipe(
-        id: 133,
-        name: 'Bibingkang Malagkit',
-        description: 'Filipino glutinous rice cake',
-        prepTime: 20,
-        cookTime: 30,
-        servings: 10,
-        difficulty: 'Medium',
-        category: 'Dessert',
-        caloriesPerServing: 240,
-        proteinPerServing: 4,
-        carbsPerServing: 42,
-        fatPerServing: 6,
-        instructions: 'Mix glutinous rice with coconut milk and sugar, bake until set',
-        isFilipinoDish: true,
-        ingredients: ['malagkit na bigas', 'gata', 'asukal', 'latik'],
-        tags: ['dessert', 'filipino', 'meryenda', 'sticky rice'],
-        allergens: [],
-        rating: 4.5,
-        cookTimeFormatted: '30 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/bibingkang-malagkit.jpg',
-      ),
-      Recipe(
-        id: 134,
-        name: 'Kakanin',
-        description: 'Filipino rice cake assortment',
-        prepTime: 25,
-        cookTime: 35,
-        servings: 12,
-        difficulty: 'Medium',
-        category: 'Dessert',
-        caloriesPerServing: 180,
-        proteinPerServing: 3,
-        carbsPerServing: 32,
-        fatPerServing: 4,
-        instructions: '''1. Mix 2 cups rice flour with 1 cup coconut milk
-2. Add 1/2 cup sugar and 1/2 teaspoon salt
-3. Divide mixture into 4 equal parts
-4. Add different food colors to each part (red, green, yellow, purple)
-5. Add different flavors (pandan, ube, mango, strawberry)
-6. Pour each colored mixture into small molds
-7. Steam for 15-20 minutes until cooked through
-8. Remove from molds and let cool
-9. Arrange on a serving plate
-10. Garnish with toasted coconut flakes
-11. Serve with additional coconut cream on the side
-12. Best served fresh and warm''',
-        isFilipinoDish: true,
-        ingredients: ['rice flour', 'gata', 'asukal', 'food coloring', 'niyog'],
-        tags: ['dessert', 'filipino', 'meryenda', 'assorted'],
-        allergens: [],
-        rating: 4.4,
-        cookTimeFormatted: '35 min',
-        prepTimeFormatted: '25 min',
-        imageUrl: 'https://example.com/kakanin.jpg',
-      ),
-      Recipe(
-        id: 135,
+        id: 129,
         name: 'Puto Kutsinta',
         description: 'Filipino steamed rice cake with brown sugar',
         prepTime: 15,
@@ -3938,7 +4079,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-kutsinta.jpg',
       ),
       Recipe(
-        id: 136,
+        id: 130,
         name: 'Bibingkang Cassava',
         description: 'Filipino cassava cake',
         prepTime: 20,
@@ -3961,7 +4102,7 @@ class RecipeService {
         imageUrl: 'https://example.com/bibingkang-cassava.jpg',
       ),
       Recipe(
-        id: 137,
+        id: 131,
         name: 'Puto Cheese',
         description: 'Filipino steamed rice cake with cheese',
         prepTime: 15,
@@ -3984,7 +4125,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-cheese.jpg',
       ),
       Recipe(
-        id: 138,
+        id: 132,
         name: 'Puto Ube',
         description: 'Filipino purple yam steamed rice cake',
         prepTime: 15,
@@ -4007,7 +4148,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-ube.jpg',
       ),
       Recipe(
-        id: 139,
+        id: 133,
         name: 'Puto Pandan',
         description: 'Filipino pandan flavored steamed rice cake',
         prepTime: 15,
@@ -4030,7 +4171,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-pandan.jpg',
       ),
       Recipe(
-        id: 140,
+        id: 134,
         name: 'Puto Calasiao',
         description: 'Filipino soft steamed rice cake from Calasiao',
         prepTime: 20,
@@ -4053,7 +4194,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-calasiao.jpg',
       ),
       Recipe(
-        id: 141,
+                  id: 135,
         name: 'Puto Maya',
         description: 'Filipino glutinous rice with coconut',
         prepTime: 15,
@@ -4087,7 +4228,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-maya.jpg',
       ),
       Recipe(
-        id: 142,
+        id: 136,
         name: 'Puto Seko',
         description: 'Filipino crumbly rice cake',
         prepTime: 20,
@@ -4110,7 +4251,7 @@ class RecipeService {
         imageUrl: 'https://example.com/puto-seko.jpg',
       ),
       Recipe(
-        id: 143,
+        id: 137,
         name: 'Puto Pao',
         description: 'Filipino steamed rice cake with meat filling',
         prepTime: 25,
@@ -4132,54 +4273,10 @@ class RecipeService {
         prepTimeFormatted: '25 min',
         imageUrl: 'https://example.com/puto-pao.jpg',
       ),
+      
+      
       Recipe(
-        id: 144,
-        name: 'Puto Bumbong',
-        description: 'Filipino purple rice cake steamed in bamboo tubes',
-        prepTime: 30,
-        cookTime: 20,
-        servings: 8,
-        difficulty: 'Medium',
-        category: 'Dessert',
-        caloriesPerServing: 200,
-        proteinPerServing: 4,
-        carbsPerServing: 35,
-        fatPerServing: 5,
-        instructions: 'Mix purple rice flour with coconut milk, steam in bamboo tubes',
-        isFilipinoDish: true,
-        ingredients: ['purple rice flour', 'gata', 'asukal', 'niyog', 'latik'],
-        tags: ['dessert', 'filipino', 'pasko', 'mahal na araw', 'special'],
-        allergens: [],
-        rating: 4.8,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '30 min',
-        imageUrl: 'https://example.com/puto-bumbong.jpg',
-      ),
-      Recipe(
-        id: 145,
-        name: 'Puto Kutsinta',
-        description: 'Filipino brown rice cake',
-        prepTime: 15,
-        cookTime: 25,
-        servings: 12,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 110,
-        proteinPerServing: 2,
-        carbsPerServing: 22,
-        fatPerServing: 1,
-        instructions: 'Mix rice flour with brown sugar and water, steam in molds',
-        isFilipinoDish: true,
-        ingredients: ['rice flour', 'brown sugar', 'water', 'baking powder'],
-        tags: ['dessert', 'filipino', 'meryenda', 'steamed'],
-        allergens: [],
-        rating: 4.2,
-        cookTimeFormatted: '25 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/puto-kutsinta.jpg',
-      ),
-      Recipe(
-        id: 146,
+        id: 138,
         name: 'Buko Salad',
         description: 'Filipino young coconut fruit salad',
         prepTime: 20,
@@ -4213,7 +4310,7 @@ class RecipeService {
         imageUrl: 'https://example.com/buko-salad.jpg',
       ),
       Recipe(
-        id: 147,
+        id: 139,
         name: 'Macapuno',
         description: 'Filipino coconut sport dessert',
         prepTime: 15,
@@ -4246,8 +4343,8 @@ class RecipeService {
         prepTimeFormatted: '15 min',
         imageUrl: 'https://example.com/macapuno.jpg',
       ),
-      Recipe(
-        id: 148,
+            Recipe(
+        id: 140,
         name: 'Buko Pie',
         description: 'Filipino young coconut pie',
         prepTime: 30,
@@ -4259,7 +4356,13 @@ class RecipeService {
         proteinPerServing: 6,
         carbsPerServing: 45,
         fatPerServing: 16,
-        instructions: 'Make pie crust, fill with young coconut mixture, bake until golden',
+        instructions: '1. Prepare the pie crust and chill for 30 minutes. '
+            '2. In a saucepan, mix coconut meat, milk, sugar, and cornstarch. '
+            '3. Cook over medium heat until thickened. '
+            '4. Pour the mixture into the prepared crust. '
+            '5. Cover with top crust and seal edges. '
+            '6. Bake in a preheated oven at 180°C (350°F) for 45 minutes or until golden brown. '
+            '7. Cool before slicing and serving.',
         isFilipinoDish: true,
         ingredients: ['young coconut', 'pie crust', 'milk', 'sugar', 'cornstarch'],
         tags: ['dessert', 'filipino', 'handaan', 'pie'],
@@ -4269,8 +4372,9 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/buko-pie.jpg',
       ),
+
       Recipe(
-        id: 149,
+        id: 141,
         name: 'Ensaymada',
         description: 'Filipino sweet bread with cheese and butter',
         prepTime: 60,
@@ -4282,7 +4386,13 @@ class RecipeService {
         proteinPerServing: 8,
         carbsPerServing: 35,
         fatPerServing: 12,
-        instructions: 'Make sweet bread dough, roll with butter and sugar, top with cheese',
+        instructions: '1. Combine yeast, sugar, and warm water. Let it activate. '
+            '2. Mix flour, eggs, butter, and the yeast mixture. Knead until smooth. '
+            '3. Let the dough rise until doubled in size. '
+            '4. Flatten dough, spread butter and sugar, then roll. '
+            '5. Shape into spirals and let rise again. '
+            '6. Bake at 180°C (350°F) for 20–25 minutes. '
+            '7. Once baked, brush with butter and top with grated cheese and sugar.',
         isFilipinoDish: true,
         ingredients: ['bread flour', 'sugar', 'butter', 'cheese', 'yeast'],
         tags: ['dessert', 'filipino', 'meryenda', 'bread'],
@@ -4292,8 +4402,9 @@ class RecipeService {
         prepTimeFormatted: '60 min',
         imageUrl: 'https://example.com/ensaymada.jpg',
       ),
+
       Recipe(
-        id: 150,
+        id: 142,
         name: 'Pan de Sal',
         description: 'Filipino salt bread rolls',
         prepTime: 30,
@@ -4305,7 +4416,13 @@ class RecipeService {
         proteinPerServing: 4,
         carbsPerServing: 22,
         fatPerServing: 2,
-        instructions: 'Make bread dough with salt, shape into rolls, bake until golden',
+        instructions: '1. Mix flour, salt, yeast, and sugar in a bowl. '
+            '2. Add water and oil; knead until smooth. '
+            '3. Let the dough rise until doubled. '
+            '4. Shape into logs and cut into small rolls. '
+            '5. Coat with breadcrumbs. '
+            '6. Place on a baking tray and let rise again. '
+            '7. Bake at 180°C (350°F) for 20 minutes or until golden.',
         isFilipinoDish: true,
         ingredients: ['bread flour', 'salt', 'yeast', 'water', 'oil'],
         tags: ['dessert', 'filipino', 'almusal', 'bread'],
@@ -4315,8 +4432,9 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/pan-de-sal.jpg',
       ),
+
       Recipe(
-        id: 151,
+        id: 143,
         name: 'Pandesal',
         description: 'Filipino sweet bread rolls',
         prepTime: 30,
@@ -4328,7 +4446,13 @@ class RecipeService {
         proteinPerServing: 4,
         carbsPerServing: 25,
         fatPerServing: 3,
-        instructions: 'Make sweet bread dough, shape into rolls, bake until golden',
+        instructions: '1. In a bowl, combine yeast, sugar, and warm water. '
+            '2. Add flour, oil, and mix until dough forms. '
+            '3. Knead until smooth and elastic. '
+            '4. Let it rise until doubled. '
+            '5. Form into logs and cut into rolls. '
+            '6. Roll in breadcrumbs and let rise again. '
+            '7. Bake at 180°C (350°F) for 20 minutes until golden.',
         isFilipinoDish: true,
         ingredients: ['bread flour', 'sugar', 'yeast', 'water', 'oil'],
         tags: ['dessert', 'filipino', 'almusal', 'bread'],
@@ -4338,8 +4462,9 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/pandesal.jpg',
       ),
+
       Recipe(
-        id: 152,
+        id: 144,
         name: 'Monay',
         description: 'Filipino dense bread',
         prepTime: 25,
@@ -4351,7 +4476,12 @@ class RecipeService {
         proteinPerServing: 5,
         carbsPerServing: 30,
         fatPerServing: 4,
-        instructions: 'Make dense bread dough, shape into oval, bake until golden',
+        instructions: '1. Mix flour, sugar, yeast, and warm water. '
+            '2. Add oil and knead until smooth and elastic. '
+            '3. Let rise for 1 hour. '
+            '4. Shape into oval forms with a slit on top. '
+            '5. Let rest for 15 minutes. '
+            '6. Bake at 180°C (350°F) for 25–30 minutes until golden brown.',
         isFilipinoDish: true,
         ingredients: ['bread flour', 'sugar', 'yeast', 'water', 'oil'],
         tags: ['dessert', 'filipino', 'meryenda', 'bread'],
@@ -4361,8 +4491,9 @@ class RecipeService {
         prepTimeFormatted: '25 min',
         imageUrl: 'https://example.com/monay.jpg',
       ),
+
       Recipe(
-        id: 153,
+        id: 145,
         name: 'Spanish Bread',
         description: 'Filipino sweet bread with filling',
         prepTime: 40,
@@ -4374,7 +4505,13 @@ class RecipeService {
         proteinPerServing: 6,
         carbsPerServing: 32,
         fatPerServing: 7,
-        instructions: 'Make sweet bread dough, fill with butter and sugar mixture, bake',
+        instructions: '1. Make the dough with flour, yeast, sugar, butter, and water. '
+            '2. Knead until soft and let it rise for 1 hour. '
+            '3. Prepare the filling by mixing butter, sugar, and breadcrumbs. '
+            '4. Roll dough flat, spread filling, and roll into logs. '
+            '5. Cut and shape pieces. '
+            '6. Let rise again for 30 minutes. '
+            '7. Bake at 180°C (350°F) for 25 minutes or until golden.',
         isFilipinoDish: true,
         ingredients: ['bread flour', 'sugar', 'butter', 'yeast', 'breadcrumbs'],
         tags: ['dessert', 'filipino', 'meryenda', 'bread'],
@@ -4384,8 +4521,9 @@ class RecipeService {
         prepTimeFormatted: '40 min',
         imageUrl: 'https://example.com/spanish-bread.jpg',
       ),
+
       Recipe(
-        id: 154,
+        id: 146,
         name: 'Hopia',
         description: 'Filipino flaky pastry with sweet filling',
         prepTime: 45,
@@ -4397,7 +4535,14 @@ class RecipeService {
         proteinPerServing: 5,
         carbsPerServing: 35,
         fatPerServing: 10,
-        instructions: 'Make flaky pastry dough, fill with sweet bean paste, bake until golden',
+        instructions: '1. In a bowl, mix flour, sugar, and a pinch of salt. '
+            '2. Cut in butter and oil until crumbly, then form into a dough. '
+            '3. Divide dough into portions and flatten each piece. '
+            '4. Place sweet bean paste filling in the center. '
+            '5. Seal and roll into a round or oval shape. '
+            '6. Arrange on a baking sheet lined with parchment paper. '
+            '7. Bake in a preheated oven at 180°C (350°F) for 25–30 minutes until golden brown. '
+            '8. Cool completely before serving.',
         isFilipinoDish: true,
         ingredients: ['flour', 'butter', 'sweet bean paste', 'sugar', 'oil'],
         tags: ['dessert', 'filipino', 'meryenda', 'pastry'],
@@ -4407,8 +4552,9 @@ class RecipeService {
         prepTimeFormatted: '45 min',
         imageUrl: 'https://example.com/hopia.jpg',
       ),
+
       Recipe(
-        id: 155,
+        id: 147,
         name: 'Hopiang Baboy',
         description: 'Filipino flaky pastry with pork filling',
         prepTime: 45,
@@ -4420,7 +4566,14 @@ class RecipeService {
         proteinPerServing: 8,
         carbsPerServing: 30,
         fatPerServing: 12,
-        instructions: 'Make flaky pastry dough, fill with seasoned pork, bake until golden',
+        instructions: '1. Make the pastry dough by mixing flour, butter, and oil until soft. '
+            '2. In a pan, sauté ground pork with garlic and onion. '
+            '3. Add sugar and soy sauce; cook until mixture thickens, then let it cool. '
+            '4. Roll out the dough and place a spoonful of pork filling in the center. '
+            '5. Fold and seal the edges tightly. '
+            '6. Arrange on a baking tray lined with parchment paper. '
+            '7. Bake in a preheated oven at 180°C (350°F) for 25–30 minutes or until golden brown. '
+            '8. Cool before serving.',
         isFilipinoDish: true,
         ingredients: ['flour', 'butter', 'ground pork', 'onion', 'garlic'],
         tags: ['dessert', 'filipino', 'meryenda', 'savory'],
@@ -4430,8 +4583,9 @@ class RecipeService {
         prepTimeFormatted: '45 min',
         imageUrl: 'https://example.com/hopiang-baboy.jpg',
       ),
+
       Recipe(
-        id: 156,
+        id: 148,
         name: 'Empanada',
         description: 'Filipino meat-filled pastry',
         prepTime: 30,
@@ -4443,7 +4597,13 @@ class RecipeService {
         proteinPerServing: 8,
         carbsPerServing: 25,
         fatPerServing: 8,
-        instructions: 'Make pastry dough, fill with meat mixture, seal and fry',
+        instructions: '1. In a bowl, combine flour, salt, and butter; mix until crumbly. '
+            '2. Add cold water gradually and form into a dough. Let rest for 15 minutes. '
+            '3. In a pan, sauté ground meat with onion, garlic, and potatoes until cooked. '
+            '4. Flatten dough and cut into circles. '
+            '5. Place filling in the center, fold, and seal edges with a fork. '
+            '6. Fry in hot oil until golden brown, or bake at 190°C (375°F) for 25 minutes. '
+            '7. Serve hot with vinegar dipping sauce.',
         isFilipinoDish: true,
         ingredients: ['flour', 'ground meat', 'onion', 'garlic', 'potatoes'],
         tags: ['dessert', 'filipino', 'meryenda', 'savory'],
@@ -4453,8 +4613,9 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/empanada.jpg',
       ),
+
       Recipe(
-        id: 157,
+        id: 149,
         name: 'Siopao',
         description: 'Filipino steamed bun with meat filling',
         prepTime: 40,
@@ -4466,7 +4627,14 @@ class RecipeService {
         proteinPerServing: 8,
         carbsPerServing: 28,
         fatPerServing: 4,
-        instructions: 'Make bun dough, fill with meat mixture, steam until cooked',
+        instructions: '1. Combine flour, sugar, yeast, and warm water to make dough. '
+            '2. Knead until smooth, then let rise until doubled. '
+            '3. In a pan, cook ground meat with garlic, onion, soy sauce, and oyster sauce. Let cool. '
+            '4. Divide dough into portions and flatten each one. '
+            '5. Place filling in the center and seal into a round bun. '
+            '6. Place buns on parchment paper squares. '
+            '7. Steam for 15–20 minutes until fluffy and cooked through. '
+            '8. Serve hot.',
         isFilipinoDish: true,
         ingredients: ['flour', 'ground meat', 'onion', 'garlic', 'yeast'],
         tags: ['dessert', 'filipino', 'meryenda', 'steamed'],
@@ -4476,8 +4644,9 @@ class RecipeService {
         prepTimeFormatted: '40 min',
         imageUrl: 'https://example.com/siopao.jpg',
       ),
+
       Recipe(
-        id: 158,
+        id: 150,
         name: 'Siomai',
         description: 'Filipino steamed dumpling',
         prepTime: 30,
@@ -4489,7 +4658,12 @@ class RecipeService {
         proteinPerServing: 6,
         carbsPerServing: 8,
         fatPerServing: 2,
-        instructions: 'Make dumpling wrapper, fill with meat mixture, steam until cooked',
+        instructions: '1. In a bowl, mix ground meat, minced onion, garlic, soy sauce, and seasonings. '
+            '2. Place a spoonful of filling in the center of a dumpling wrapper. '
+            '3. Fold and press the edges lightly to seal the shape. '
+            '4. Arrange siomai in a steamer lined with parchment or banana leaves. '
+            '5. Steam over medium heat for 12–15 minutes until cooked through. '
+            '6. Serve hot with soy sauce, calamansi, and chili garlic oil.',
         isFilipinoDish: true,
         ingredients: ['dumpling wrapper', 'ground meat', 'onion', 'garlic', 'soy sauce'],
         tags: ['dessert', 'filipino', 'meryenda', 'steamed'],
@@ -4499,1004 +4673,738 @@ class RecipeService {
         prepTimeFormatted: '30 min',
         imageUrl: 'https://example.com/siomai.jpg',
       ),
+
       Recipe(
-        id: 159,
-        name: 'Lumpia',
-        description: 'Filipino spring roll',
-        prepTime: 25,
-        cookTime: 15,
-        servings: 10,
-        difficulty: 'Medium',
-        category: 'Dessert',
-        caloriesPerServing: 120,
-        proteinPerServing: 5,
-        carbsPerServing: 15,
-        fatPerServing: 4,
-        instructions: 'Wrap vegetable mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'vegetables', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'fried'],
-        allergens: ['wheat'],
-        rating: 4.2,
-        cookTimeFormatted: '15 min',
-        prepTimeFormatted: '25 min',
-        imageUrl: 'https://example.com/lumpia.jpg',
-      ),
-      Recipe(
-        id: 160,
-        name: 'Lumpiang Gulay',
-        description: 'Filipino vegetable spring roll',
-        prepTime: 25,
-        cookTime: 15,
-        servings: 10,
-        difficulty: 'Medium',
-        category: 'Dessert',
-        caloriesPerServing: 100,
-        proteinPerServing: 4,
-        carbsPerServing: 12,
-        fatPerServing: 3,
-        instructions: 'Wrap mixed vegetables in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'mixed vegetables', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '15 min',
-        prepTimeFormatted: '25 min',
-        imageUrl: 'https://example.com/lumpiang-gulay.jpg',
-      ),
-      Recipe(
-        id: 161,
-        name: 'Lumpiang Sariwa',
-        description: 'Filipino fresh spring roll',
-        prepTime: 20,
-        cookTime: 10,
+      id: 151,
+      name: 'Lumpia',
+      description: 'Filipino spring roll',
+      prepTime: 25,
+      cookTime: 15,
+      servings: 10,
+      difficulty: 'Medium',
+      category: 'Dessert',
+      caloriesPerServing: 120,
+      proteinPerServing: 5,
+      carbsPerServing: 15,
+      fatPerServing: 4,
+      instructions: '1. In a pan, sauté onion and garlic in oil until fragrant. '
+          '2. Add chopped vegetables and cook until slightly tender. '
+          '3. Let mixture cool completely before wrapping. '
+          '4. Place a spoonful of filling on a spring roll wrapper and roll tightly, sealing the edge with water. '
+          '5. Heat oil in a pan and fry until golden brown. '
+          '6. Drain excess oil on paper towels and serve with vinegar or sweet chili sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'vegetables', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'fried'],
+      allergens: ['wheat'],
+      rating: 4.2,
+      cookTimeFormatted: '15 min',
+      prepTimeFormatted: '25 min',
+      imageUrl: 'assets/images/Lumpia.jpg',
+    ),
+
+    Recipe(
+      id: 152,
+      name: 'Lumpiang Gulay',
+      description: 'Filipino vegetable spring roll',
+      prepTime: 25,
+      cookTime: 15,
+      servings: 10,
+      difficulty: 'Medium',
+      category: 'Dessert',
+      caloriesPerServing: 100,
+      proteinPerServing: 4,
+      carbsPerServing: 12,
+      fatPerServing: 3,
+      instructions: '1. In a pan, heat oil and sauté garlic and onion until fragrant. '
+          '2. Add mixed vegetables and season with salt and pepper. '
+          '3. Cook until vegetables are slightly tender, then let cool. '
+          '4. Wrap mixture in spring roll wrappers and seal edges with water. '
+          '5. Deep-fry in hot oil until crisp and golden brown. '
+          '6. Drain excess oil and serve hot with vinegar dipping sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'mixed vegetables', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.1,
+      cookTimeFormatted: '15 min',
+      prepTimeFormatted: '25 min',
+      imageUrl: 'assets/images/LumpiangGulay.jpg',
+    ),
+
+    Recipe(
+      id: 153,
+      name: 'Lumpiang Sariwa',
+      description: 'Filipino fresh spring roll',
+      prepTime: 20,
+      cookTime: 10,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 80,
+      proteinPerServing: 3,
+      carbsPerServing: 10,
+      fatPerServing: 2,
+      instructions: '1. Blanch or lightly sauté vegetables such as carrots, lettuce, and bean sprouts. '
+          '2. Prepare rice paper or fresh lumpia wrapper and lay flat on a plate. '
+          '3. Place a portion of vegetables in the center of the wrapper. '
+          '4. Roll tightly and fold the sides to enclose the filling. '
+          '5. Serve with homemade sweet garlic sauce and crushed peanuts on top.',
+      isFilipinoDish: true,
+      ingredients: ['rice paper', 'fresh vegetables', 'lettuce', 'carrots', 'sweet sauce'],
+      tags: ['dessert', 'filipino', 'meryenda', 'fresh'],
+      allergens: [],
+      rating: 4.0,
+      cookTimeFormatted: '10 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangSariwa.jpg',
+    ),
+
+    Recipe(
+      id: 154,
+      name: 'Lumpiang Hubad',
+      description: 'Filipino naked spring roll',
+      prepTime: 15,
+      cookTime: 10,
+      servings: 6,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 90,
+      proteinPerServing: 4,
+      carbsPerServing: 12,
+      fatPerServing: 2,
+      instructions: '1. In a pan, heat oil and sauté garlic and onion until fragrant. '
+          '2. Add mixed vegetables and cook until tender. '
+          '3. Pour sweet sauce over the cooked vegetables and mix well. '
+          '4. Transfer to a serving plate and top with crushed peanuts. '
+          '5. Serve warm as a healthy and light snack.',
+      isFilipinoDish: true,
+      ingredients: ['mixed vegetables', 'sweet sauce', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: [],
+      rating: 4.0,
+      cookTimeFormatted: '10 min',
+      prepTimeFormatted: '15 min',
+      imageUrl: 'assets/images/LumpiangHubad.jpg',
+    ),
+
+    Recipe(
+      id: 155,
+      name: 'Lumpiang Togue',
+      description: 'Filipino bean sprout spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 70,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: '1. In a pan, sauté garlic and onion until fragrant. '
+          '2. Add bean sprouts and cook for 2–3 minutes, just until slightly tender. '
+          '3. Let cool before wrapping. '
+          '4. Place filling on spring roll wrapper and roll tightly, sealing the edges with water. '
+          '5. Fry in hot oil until golden brown and crispy. '
+          '6. Drain on paper towels and serve with vinegar or garlic dipping sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'bean sprouts', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.1,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangTogue.jpg',
+),
+
+     Recipe(
+      id: 156,
+      name: 'Lumpiang Ubod',
+      description: 'Filipino heart of palm spring roll',
+      prepTime: 25,
+      cookTime: 15,
+      servings: 8,
+      difficulty: 'Medium',
+      category: 'Dessert',
+      caloriesPerServing: 110,
+      proteinPerServing: 4,
+      carbsPerServing: 12,
+      fatPerServing: 4,
+      instructions: '''
+    1. Heat oil in a pan over medium heat. 
+    2. Sauté garlic and onion until fragrant. 
+    3. Add sliced heart of palm (ubod) and cook until tender. 
+    4. Season with salt and pepper to taste, then let it cool. 
+    5. Place a portion of the mixture on each spring roll wrapper. 
+    6. Roll tightly and seal the edges with water. 
+    7. Fry until golden brown and crisp. 
+    8. Drain excess oil and serve with sweet garlic sauce.
+    ''',
+      isFilipinoDish: true,
+      ingredients: [
+        'spring roll wrapper',
+        'heart of palm',
+        'onion',
+        'garlic',
+        'oil'
+      ],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.2,
+      cookTimeFormatted: '15 min',
+      prepTimeFormatted: '25 min',
+      imageUrl: 'assets/images/LumpiangUbod.jpg',
+    ),
+
+    Recipe(
+      id: 157,
+      name: 'Lumpiang Singkamas',
+      description: 'Filipino jicama spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 85,
+      proteinPerServing: 3,
+      carbsPerServing: 10,
+      fatPerServing: 2,
+      instructions: '''
+    1. Heat oil in a pan over medium heat. 
+    2. Sauté garlic and onion until fragrant. 
+    3. Add shredded singkamas (jicama) and cook lightly for 2–3 minutes. 
+    4. Season with salt and pepper. Let the mixture cool. 
+    5. Place filling in a spring roll wrapper and roll tightly. 
+    6. Seal edges with water. 
+    7. Fry until golden brown. 
+    8. Drain on paper towels and serve with vinegar dipping sauce.
+    ''',
+      isFilipinoDish: true,
+      ingredients: [
+        'spring roll wrapper',
+        'jicama',
+        'onion',
+        'garlic',
+        'oil'
+      ],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangSingkamas.jpg',
+    ),
+
+    Recipe(
+        id: 158,
+        name: 'Chicken Relleno',
+        description: 'Stuffed whole chicken - Filipino special occasion dish',
+        prepTime: 60,
+        cookTime: 90,
         servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap fresh vegetables in rice paper, serve with sweet sauce',
+        difficulty: 'Hard',
+        category: 'Filipino',
+        caloriesPerServing: 520,
+        proteinPerServing: 42,
+        carbsPerServing: 18,
+        fatPerServing: 32,
+        instructions: '''1. Debone whole chicken carefully, keeping skin intact
+2. Prepare stuffing: ground pork, chorizo, hard-boiled eggs
+3. Mix stuffing with raisins, pickles, and breadcrumbs
+4. Season chicken cavity with salt and pepper
+5. Fill chicken with stuffing mixture
+6. Sew or tie chicken to close
+7. Brown chicken in oil on all sides
+8. Braise in soy sauce and water for 1 hour
+9. Bake at 350°F for 30 minutes
+10. Slice and serve with liver sauce''',
         isFilipinoDish: true,
-        ingredients: ['rice paper', 'fresh vegetables', 'lettuce', 'carrots', 'sweet sauce'],
-        tags: ['dessert', 'filipino', 'meryenda', 'fresh'],
-        allergens: [],
-        rating: 4.0,
-        cookTimeFormatted: '10 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-sariwa.jpg',
+        ingredients: ['whole chicken', 'ground pork', 'chorizo', 'hard-boiled eggs', 'raisins'],
+        tags: ['filipino', 'lunch', 'special occasion', 'stuffed'],
+        allergens: ['egg', 'wheat', 'soy'],
+        rating: 4.9,
+        cookTimeFormatted: '90 min',
+        prepTimeFormatted: '60 min',
+        imageUrl: 'assets/images/ChickenRelleno.jpg',
       ),
-      Recipe(
-        id: 162,
-        name: 'Lumpiang Hubad',
-        description: 'Filipino naked spring roll',
-        prepTime: 15,
-        cookTime: 10,
-        servings: 6,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 90,
-        proteinPerServing: 4,
-        carbsPerServing: 12,
-        fatPerServing: 2,
-        instructions: 'Mix vegetables with sauce, serve without wrapper',
-        isFilipinoDish: true,
-        ingredients: ['mixed vegetables', 'sweet sauce', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: [],
-        rating: 4.0,
-        cookTimeFormatted: '10 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/lumpiang-hubad.jpg',
-      ),
-      Recipe(
-        id: 163,
-        name: 'Lumpiang Togue',
-        description: 'Filipino bean sprout spring roll',
+
+    Recipe(
+      id: 159,
+      name: 'Lumpiang Kalabasa',
+      description: 'Filipino squash spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 80,
+      proteinPerServing: 3,
+      carbsPerServing: 10,
+      fatPerServing: 2,
+      instructions: '''
+    1. Peel and grate the squash (kalabasa). 
+    2. Sauté garlic and onion in a little oil until fragrant. 
+    3. Add grated squash and cook until slightly soft. 
+    4. Season with salt and pepper. Let cool before wrapping. 
+    5. Place a spoonful of the mixture in a spring roll wrapper and roll tightly. 
+    6. Seal the edge with water. 
+    7. Deep-fry until golden brown. 
+    8. Drain excess oil and serve hot with vinegar or sweet chili sauce.
+    ''',
+      isFilipinoDish: true,
+      ingredients: [
+        'spring roll wrapper',
+        'squash',
+        'onion',
+        'garlic',
+        'oil'
+      ],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangKalabasa.jpg',
+    ),
+
+    Recipe(
+      id: 160,
+      name: 'Lumpiang Sayote',
+      description: 'Filipino chayote spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 75,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: '''
+    1. Peel and shred sayote (chayote). 
+    2. Heat oil in a pan and sauté garlic and onion. 
+    3. Add shredded sayote and cook for 2–3 minutes. 
+    4. Season with salt and pepper. Remove from heat and cool. 
+    5. Place mixture on a spring roll wrapper, roll tightly, and seal with water. 
+    6. Fry in hot oil until golden brown and crispy. 
+    7. Drain excess oil and serve with sweet chili or vinegar sauce.
+    ''',
+      isFilipinoDish: true,
+      ingredients: [
+        'spring roll wrapper',
+        'chayote',
+        'onion',
+        'garlic',
+        'oil'
+      ],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangSayote.jpg',
+    ),
+
+          Recipe(
+      id: 161,
+      name: 'Lumpiang Patola',
+      description: 'Filipino sponge gourd spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 75,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: 
+        '1. Peel and slice sponge gourd into thin strips.\n'
+        '2. Sauté garlic and onion in oil until fragrant.\n'
+        '3. Add the sponge gourd and cook for 3–5 minutes until slightly tender.\n'
+        '4. Let it cool, then place 2 tablespoons of the mixture onto each spring roll wrapper.\n'
+        '5. Fold and seal edges with water.\n'
+        '6. Heat oil in a pan and fry the rolls until golden brown.\n'
+        '7. Drain excess oil on paper towels and serve warm with vinegar or sweet chili sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'sponge gourd', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangPatola.jpg',
+    ),
+
+    Recipe(
+      id: 162,
+      name: 'Lumpiang Ampalaya',
+      description: 'Filipino bitter gourd spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 80,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: 
+        '1. Slice the bitter gourd thinly and soak in salted water for 10 minutes.\n'
+        '2. Sauté garlic and onion in oil.\n'
+        '3. Add drained bitter gourd and cook for 3–4 minutes.\n'
+        '4. Allow to cool, then place a small portion on each spring roll wrapper.\n'
+        '5. Fold tightly and seal edges with water.\n'
+        '6. Fry in hot oil until golden and crisp.\n'
+        '7. Serve with spiced vinegar or sweet dipping sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'bitter gourd', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangAmpalaya.jpg',
+    ),
+
+    Recipe(
+      id: 163,
+      name: 'Lumpiang Kangkong',
+      description: 'Filipino water spinach spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 70,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: 
+        '1. Wash and cut water spinach into small pieces.\n'
+        '2. Sauté garlic and onion in oil until aromatic.\n'
+        '3. Add kangkong and cook briefly until wilted.\n'
+        '4. Let the mixture cool before wrapping.\n'
+        '5. Place a portion of the mixture on a spring roll wrapper, fold tightly, and seal with water.\n'
+        '6. Heat oil and fry until golden and crisp.\n'
+        '7. Serve with vinegar or sweet chili sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'water spinach', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangKangkong.jpg',
+    ),
+
+    Recipe(
+      id: 164,
+      name: 'Lumpiang Saluyot',
+      description: 'Filipino jute leaves spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 75,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: 
+        '1. Clean and roughly chop the saluyot (jute) leaves.\n'
+        '2. Sauté garlic and onion in oil.\n'
+        '3. Add saluyot and cook for 2–3 minutes until soft.\n'
+        '4. Let mixture cool before wrapping.\n'
+        '5. Place 1–2 tablespoons of filling into each wrapper, roll tightly, and seal edges.\n'
+        '6. Deep fry in hot oil until golden brown.\n'
+        '7. Serve with vinegar or banana ketchup.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'jute leaves', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangSaluyot.jpg',
+    ),
+
+    Recipe(
+      id: 165,
+      name: 'Lumpiang Malunggay',
+      description: 'Filipino moringa leaves spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 80,
+      proteinPerServing: 4,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: 
+        '1. Remove malunggay (moringa) leaves from stems and wash well.\n'
+        '2. Sauté garlic and onion in oil until fragrant.\n'
+        '3. Add malunggay leaves and cook for 2–3 minutes until tender.\n'
+        '4. Allow mixture to cool before wrapping.\n'
+        '5. Wrap 2 tablespoons in each spring roll wrapper, fold tightly, and seal with water.\n'
+        '6. Fry in medium-hot oil until golden brown.\n'
+        '7. Serve with vinegar-garlic dip or sweet chili sauce.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'moringa leaves', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.1,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangMalunggay.jpg',
+    ),
+
+    Recipe(
+      id: 166,
+      name: 'Lumpiang Pechay',
+      description: 'Filipino Chinese cabbage spring roll',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Dessert',
+      caloriesPerServing: 70,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: 
+        '1. Chop Chinese cabbage finely and remove excess water.\n'
+        '2. Sauté garlic and onion in oil until fragrant.\n'
+        '3. Add chopped cabbage and cook for 3 minutes until softened.\n'
+        '4. Let cool before wrapping.\n'
+        '5. Put a spoonful of filling on each wrapper, fold tightly, and seal edges with water.\n'
+        '6. Fry in hot oil until golden brown and crisp.\n'
+        '7. Drain excess oil and serve with sweet dipping sauce or vinegar.',
+      isFilipinoDish: true,
+      ingredients: ['spring roll wrapper', 'Chinese cabbage', 'onion', 'garlic', 'oil'],
+      tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangPechay.jpg',
+    ),
+
+        Recipe(
+        id: 167,
+        name: 'Lumpiang Repolyo',
+        description: 'Crispy Filipino spring roll filled with sautéed cabbage and vegetables',
         prepTime: 20,
         cookTime: 12,
         servings: 8,
         difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
+        category: 'Snack',
+        caloriesPerServing: 75,
         proteinPerServing: 3,
         carbsPerServing: 8,
         fatPerServing: 2,
-        instructions: 'Wrap bean sprouts in spring roll wrapper, fry until golden',
+        instructions: '''
+      1. Finely shred the cabbage and chop the onion and garlic.  
+      2. Heat oil in a pan over medium heat.  
+      3. Sauté the garlic and onion until fragrant.  
+      4. Add the shredded cabbage and cook for about 3–5 minutes, just until slightly wilted.  
+      5. Season with salt and pepper to taste. Add a bit of soy sauce or oyster sauce if desired.  
+      6. Remove from heat and let the filling cool.  
+      7. Place 1–2 tablespoons of the cabbage filling on a spring roll wrapper. Fold and roll tightly, sealing the edge with a bit of water.  
+      8. Heat oil in a pan and fry the lumpia until golden brown and crisp on all sides.  
+      9. Drain excess oil on paper towels.  
+      10. Serve hot with spiced vinegar or sweet chili sauce for dipping.
+      ''',
         isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bean sprouts', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-togue.jpg',
-      ),
-      Recipe(
-        id: 164,
-        name: 'Lumpiang Ubod',
-        description: 'Filipino heart of palm spring roll',
-        prepTime: 25,
-        cookTime: 15,
-        servings: 8,
-        difficulty: 'Medium',
-        category: 'Dessert',
-        caloriesPerServing: 110,
-        proteinPerServing: 4,
-        carbsPerServing: 12,
-        fatPerServing: 4,
-        instructions: 'Wrap heart of palm mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'heart of palm', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.2,
-        cookTimeFormatted: '15 min',
-        prepTimeFormatted: '25 min',
-        imageUrl: 'https://example.com/lumpiang-ubod.jpg',
-      ),
-      Recipe(
-        id: 165,
-        name: 'Lumpiang Singkamas',
-        description: 'Filipino jicama spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 85,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap jicama mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'jicama', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+        ingredients: [
+          'spring roll wrapper',
+          'cabbage',
+          'onion',
+          'garlic',
+          'salt',
+          'pepper',
+          'oil',
+          'soy sauce (optional)'
+        ],
+        tags: ['filipino', 'snack', 'meryenda', 'vegetarian', 'crispy'],
         allergens: ['wheat'],
         rating: 4.0,
         cookTimeFormatted: '12 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-singkamas.jpg',
+        imageUrl: 'assets/images/LumpiangRepolyo.jpg',
       ),
-      Recipe(
-        id: 166,
-        name: 'Lumpiang Kamote',
-        description: 'Filipino sweet potato spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 95,
-        proteinPerServing: 3,
-        carbsPerServing: 15,
-        fatPerServing: 2,
-        instructions: 'Wrap sweet potato mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'sweet potato', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kamote.jpg',
-      ),
-      Recipe(
-        id: 167,
-        name: 'Lumpiang Kalabasa',
-        description: 'Filipino squash spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap squash mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'squash', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kalabasa.jpg',
-      ),
+
       Recipe(
         id: 168,
-        name: 'Lumpiang Sayote',
-        description: 'Filipino chayote spring roll',
+        name: 'Lumpiang Labanos',
+        description: 'Crispy Filipino spring roll filled with sautéed radish and vegetables',
         prepTime: 20,
         cookTime: 12,
         servings: 8,
         difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap chayote mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'chayote', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-sayote.jpg',
-      ),
-      Recipe(
-        id: 169,
-        name: 'Lumpiang Upo',
-        description: 'Filipino bottle gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
+        category: 'Snack',
         caloriesPerServing: 70,
         proteinPerServing: 3,
         carbsPerServing: 8,
         fatPerServing: 2,
-        instructions: 'Wrap bottle gourd mixture in spring roll wrapper, fry until golden',
+        instructions: '''
+      1. Peel and shred the radish (labanos). Lightly squeeze out excess liquid using clean hands or a cloth to prevent soggy filling.  
+      2. In a pan, heat oil and sauté garlic and onion until fragrant.  
+      3. Add the shredded radish and cook for about 5–7 minutes or until tender.  
+      4. Season with salt and pepper to taste. You may also add a small amount of soy sauce for added flavor.  
+      5. Let the mixture cool slightly.  
+      6. Place 1–2 tablespoons of the radish filling on a spring roll wrapper. Roll tightly and seal the edge with water.  
+      7. Heat enough oil in a pan over medium heat and fry the lumpia until golden brown and crispy.  
+      8. Drain excess oil on paper towels.  
+      9. Serve hot with vinegar dipping sauce or sweet chili sauce.
+      ''',
         isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bottle gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
+        ingredients: [
+          'spring roll wrapper',
+          'radish (labanos)',
+          'onion',
+          'garlic',
+          'salt',
+          'pepper',
+          'oil',
+          'soy sauce (optional)'
+        ],
+        tags: ['filipino', 'snack', 'meryenda', 'vegetarian', 'crispy', 'light'],
         allergens: ['wheat'],
         rating: 4.0,
         cookTimeFormatted: '12 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-upo.jpg',
+        imageUrl: 'assets/images/LumpiangLabanos.jpg',
       ),
+
+      
+      
       Recipe(
-        id: 170,
-        name: 'Lumpiang Patola',
-        description: 'Filipino sponge gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap sponge gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'sponge gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-patola.jpg',
-      ),
+          id: 169,
+          name: 'Lumpiang Kamote',
+          description: 'Crispy Filipino spring roll filled with sautéed sweet potato mixture',
+          prepTime: 20,
+          cookTime: 12,
+          servings: 8,
+          difficulty: 'Easy',
+          category: 'Snack',
+          caloriesPerServing: 85,
+          proteinPerServing: 3,
+          carbsPerServing: 12,
+          fatPerServing: 2,
+          instructions: '''
+        1. Peel and grate or finely chop the sweet potato (kamote).  
+        2. In a pan, heat a small amount of oil and sauté garlic and onion until fragrant.  
+        3. Add the sweet potato and cook for 5–7 minutes or until slightly tender. Season with salt and pepper to taste.  
+        4. Let the mixture cool slightly to make wrapping easier.  
+        5. Place a spoonful of the kamote filling on a spring roll wrapper. Roll tightly and seal the edge with a bit of water.  
+        6. Heat oil in a frying pan over medium heat. Fry the lumpia until golden brown and crispy on all sides.  
+        7. Drain excess oil using paper towels.  
+        8. Serve hot as a snack or meryenda. Optionally, drizzle with a little caramelized brown sugar syrup for a sweeter version.
+        ''',
+          isFilipinoDish: true,
+          ingredients: [
+            'spring roll wrapper',
+            'sweet potato (kamote)',
+            'onion',
+            'garlic',
+            'salt',
+            'pepper',
+            'oil'
+          ],
+          tags: ['filipino', 'snack', 'meryenda', 'vegetarian', 'crispy', 'sweet'],
+          allergens: ['wheat'],
+          rating: 4.1,
+          cookTimeFormatted: '12 min',
+          prepTimeFormatted: '20 min',
+          imageUrl: 'assets/images/LumpiangKamote.jpg',
+        ),
+
       Recipe(
-        id: 171,
-        name: 'Lumpiang Talong',
-        description: 'Filipino eggplant spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 85,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap eggplant mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'eggplant', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-talong.jpg',
-      ),
+      id: 170,
+      name: 'Lumpiang Upo',
+      description: 'Crispy Filipino spring roll filled with sautéed bottle gourd and vegetables',
+      prepTime: 20,
+      cookTime: 12,
+      servings: 8,
+      difficulty: 'Easy',
+      category: 'Snack',
+      caloriesPerServing: 70,
+      proteinPerServing: 3,
+      carbsPerServing: 8,
+      fatPerServing: 2,
+      instructions: '''
+    1. Peel and finely chop the bottle gourd (upo).  
+    2. In a pan, heat a little oil and sauté garlic and onion until fragrant.  
+    3. Add the chopped upo and cook until slightly tender. Season with salt and pepper to taste.  
+    4. Drain excess liquid from the cooked upo mixture to avoid soggy lumpia. Let it cool.  
+    5. Place a spoonful of the mixture onto a spring roll wrapper. Roll tightly and seal the edge with water.  
+    6. Heat oil in a pan over medium heat and fry the lumpia until golden brown and crispy on all sides.  
+    7. Drain on paper towels to remove excess oil.  
+    8. Serve hot with vinegar or sweet chili sauce for dipping.
+    ''',
+      isFilipinoDish: true,
+      ingredients: [
+        'spring roll wrapper',
+        'bottle gourd (upo)',
+        'onion',
+        'garlic',
+        'salt',
+        'pepper',
+        'oil'
+      ],
+      tags: ['filipino', 'meryenda', 'snack', 'vegetarian', 'crispy'],
+      allergens: ['wheat'],
+      rating: 4.0,
+      cookTimeFormatted: '12 min',
+      prepTimeFormatted: '20 min',
+      imageUrl: 'assets/images/LumpiangUpo.jpg',
+    ),
+
+      
+      Recipe(
+  id: 171,
+  name: 'Lumpiang Talong',
+  description: 'Crispy Filipino eggplant spring roll, perfect for snacks or meryenda',
+  prepTime: 20,
+  cookTime: 12,
+  servings: 8,
+  difficulty: 'Easy',
+  category: 'Snack',
+  caloriesPerServing: 85,
+  proteinPerServing: 3,
+  carbsPerServing: 10,
+  fatPerServing: 2,
+  instructions: '''
+1. Grill or roast the eggplants until the skin is charred and the flesh becomes soft. Let them cool slightly, then peel off the skin and mash the flesh lightly.  
+2. In a pan, sauté garlic and onion until fragrant. Add the mashed eggplant and season with salt and pepper. Mix well and let it cool.  
+3. Place a portion of the eggplant mixture on a spring roll wrapper. Roll tightly and seal the edge with a bit of water.  
+4. Heat oil in a pan over medium heat. Fry the lumpia until golden brown and crisp on all sides.  
+5. Drain excess oil on paper towels.  
+6. Serve hot with vinegar, ketchup, or sweet chili sauce for dipping.
+''',
+  isFilipinoDish: true,
+  ingredients: [
+    'spring roll wrapper',
+    'eggplant',
+    'onion',
+    'garlic',
+    'salt',
+    'pepper',
+    'oil'
+  ],
+  tags: ['filipino', 'meryenda', 'snack', 'vegetarian', 'crispy'],
+  allergens: ['wheat'],
+  rating: 4.1,
+  cookTimeFormatted: '12 min',
+  prepTimeFormatted: '20 min',
+  imageUrl: 'assets/images/LumpiangTalong.jpg',
+),
+
+      
       Recipe(
         id: 172,
-        name: 'Lumpiang Ampalaya',
-        description: 'Filipino bitter gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap bitter gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bitter gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-ampalaya.jpg',
-      ),
-      Recipe(
-        id: 173,
-        name: 'Lumpiang Kangkong',
-        description: 'Filipino water spinach spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap water spinach mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'water spinach', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kangkong.jpg',
-      ),
-      Recipe(
-        id: 174,
-        name: 'Lumpiang Saluyot',
-        description: 'Filipino jute leaves spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap jute leaves mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'jute leaves', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-saluyot.jpg',
-      ),
-      Recipe(
-        id: 175,
-        name: 'Lumpiang Malunggay',
-        description: 'Filipino moringa leaves spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 4,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap moringa leaves mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'moringa leaves', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-malunggay.jpg',
-      ),
-      Recipe(
-        id: 176,
-        name: 'Lumpiang Pechay',
-        description: 'Filipino Chinese cabbage spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap Chinese cabbage mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'Chinese cabbage', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-pechay.jpg',
-      ),
-      Recipe(
-        id: 177,
-        name: 'Lumpiang Repolyo',
-        description: 'Filipino cabbage spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap cabbage mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'cabbage', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-repolyo.jpg',
-      ),
-      Recipe(
-        id: 178,
-        name: 'Lumpiang Labanos',
-        description: 'Filipino radish spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap radish mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'radish', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-labanos.jpg',
-      ),
-      Recipe(
-        id: 179,
-        name: 'Lumpiang Singkamas',
-        description: 'Filipino jicama spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap jicama mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'jicama', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-singkamas.jpg',
-      ),
-      Recipe(
-        id: 180,
-        name: 'Lumpiang Kamote',
-        description: 'Filipino sweet potato spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 85,
-        proteinPerServing: 3,
-        carbsPerServing: 12,
-        fatPerServing: 2,
-        instructions: 'Wrap sweet potato mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'sweet potato', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kamote.jpg',
-      ),
-      Recipe(
-        id: 181,
-        name: 'Lumpiang Kalabasa',
-        description: 'Filipino squash spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap squash mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'squash', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kalabasa.jpg',
-      ),
-      Recipe(
-        id: 182,
-        name: 'Lumpiang Sayote',
-        description: 'Filipino chayote spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap chayote mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'chayote', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-sayote.jpg',
-      ),
-      Recipe(
-        id: 183,
-        name: 'Lumpiang Upo',
-        description: 'Filipino bottle gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap bottle gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bottle gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-upo.jpg',
-      ),
-      Recipe(
-        id: 184,
-        name: 'Lumpiang Patola',
-        description: 'Filipino sponge gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap sponge gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'sponge gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-patola.jpg',
-      ),
-      Recipe(
-        id: 185,
-        name: 'Lumpiang Talong',
-        description: 'Filipino eggplant spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 85,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap eggplant mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'eggplant', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-talong.jpg',
-      ),
-      Recipe(
-        id: 186,
-        name: 'Lumpiang Ampalaya',
-        description: 'Filipino bitter gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap bitter gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bitter gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-ampalaya.jpg',
-      ),
-      Recipe(
-        id: 187,
-        name: 'Lumpiang Kangkong',
-        description: 'Filipino water spinach spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap water spinach mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'water spinach', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kangkong.jpg',
-      ),
-      Recipe(
-        id: 188,
-        name: 'Lumpiang Saluyot',
-        description: 'Filipino jute leaves spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap jute leaves mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'jute leaves', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-saluyot.jpg',
-      ),
-      Recipe(
-        id: 189,
-        name: 'Lumpiang Malunggay',
-        description: 'Filipino moringa leaves spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 4,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap moringa leaves mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'moringa leaves', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-malunggay.jpg',
-      ),
-      Recipe(
-        id: 190,
-        name: 'Lumpiang Pechay',
-        description: 'Filipino Chinese cabbage spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap Chinese cabbage mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'Chinese cabbage', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-pechay.jpg',
-      ),
-      Recipe(
-        id: 191,
-        name: 'Lumpiang Repolyo',
-        description: 'Filipino cabbage spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap cabbage mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'cabbage', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-repolyo.jpg',
-      ),
-      Recipe(
-        id: 192,
-        name: 'Lumpiang Labanos',
-        description: 'Filipino radish spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap radish mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'radish', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-labanos.jpg',
-      ),
-      Recipe(
-        id: 193,
-        name: 'Lumpiang Singkamas',
-        description: 'Filipino jicama spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap jicama mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'jicama', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-singkamas.jpg',
-      ),
-      Recipe(
-        id: 194,
-        name: 'Lumpiang Kamote',
-        description: 'Filipino sweet potato spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 85,
-        proteinPerServing: 3,
-        carbsPerServing: 12,
-        fatPerServing: 2,
-        instructions: 'Wrap sweet potato mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'sweet potato', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kamote.jpg',
-      ),
-      Recipe(
-        id: 195,
-        name: 'Lumpiang Kalabasa',
-        description: 'Filipino squash spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap squash mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'squash', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-kalabasa.jpg',
-      ),
-      Recipe(
-        id: 196,
-        name: 'Lumpiang Sayote',
-        description: 'Filipino chayote spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap chayote mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'chayote', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-sayote.jpg',
-      ),
-      Recipe(
-        id: 197,
-        name: 'Lumpiang Upo',
-        description: 'Filipino bottle gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 70,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap bottle gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bottle gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-upo.jpg',
-      ),
-      Recipe(
-        id: 198,
-        name: 'Lumpiang Patola',
-        description: 'Filipino sponge gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 75,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap sponge gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'sponge gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-patola.jpg',
-      ),
-      Recipe(
-        id: 199,
-        name: 'Lumpiang Talong',
-        description: 'Filipino eggplant spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 85,
-        proteinPerServing: 3,
-        carbsPerServing: 10,
-        fatPerServing: 2,
-        instructions: 'Wrap eggplant mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'eggplant', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.1,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-talong.jpg',
-      ),
-      Recipe(
-        id: 200,
-        name: 'Lumpiang Ampalaya',
-        description: 'Filipino bitter gourd spring roll',
-        prepTime: 20,
-        cookTime: 12,
-        servings: 8,
-        difficulty: 'Easy',
-        category: 'Dessert',
-        caloriesPerServing: 80,
-        proteinPerServing: 3,
-        carbsPerServing: 8,
-        fatPerServing: 2,
-        instructions: 'Wrap bitter gourd mixture in spring roll wrapper, fry until golden',
-        isFilipinoDish: true,
-        ingredients: ['spring roll wrapper', 'bitter gourd', 'onion', 'garlic', 'oil'],
-        tags: ['dessert', 'filipino', 'meryenda', 'vegetarian'],
-        allergens: ['wheat'],
-        rating: 4.0,
-        cookTimeFormatted: '12 min',
-        prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/lumpiang-ampalaya.jpg',
-      ),
-      
-      // Additional Filipino Breakfast Dishes for Variety
-      Recipe(
-        id: 201,
-        name: 'Tocilog',
-        description: 'Tocino, Sinangag, at Itlog - Sweet cured pork with garlic rice and egg',
-        prepTime: 15,
-        cookTime: 20,
-        servings: 2,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 450,
-        proteinPerServing: 22,
-        carbsPerServing: 35,
-        fatPerServing: 25,
-        instructions: '''1. Marinate pork belly with sugar, salt, and garlic overnight
-2. Cook garlic rice by sautéing minced garlic in oil until golden, then add cooked rice
-3. Pan-fry the marinated tocino until caramelized and tender
-4. Fry an egg sunny-side up
-5. Serve tocino over garlic rice with the fried egg on top
-6. Garnish with sliced tomatoes and enjoy!''',
-        isFilipinoDish: true,
-        ingredients: ['pork belly', 'garlic rice', 'egg', 'garlic', 'sugar', 'salt'],
-        tags: ['filipino', 'breakfast', 'protein'],
-        allergens: ['egg'],
-        rating: 4.6,
-        cookTimeFormatted: '20 min',
-        prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/tocilog.jpg',
-      ),
-      Recipe(
-        id: 202,
         name: 'Bangsilog',
         description: 'Bangus, Sinangag, at Itlog - Milkfish with garlic rice and egg',
         prepTime: 20,
@@ -5521,10 +5429,10 @@ class RecipeService {
         rating: 4.5,
         cookTimeFormatted: '25 min',
         prepTimeFormatted: '20 min',
-        imageUrl: 'https://example.com/bangsilog.jpg',
+        imageUrl: 'assets/images/Bangsilog.jpg',
       ),
       Recipe(
-        id: 203,
+        id: 173,
         name: 'Cornsilog',
         description: 'Corned Beef, Sinangag, at Itlog - Corned beef with garlic rice and egg',
         prepTime: 10,
@@ -5548,92 +5456,13 @@ class RecipeService {
         rating: 4.4,
         cookTimeFormatted: '15 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/cornsilog.jpg',
+        imageUrl: 'assets/images/Cornsilog.jpg',
       ),
+      
+      
+      
       Recipe(
-        id: 204,
-        name: 'Spamsilog',
-        description: 'Spam, Sinangag, at Itlog - Spam with garlic rice and egg',
-        prepTime: 10,
-        cookTime: 15,
-        servings: 2,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 520,
-        proteinPerServing: 24,
-        carbsPerServing: 35,
-        fatPerServing: 28,
-        instructions: '''1. Slice spam and pan-fry until golden brown
-2. Cook garlic rice by sautéing minced garlic in oil until golden
-3. Fry an egg sunny-side up
-4. Serve spam over garlic rice with the fried egg
-5. Garnish with sliced tomatoes and enjoy!''',
-        isFilipinoDish: true,
-        ingredients: ['spam', 'garlic rice', 'egg', 'garlic'],
-        tags: ['filipino', 'breakfast', 'protein'],
-        allergens: ['egg', 'pork'],
-        rating: 4.3,
-        cookTimeFormatted: '15 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/spamsilog.jpg',
-      ),
-      Recipe(
-        id: 205,
-        name: 'Hotsilog',
-        description: 'Hotdog, Sinangag, at Itlog - Hotdog with garlic rice and egg',
-        prepTime: 10,
-        cookTime: 15,
-        servings: 2,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 380,
-        proteinPerServing: 18,
-        carbsPerServing: 32,
-        fatPerServing: 20,
-        instructions: '''1. Slice hotdog and pan-fry until golden brown
-2. Cook garlic rice by sautéing minced garlic in oil until golden
-3. Fry an egg sunny-side up
-4. Serve hotdog over garlic rice with the fried egg
-5. Garnish with sliced tomatoes and enjoy!''',
-        isFilipinoDish: true,
-        ingredients: ['hotdog', 'garlic rice', 'egg', 'garlic'],
-        tags: ['filipino', 'breakfast', 'protein'],
-        allergens: ['egg', 'pork'],
-        rating: 4.2,
-        cookTimeFormatted: '15 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/hotsilog.jpg',
-      ),
-      Recipe(
-        id: 206,
-        name: 'Champorado with Tuyo',
-        description: 'Sweet chocolate rice porridge with dried fish',
-        prepTime: 10,
-        cookTime: 25,
-        servings: 4,
-        difficulty: 'Easy',
-        category: 'Filipino',
-        caloriesPerServing: 380,
-        proteinPerServing: 15,
-        carbsPerServing: 62,
-        fatPerServing: 9,
-        instructions: '''1. Boil water in a pot
-2. Add glutinous rice and cook until soft
-3. Add cocoa powder and sugar, mix well
-4. Cook until thick and creamy
-5. Serve hot with tuyo (dried fish) on the side
-6. Enjoy the sweet and savory combination!''',
-        isFilipinoDish: true,
-        ingredients: ['glutinous rice', 'cocoa powder', 'sugar', 'tuyo', 'water'],
-        tags: ['filipino', 'breakfast', 'comfort food'],
-        allergens: ['fish'],
-        rating: 4.7,
-        cookTimeFormatted: '25 min',
-        prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/champorado-tuyo.jpg',
-      ),
-      Recipe(
-        id: 207,
+                id: 174,
         name: 'Ginataang Mais',
         description: 'Sweet corn in coconut milk - Filipino breakfast porridge',
         prepTime: 10,
@@ -5657,10 +5486,10 @@ class RecipeService {
         rating: 4.4,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '10 min',
-        imageUrl: 'https://example.com/ginataang-mais.jpg',
+        imageUrl: 'assets/images/GinataangMais.jpg',
       ),
       Recipe(
-        id: 208,
+        id: 175,
         name: 'Pandesal with Cheese',
         description: 'Filipino bread roll with cheese filling',
         prepTime: 15,
@@ -5684,8 +5513,774 @@ class RecipeService {
         rating: 4.5,
         cookTimeFormatted: '20 min',
         prepTimeFormatted: '15 min',
-        imageUrl: 'https://example.com/pandesal-cheese.jpg',
+        imageUrl: 'assets/images/PandesalWithCheese.jpg',
       ),
+      
+      Recipe(
+        id: 176,
+        name: 'Spamsilog',
+        description: 'Spam, Sinangag, at Itlog - Spam with garlic rice and egg',
+        prepTime: 5,
+        cookTime: 10,
+        servings: 2,
+        difficulty: 'Easy',
+        category: 'Filipino',
+        caloriesPerServing: 480,
+        proteinPerServing: 20,
+        carbsPerServing: 48,
+        fatPerServing: 22,
+        instructions: '''1. Slice spam and fry until golden brown on both sides
+2. Cook garlic rice by sautéing minced garlic in oil until golden, then add cooked rice
+3. In a separate pan, fry an egg sunny-side up
+4. Serve the fried spam over garlic rice with the fried egg
+5. Garnish with sliced tomatoes and enjoy!''',
+        isFilipinoDish: true,
+        ingredients: ['spam', 'garlic rice', 'egg', 'garlic', 'oil'],
+        tags: ['filipino', 'breakfast', 'quick'],
+        allergens: ['egg'],
+        rating: 4.2,
+        cookTimeFormatted: '10 min',
+        prepTimeFormatted: '5 min',
+        imageUrl: 'assets/images/Spamsilog.jpg',
+      ),
+      Recipe(
+        id: 177,
+        name: 'Hotsilog',
+        description: 'Hotdog, Sinangag, at Itlog - Hotdog with garlic rice and egg',
+        prepTime: 5,
+        cookTime: 10,
+        servings: 2,
+        difficulty: 'Easy',
+        category: 'Filipino',
+        caloriesPerServing: 380,
+        proteinPerServing: 16,
+        carbsPerServing: 46,
+        fatPerServing: 12,
+        instructions: '''1. Slice hotdogs and fry until golden brown
+2. Cook garlic rice by sautéing minced garlic in oil until golden, then add cooked rice
+3. In a separate pan, fry an egg sunny-side up
+4. Serve the fried hotdogs over garlic rice with the fried egg
+5. Garnish with sliced tomatoes and enjoy!''',
+        isFilipinoDish: true,
+        ingredients: ['hotdog', 'garlic rice', 'egg', 'garlic', 'oil'],
+        tags: ['filipino', 'breakfast', 'quick'],
+        allergens: ['egg'],
+        rating: 4.1,
+        cookTimeFormatted: '10 min',
+        prepTimeFormatted: '5 min',
+        imageUrl: 'assets/images/Hotsilog.jpg',
+      ),
+      
+      
+      Recipe(
+        id: 178,
+        name: 'Suman',
+        description: 'Sticky rice wrapped in banana leaves - Traditional Filipino breakfast',
+        prepTime: 30,
+        cookTime: 45,
+        servings: 6,
+        difficulty: 'Medium',
+        category: 'Filipino',
+        caloriesPerServing: 280,
+        proteinPerServing: 6,
+        carbsPerServing: 58,
+        fatPerServing: 3,
+        instructions: '''1. Soak glutinous rice in water for 2 hours
+2. Mix rice with coconut milk and sugar
+3. Wrap in banana leaves and tie securely
+4. Steam for 45 minutes until rice is tender
+5. Serve warm with coconut cream on top''',
+        isFilipinoDish: true,
+        ingredients: ['glutinous rice', 'coconut milk', 'sugar', 'banana leaves'],
+        tags: ['filipino', 'breakfast', 'traditional'],
+        allergens: [],
+        rating: 4.5,
+        cookTimeFormatted: '45 min',
+        prepTimeFormatted: '30 min',
+        imageUrl: 'assets/images/Suman.jpg',
+      ),
+      
+      Recipe(
+        id: 179,  
+        name: 'Kakanin',
+        description: 'Traditional Filipino rice cakes - Assorted breakfast treats',
+        prepTime: 20,
+        cookTime: 25,
+        servings: 6,
+        difficulty: 'Medium',
+        category: 'Filipino',
+        caloriesPerServing: 250,
+        proteinPerServing: 4,
+        carbsPerServing: 48,
+        fatPerServing: 4,
+        instructions: '''1. Mix rice flour with coconut milk and sugar
+2. Add pandan extract for flavor and color
+3. Pour into molds and steam for 20-25 minutes
+4. Let cool before serving
+5. Enjoy with coffee or hot chocolate''',
+        isFilipinoDish: true,
+        ingredients: ['rice flour', 'coconut milk', 'sugar', 'pandan extract'],
+        tags: ['filipino', 'breakfast', 'traditional'],
+        allergens: [],
+        rating: 4.4,
+        cookTimeFormatted: '25 min',
+        prepTimeFormatted: '20 min',
+        imageUrl: 'assets/images/Kakanin.jpg',
+      ),
+      Recipe(
+        id: 180,
+        name: 'Tuyo at Itlog',
+        description: 'Dried fish and egg - Simple Filipino breakfast',
+        prepTime: 5,
+        cookTime: 10,
+        servings: 2,
+        difficulty: 'Easy',
+        category: 'Filipino',
+        caloriesPerServing: 320,
+        proteinPerServing: 28,
+        carbsPerServing: 12,
+        fatPerServing: 18,
+        instructions: '''1. Fry tuyo (dried fish) in oil until crispy
+2. Remove tuyo and set aside
+3. Fry eggs in the same oil until desired doneness
+4. Serve tuyo and eggs over garlic rice
+5. Add sliced tomatoes and vinegar on the side
+6. Enjoy with your morning coffee''',
+        isFilipinoDish: true,
+        ingredients: ['tuyo', 'eggs', 'garlic rice', 'tomatoes', 'vinegar'],
+        tags: ['filipino', 'breakfast', 'quick', 'protein'],
+        allergens: ['fish', 'egg'],
+        rating: 4.4,
+        cookTimeFormatted: '10 min',
+        prepTimeFormatted: '5 min',
+        imageUrl: 'assets/images/TuyoAtItlog.jpg',
+      ),
+      Recipe(
+        id: 181,
+        name: 'Pancit Miki-Bihon',
+        description: 'Mixed noodles with meat and vegetables',
+        prepTime: 20,
+        cookTime: 25,
+        servings: 6,
+        difficulty: 'Medium',
+        category: 'Filipino',
+        caloriesPerServing: 380,
+        proteinPerServing: 18,
+        carbsPerServing: 52,
+        fatPerServing: 12,
+        instructions: '''1. Soak bihon noodles in warm water
+2. Cook miki noodles according to package
+3. Sauté garlic, onions, and celery
+4. Add chicken or pork and cook
+5. Add shrimp and cook until pink
+6. Add vegetables: cabbage, carrots, snow peas
+7. Season with soy sauce and oyster sauce
+8. Add both noodles and toss
+9. Cook until well combined
+10. Garnish with eggs and calamansi''',
+        isFilipinoDish: true,
+        ingredients: ['miki noodles', 'bihon', 'chicken', 'shrimp', 'mixed vegetables'],
+        tags: ['filipino', 'lunch', 'noodles', 'mixed'],
+        allergens: ['shellfish', 'wheat', 'soy', 'egg'],
+        rating: 4.7,
+        cookTimeFormatted: '25 min',
+        prepTimeFormatted: '20 min',
+        imageUrl: 'https://example.com/miki-bihon.jpg',
+      ),
+
+      // Additional Healthy Filipino Dishes
+      Recipe(
+        id: 182,
+        name: 'Ensaladang Pipino at Kamatis',
+        description: 'Refreshing cucumber and tomato salad with coconut vinegar dressing',
+        prepTime: 10,
+        cookTime: 0,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Salad',
+        caloriesPerServing: 45,
+        proteinPerServing: 2,
+        carbsPerServing: 8,
+        fatPerServing: 1,
+        instructions: '''
+1. Slice cucumbers and tomatoes into bite-sized pieces
+2. Thinly slice red onion
+3. Mix vegetables in a bowl
+4. Drizzle with coconut vinegar
+5. Sprinkle with sea salt and black pepper
+6. Toss gently and let marinate for 10 minutes
+7. Serve chilled as a side dish
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['cucumber', 'tomatoes', 'red onion', 'coconut vinegar', 'sea salt', 'black pepper'],
+        tags: ['filipino', 'salad', 'healthy', 'vegetarian', 'refreshing'],
+        allergens: [],
+        rating: 4.3,
+        cookTimeFormatted: '0 min',
+        prepTimeFormatted: '10 min',
+        imageUrl: 'https://example.com/ensaladang-pipino-kamatis.jpg',
+      ),
+
+      Recipe(
+        id: 183,
+        name: 'Kilawing Tanigue',
+        description: 'Fresh Spanish mackerel ceviche with vinegar and calamansi',
+        prepTime: 20,
+        cookTime: 0,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Appetizer',
+        caloriesPerServing: 180,
+        proteinPerServing: 25,
+        carbsPerServing: 8,
+        fatPerServing: 6,
+        instructions: '''
+1. Cut fresh tanigue into thin slices
+2. Marinate fish in vinegar and calamansi juice for 15 minutes
+3. Add sliced ginger and onions
+4. Season with salt and pepper
+5. Add chili peppers for heat
+6. Let marinate for another 10 minutes
+7. Serve immediately with crackers or rice
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['fresh tanigue', 'vinegar', 'calamansi', 'ginger', 'onion', 'chili peppers', 'salt', 'pepper'],
+        tags: ['filipino', 'appetizer', 'healthy', 'protein', 'raw'],
+        allergens: ['fish'],
+        rating: 4.5,
+        cookTimeFormatted: '0 min',
+        prepTimeFormatted: '20 min',
+        imageUrl: 'https://example.com/kilawing-tanigue.jpg',
+      ),
+
+      Recipe(
+        id: 184,
+        name: 'Tofu Tinola',
+        description: 'Plant-based version of tinola using tofu instead of chicken',
+        prepTime: 15,
+        cookTime: 25,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Soup',
+        caloriesPerServing: 120,
+        proteinPerServing: 12,
+        carbsPerServing: 8,
+        fatPerServing: 4,
+        instructions: '''
+1. Sauté garlic, onion, and ginger in oil
+2. Add tofu cubes and cook until lightly browned
+3. Pour in vegetable broth and bring to boil
+4. Add chayote and green papaya
+5. Season with fish sauce and pepper
+6. Add malunggay leaves at the end
+7. Simmer for 5 minutes and serve hot
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['firm tofu', 'ginger', 'garlic', 'onion', 'chayote', 'green papaya', 'malunggay', 'vegetable broth'],
+        tags: ['filipino', 'soup', 'healthy', 'vegetarian', 'vegan'],
+        allergens: ['soy'],
+        rating: 4.4,
+        cookTimeFormatted: '25 min',
+        prepTimeFormatted: '15 min',
+        imageUrl: 'https://example.com/tofu-tinola.jpg',
+      ),
+
+      Recipe(
+        id: 185,
+        name: 'Steamed Tilapia with Tomatoes and Onions',
+        description: 'Simple and healthy steamed fish with fresh vegetables',
+        prepTime: 10,
+        cookTime: 15,
+        servings: 3,
+        difficulty: 'Easy',
+        category: 'Main Course',
+        caloriesPerServing: 200,
+        proteinPerServing: 30,
+        carbsPerServing: 6,
+        fatPerServing: 6,
+        instructions: '''
+1. Clean and score the tilapia
+2. Season with salt and pepper
+3. Place fish on a steaming plate
+4. Top with sliced tomatoes and onions
+5. Add ginger slices and spring onions
+6. Steam for 12-15 minutes until cooked
+7. Drizzle with soy sauce and serve hot
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['tilapia', 'tomatoes', 'onions', 'ginger', 'spring onions', 'soy sauce', 'salt', 'pepper'],
+        tags: ['filipino', 'main course', 'healthy', 'protein', 'steamed'],
+        allergens: ['fish', 'soy'],
+        rating: 4.6,
+        cookTimeFormatted: '15 min',
+        prepTimeFormatted: '10 min',
+        imageUrl: 'https://example.com/steamed-tilapia-tomatoes.jpg',
+      ),
+
+      Recipe(
+        id: 186,
+        name: 'Adobong Pusit',
+        description: 'Squid sautéed in garlic, onions, vinegar, and soy sauce',
+        prepTime: 15,
+        cookTime: 20,
+        servings: 4,
+        difficulty: 'Medium',
+        category: 'Main Course',
+        caloriesPerServing: 150,
+        proteinPerServing: 20,
+        carbsPerServing: 8,
+        fatPerServing: 4,
+        instructions: '''
+1. Clean squid and cut into rings
+2. Sauté garlic and onions until fragrant
+3. Add squid and cook for 2 minutes
+4. Pour in vinegar and soy sauce
+5. Add bay leaves and peppercorns
+6. Simmer for 15 minutes until tender
+7. Adjust seasoning and serve hot
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['squid', 'garlic', 'onions', 'vinegar', 'soy sauce', 'bay leaves', 'peppercorns'],
+        tags: ['filipino', 'main course', 'healthy', 'protein', 'seafood'],
+        allergens: ['shellfish', 'soy'],
+        rating: 4.5,
+        cookTimeFormatted: '20 min',
+        prepTimeFormatted: '15 min',
+        imageUrl: 'https://example.com/adobong-pusit.jpg',
+      ),
+
+      Recipe(
+        id: 187,
+        name: 'Ginataang Sitaw at Kalabasa',
+        description: 'String beans and squash cooked in coconut milk',
+        prepTime: 10,
+        cookTime: 20,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Vegetable',
+        caloriesPerServing: 180,
+        proteinPerServing: 4,
+        carbsPerServing: 15,
+        fatPerServing: 12,
+        instructions: '''
+1. Sauté garlic, onion, and shrimp paste
+2. Add squash cubes and cook for 5 minutes
+3. Pour in coconut milk and bring to boil
+4. Add string beans and chili peppers
+5. Simmer for 10 minutes until vegetables are tender
+6. Season with salt and pepper
+7. Serve hot with rice
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['string beans', 'squash', 'coconut milk', 'garlic', 'onion', 'shrimp paste', 'chili peppers'],
+        tags: ['filipino', 'vegetable', 'healthy', 'vegetarian', 'coconut'],
+        allergens: ['shellfish'],
+        rating: 4.4,
+        cookTimeFormatted: '20 min',
+        prepTimeFormatted: '10 min',
+        imageUrl: 'https://example.com/ginataang-sitaw-kalabasa.jpg',
+      ),
+
+      Recipe(
+        id: 188,
+        name: 'Lumpiang Sariwa (Fresh Spring Rolls)',
+        description: 'Fresh spring rolls with heart of palm, vegetables, and peanut sauce',
+        prepTime: 30,
+        cookTime: 15,
+        servings: 6,
+        difficulty: 'Medium',
+        category: 'Appetizer',
+        caloriesPerServing: 120,
+        proteinPerServing: 6,
+        carbsPerServing: 18,
+        fatPerServing: 4,
+        instructions: '''
+1. Sauté heart of palm, carrots, and beans
+2. Season with salt and pepper
+3. Prepare fresh lettuce leaves
+4. Make peanut sauce with garlic and soy sauce
+5. Wrap vegetables in lettuce leaves
+6. Serve with peanut sauce on the side
+7. Enjoy fresh and healthy
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['heart of palm', 'carrots', 'green beans', 'lettuce', 'peanuts', 'garlic', 'soy sauce'],
+        tags: ['filipino', 'appetizer', 'healthy', 'vegetarian', 'fresh'],
+        allergens: ['peanuts', 'soy'],
+        rating: 4.7,
+        cookTimeFormatted: '15 min',
+        prepTimeFormatted: '30 min',
+        imageUrl: 'https://example.com/lumpiang-sariwa.jpg',
+      ),
+
+      Recipe(
+        id: 189,
+        name: 'Ginisang Munggo with Malunggay',
+        description: 'Sautéed mung beans with moringa leaves - nutritious and healthy',
+        prepTime: 15,
+        cookTime: 30,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Vegetable',
+        caloriesPerServing: 160,
+        proteinPerServing: 12,
+        carbsPerServing: 25,
+        fatPerServing: 3,
+        instructions: '''
+1. Boil mung beans until tender
+2. Sauté garlic, onion, and tomatoes
+3. Add shrimp paste and cook for 2 minutes
+4. Add cooked mung beans and mix well
+5. Pour in coconut milk and simmer
+6. Add malunggay leaves at the end
+7. Season with salt and serve hot
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['mung beans', 'malunggay leaves', 'garlic', 'onion', 'tomatoes', 'shrimp paste', 'coconut milk'],
+        tags: ['filipino', 'vegetable', 'healthy', 'protein', 'nutritious'],
+        allergens: ['shellfish'],
+        rating: 4.6,
+        cookTimeFormatted: '30 min',
+        prepTimeFormatted: '15 min',
+        imageUrl: 'https://example.com/ginisang-munggo-malunggay.jpg',
+      ),
+
+      Recipe(
+        id: 190,
+        name: 'Sinigang na Isda sa Bayabas',
+        description: 'Fish sour soup with guava - tangy and healthy',
+        prepTime: 15,
+        cookTime: 25,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Soup',
+        caloriesPerServing: 180,
+        proteinPerServing: 22,
+        carbsPerServing: 12,
+        fatPerServing: 4,
+        instructions: '''
+1. Boil water with guava leaves and fruit
+2. Add fish and simmer for 10 minutes
+3. Add tomatoes, radish, and string beans
+4. Season with fish sauce and salt
+5. Add kangkong and okra
+6. Simmer for 5 more minutes
+7. Serve hot with rice
+        ''',
+        isFilipinoDish: true,
+        ingredients: ['fish', 'guava leaves', 'guava fruit', 'tomatoes', 'radish', 'string beans', 'kangkong', 'okra'],
+        tags: ['filipino', 'soup', 'healthy', 'protein', 'sour'],
+        allergens: ['fish'],
+        rating: 4.5,
+        cookTimeFormatted: '25 min',
+        prepTimeFormatted: '15 min',
+        imageUrl: 'https://example.com/sinigang-isda-bayabas.jpg',
+      ),
+    Recipe(
+        id: 191,
+        name: 'Steamed Pechay with Garlic',
+        description: 'Simple steamed bok choy - very low calorie',
+        prepTime: 5,
+        cookTime: 8,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Healthy',
+        caloriesPerServing: 30,
+        proteinPerServing: 3,
+        carbsPerServing: 4,
+        fatPerServing: 1,
+        instructions: '''1. Wash pechay thoroughly
+2. Steam for 6-8 minutes until tender
+3. Heat 1 tsp sesame oil with minced garlic
+4. Pour garlic oil over steamed pechay
+5. Add a dash of light soy sauce
+6. Serve immediately
+7. Perfect side dish for any meal''',
+        isFilipinoDish: true,
+        ingredients: ['pechay', 'garlic', 'sesame oil', 'light soy sauce'],
+        tags: ['healthy', 'vegetarian', 'low-calorie', 'quick'],
+        allergens: ['soy'],
+        rating: 4.2,
+        cookTimeFormatted: '8 min',
+        prepTimeFormatted: '5 min',
+        imageUrl: 'https://example.com/steamed-pechay.jpg',
+      ),
+      
+       Recipe(
+        id: 192,
+        name: 'Ensaladang Pipino',
+        description: 'Cucumber salad with tomatoes - refreshing',
+        prepTime: 10,
+        cookTime: 0,
+        servings: 4,
+        difficulty: 'Easy',
+        category: 'Healthy',
+        caloriesPerServing: 35,
+        proteinPerServing: 1,
+        carbsPerServing: 7,
+        fatPerServing: 0,
+        instructions: '''1. Slice cucumbers thinly
+2. Add diced tomatoes and onions
+3. Make dressing: vinegar, calamansi, salt
+4. Add a touch of stevia instead of sugar
+5. Toss vegetables with dressing
+6. Chill for 10 minutes
+7. Serve cold as side dish''',
+        isFilipinoDish: true,
+        ingredients: ['cucumber', 'tomatoes', 'onions', 'vinegar', 'calamansi'],
+        tags: ['healthy', 'salad', 'zero-fat', 'refreshing'],
+        allergens: [],
+        rating: 4.3,
+        cookTimeFormatted: '0 min',
+        prepTimeFormatted: '10 min',
+        imageUrl: 'https://example.com/ensaladang-pipino.jpg',
+      ),
+Recipe(
+  id: 193,
+  name: 'Tuna Pandesal Melt',
+  description: 'A light, protein-rich breakfast sandwich using whole wheat pandesal and tuna.',
+  prepTime: 10,
+  cookTime: 5,
+  servings: 2,
+  difficulty: 'Easy',
+  category: 'Healthy Breakfast',
+  caloriesPerServing: 220,
+  proteinPerServing: 20,
+  carbsPerServing: 18,
+  fatPerServing: 7,
+  instructions: '''1. Mix canned tuna (in water, drained) with a teaspoon of light mayonnaise and chopped celery.
+2. Slice whole wheat pandesal in half and toast lightly.
+3. Spread tuna mixture on the bottom half and top with a thin slice of low-fat cheese.
+4. Toast in the oven or pan until cheese melts slightly.
+5. Add lettuce or cucumber slices for crunch.
+6. Serve warm with black coffee or green tea.''',
+  isFilipinoDish: true,
+  ingredients: ['whole wheat pandesal', 'tuna in water', 'light mayonnaise', 'celery', 'low-fat cheese', 'lettuce', 'cucumber'],
+  tags: ['high-protein', 'low-fat', 'sandwich', 'diet-breakfast'],
+  allergens: ['fish', 'dairy'],
+  rating: 4.6,
+  cookTimeFormatted: '5 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/tuna-pandesal-melt.jpg',
+),
+Recipe(
+  id: 194,
+  name: 'Ampalaya Omelette with Tomatoes',
+  description: 'A low-calorie omelette packed with nutrients from bitter melon and tomatoes.',
+  prepTime: 10,
+  cookTime: 8,
+  servings: 2,
+  difficulty: 'Easy',
+  category: 'Healthy Breakfast',
+  caloriesPerServing: 160,
+  proteinPerServing: 12,
+  carbsPerServing: 6,
+  fatPerServing: 8,
+  instructions: '''1. Slice ampalaya thinly and soak in water with a pinch of salt for 5 minutes, then drain.
+2. Sauté onion, garlic, and tomatoes in a teaspoon of olive oil.
+3. Add ampalaya and cook for 2 minutes until slightly tender.
+4. Beat eggs and pour over vegetables, cooking until set.
+5. Fold and serve with a side of fresh papaya slices.''',
+  isFilipinoDish: true,
+  ingredients: ['ampalaya', 'eggs', 'onion', 'garlic', 'tomatoes', 'olive oil'],
+  tags: ['low-carb', 'vegetarian', 'keto-friendly', 'high-protein', 'diet'],
+  allergens: ['egg'],
+  rating: 4.8,
+  cookTimeFormatted: '8 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/ampalaya-omelette.jpg',
+),
+Recipe(
+  id: 195,
+  name: 'Oatmeal Lugaw with Malunggay and Egg',
+  description: 'A fiber-rich, low-fat twist on the classic lugaw using oats and malunggay.',
+  prepTime: 10,
+  cookTime: 15,
+  servings: 2,
+  difficulty: 'Easy',
+  category: 'Healthy Breakfast',
+  caloriesPerServing: 180,
+  proteinPerServing: 10,
+  carbsPerServing: 25,
+  fatPerServing: 4,
+  instructions: '''1. In a pot, boil 2 cups of water and add ½ cup rolled oats.
+2. Stir occasionally until the mixture thickens to lugaw consistency.
+3. Add finely chopped malunggay leaves and simmer for 2 minutes.
+4. Crack in one egg, stirring gently until cooked.
+5. Season with salt, pepper, and a few drops of calamansi juice.
+6. Serve warm, topped with a sprinkle of toasted garlic.''',
+  isFilipinoDish: true,
+  ingredients: ['rolled oats', 'egg', 'malunggay leaves', 'calamansi', 'salt', 'pepper', 'garlic'],
+  tags: ['diet', 'fiber', 'low-fat', 'oatmeal', 'lugaw'],
+  allergens: ['egg'],
+  rating: 4.7,
+  cookTimeFormatted: '15 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/oatmeal-lugaw.jpg',
+),
+Recipe(
+  id: 196,
+  name: 'Chicken and Malunggay Egg Muffins',
+  description: 'Protein-packed baked egg muffins with shredded chicken and malunggay leaves.',
+  prepTime: 10,
+  cookTime: 20,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Healthy Breakfast',
+  caloriesPerServing: 150,
+  proteinPerServing: 14,
+  carbsPerServing: 3,
+  fatPerServing: 8,
+  instructions: '''1. Preheat oven to 180°C.
+2. In a bowl, whisk 6 eggs with salt, pepper, and a dash of milk.
+3. Add shredded chicken breast, malunggay leaves, and diced tomatoes.
+4. Pour into greased muffin molds.
+5. Bake for 15–20 minutes or until firm and lightly golden.
+6. Serve warm or store in the fridge for grab-and-go breakfast.''',
+  isFilipinoDish: true,
+  ingredients: ['eggs', 'chicken breast', 'malunggay leaves', 'tomatoes', 'milk', 'salt', 'pepper'],
+  tags: ['high-protein', 'meal-prep', 'low-carb', 'diet', 'keto-friendly'],
+  allergens: ['egg', 'dairy'],
+  rating: 4.8,
+  cookTimeFormatted: '20 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/chicken-malunggay-muffins.jpg',
+),
+Recipe(
+  id: 197,
+  name: 'Banana Oat Turon Bites',
+  description: 'A lighter version of turon using oats, saba banana, and an air fryer instead of oil.',
+  prepTime: 10,
+  cookTime: 10,
+  servings: 4,
+  difficulty: 'Easy',
+  category: 'Healthy Breakfast',
+  caloriesPerServing: 160,
+  proteinPerServing: 3,
+  carbsPerServing: 28,
+  fatPerServing: 4,
+  instructions: '''1. Slice saba bananas into halves and roll them in oats mixed with a touch of cinnamon.
+2. Wrap each in rice paper or lumpia wrapper lightly brushed with water.
+3. Air fry at 180°C for 8–10 minutes until golden.
+4. Drizzle lightly with honey or serve with low-fat yogurt for dipping.''',
+  isFilipinoDish: true,
+  ingredients: ['saba banana', 'oats', 'cinnamon', 'rice paper', 'honey', 'low-fat yogurt'],
+  tags: ['low-fat', 'fiber', 'air-fryer', 'diet', 'sweet-breakfast'],
+  allergens: [],
+  rating: 4.7,
+  cookTimeFormatted: '10 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/banana-oat-turon-bites.jpg',
+),
+Recipe(
+  id: 198,
+  name: 'Ginisang Monggo with Malunggay and Tinapa Flakes',
+  description: 'A fiber- and protein-rich monggo dish enhanced with malunggay and a touch of tinapa.',
+  prepTime: 15,
+  cookTime: 30,
+  servings: 3,
+  difficulty: 'Medium',
+  category: 'Healthy Lunch',
+  caloriesPerServing: 240,
+  proteinPerServing: 18,
+  carbsPerServing: 22,
+  fatPerServing: 7,
+  instructions: '''1. Boil ½ cup mung beans until soft; drain excess water.
+2. In a pan, sauté garlic, onion, and tomatoes in 1 teaspoon olive oil.
+3. Add cooked monggo and mix well.
+4. Stir in malunggay leaves and a small handful of tinapa flakes for flavor.
+5. Simmer for 3 minutes and serve with a squeeze of calamansi.''',
+  isFilipinoDish: true,
+  ingredients: ['mung beans', 'malunggay', 'tinapa flakes', 'garlic', 'onion', 'tomatoes', 'olive oil', 'calamansi'],
+  tags: ['fiber-rich', 'high-protein', 'heart-healthy', 'diet', 'vegetable-dish'],
+  allergens: ['fish'],
+  rating: 4.9,
+  cookTimeFormatted: '30 min',
+  prepTimeFormatted: '15 min',
+  imageUrl: 'https://example.com/monggo-malunggay.jpg',
+),
+Recipe(
+  id: 199,
+  name: 'Tofu Adobo',
+  description: 'A plant-based twist on adobo made with tofu and light soy sauce, served with brown rice.',
+  prepTime: 10,
+  cookTime: 15,
+  servings: 2,
+  difficulty: 'Easy',
+  category: 'Healthy Lunch',
+  caloriesPerServing: 230,
+  proteinPerServing: 16,
+  carbsPerServing: 18,
+  fatPerServing: 9,
+  instructions: '''1. Drain and cube firm tofu; pat dry.
+2. In a pan, sauté garlic and onion in 1 teaspoon olive oil.
+3. Add tofu, vinegar, soy sauce (low-sodium), and bay leaf.
+4. Simmer for 5–7 minutes until sauce thickens and tofu is golden.
+5. Serve over brown rice with steamed kangkong or pechay on the side.''',
+  isFilipinoDish: true,
+  ingredients: ['tofu', 'garlic', 'onion', 'vinegar', 'soy sauce', 'bay leaf', 'olive oil', 'brown rice', 'kangkong'],
+  tags: ['plant-based', 'low-fat', 'fiber', 'diet', 'adobo'],
+  allergens: ['soy'],
+  rating: 4.9,
+  cookTimeFormatted: '15 min',
+  prepTimeFormatted: '10 min',
+  imageUrl: 'https://example.com/tofu-adobo-bowl.jpg',
+),
+Recipe(
+  id: 200,
+  name: 'Vegetable Kare-Kare',
+  description: 'A lighter, plant-based kare-kare using peanut butter substitute and no bagoong.',
+  prepTime: 15,
+  cookTime: 20,
+  servings: 3,
+  difficulty: 'Medium',
+  category: 'Healthy Lunch',
+  caloriesPerServing: 220,
+  proteinPerServing: 10,
+  carbsPerServing: 18,
+  fatPerServing: 10,
+  instructions: '''1. In a pot, sauté garlic and onion in 1 teaspoon olive oil.
+2. Add sliced eggplant, pechay, sitaw, and banana heart; cook for 3–4 minutes.
+3. Mix 2 tablespoons natural peanut butter (or powdered peanut butter) with 1 cup low-sodium vegetable broth.
+4. Pour mixture into the pot and simmer until vegetables are tender.
+5. Season with a pinch of salt and serve with a few slices of grilled tofu.''',
+  isFilipinoDish: true,
+  ingredients: ['eggplant', 'pechay', 'sitaw', 'banana heart', 'peanut butter', 'vegetable broth', 'olive oil', 'tofu'],
+  tags: ['plant-based', 'low-sodium', 'fiber-rich', 'diet', 'vegan'],
+  allergens: ['peanuts', 'soy'],
+  rating: 4.7,
+  cookTimeFormatted: '20 min',
+  prepTimeFormatted: '15 min',
+  imageUrl: 'https://example.com/vegetable-kare-kare-lite.jpg',
+),
+Recipe(
+  id: 201,
+  name: 'Chicken Adobo sa Puso ng Saging',
+  description: 'A fiber-rich, heart-healthy twist on adobo using lean chicken breast and banana blossom.',
+  prepTime: 15,
+  cookTime: 20,
+  servings: 3,
+  difficulty: 'Medium',
+  category: 'Healthy Lunch',
+  caloriesPerServing: 210,
+  proteinPerServing: 22,
+  carbsPerServing: 10,
+  fatPerServing: 7,
+  instructions: '''1. Boil banana blossoms for 5 minutes, then drain.
+2. In a pan, sauté garlic and onion in 1 teaspoon olive oil.
+3. Add chicken breast and cook until lightly browned.
+4. Pour vinegar, low-sodium soy sauce, and bay leaf; simmer for 10 minutes.
+5. Stir in the banana blossoms and cook until sauce reduces slightly.
+6. Serve with steamed vegetables or ½ cup brown rice.''',
+  isFilipinoDish: true,
+  ingredients: ['chicken breast', 'banana blossom', 'vinegar', 'soy sauce', 'garlic', 'onion', 'olive oil', 'bay leaf'],
+  tags: ['adobo', 'low-sodium', 'high-protein', 'fiber', 'diet'],
+  allergens: ['soy'],
+  rating: 4.9,
+  cookTimeFormatted: '20 min',
+  prepTimeFormatted: '15 min',
+  imageUrl: 'https://example.com/chicken-adobo-puso.jpg',
+),
     ];
   }
 

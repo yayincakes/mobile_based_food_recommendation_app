@@ -901,7 +901,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'â€¢ At least 8 characters\nâ€¢ Include uppercase and lowercase letters\nâ€¢ Include at least one number',
+                  ' At least 8 characters\n Include uppercase and lowercase letters\n Include at least one number',
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     color: Colors.grey.shade600,

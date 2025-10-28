@@ -47,6 +47,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
   
   final _customConditionController = TextEditingController();
   final _customRestrictionController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
 
   late final List<OnboardingStep> _steps;
 
@@ -233,6 +235,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
   void dispose() {
     _customConditionController.dispose();
     _customRestrictionController.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
     _pageController.dispose();
     _animController.dispose();
     super.dispose();
@@ -398,6 +402,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
         bmiCategory: _getBMICategory(_calculateBMI(profile.height, profile.weight)),
         healthConditions: profile.conditions,
         restrictions: profile.restrictions,
+        mealPreferences: profile.mealPreferences ?? [],
       );
       
       await UserDataService.saveUserProfile(userProfileData);
@@ -467,6 +472,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
         startDate: DateTime.now(),
         endDate: DateTime.now().add(const Duration(days: 30)),
         isActive: true,
+        mealsPerDay: profile.mealsPerDay ?? 3, // Use the selected meals per day
+        mealPreferences: profile.mealPreferences ?? [],
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       ));
@@ -482,6 +489,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
+    final isSmallScreen = size.height < 600;
+    final isLargeScreen = size.width > 900;
     
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
@@ -489,7 +498,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
         child: Column(
           children: [
             // Progress Header
-            _buildProgressHeader(isTablet),
+            _buildProgressHeader(isTablet, isSmallScreen),
             
             // Content
             Expanded(
@@ -499,25 +508,25 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
                 itemCount: _steps.length,
                 itemBuilder: (context, index) => SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
-                    horizontal: isTablet ? 48 : 20,
-                    vertical: isTablet ? 32 : 20,
+                    horizontal: isLargeScreen ? 64 : (isTablet ? 48 : 20),
+                    vertical: isSmallScreen ? 16 : (isTablet ? 32 : 20),
                   ),
-                  child: _buildStepContent(index),
+                  child: _buildStepContent(index, isTablet, isSmallScreen),
                 ),
               ),
             ),
             
             // Bottom Buttons
-            _buildBottomButtons(isTablet),
+            _buildBottomButtons(isTablet, isSmallScreen),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProgressHeader(bool isTablet) {
+  Widget _buildProgressHeader(bool isTablet, bool isSmallScreen) {
     return Container(
-      padding: EdgeInsets.all(isTablet ? 32 : 20),
+      padding: EdgeInsets.all(isTablet ? 32 : (isSmallScreen ? 16 : 20)),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [darkGreen, darkGreen.withOpacity(0.8)],
@@ -538,17 +547,21 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
               IconButton(
                 onPressed: _back,
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
+                iconSize: isSmallScreen ? 20 : 24,
               ),
               Text('FitMeal', 
-                style: GoogleFonts.pacifico(fontSize: isTablet ? 32 : 26, color: Colors.white)),
+                style: GoogleFonts.pacifico(
+                  fontSize: isTablet ? 32 : (isSmallScreen ? 22 : 26), 
+                  color: Colors.white
+                )),
               const SizedBox(width: 48),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: isSmallScreen ? 12 : 16),
           Stack(
             children: [
               Container(
-                height: 8,
+                height: isSmallScreen ? 6 : 8,
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(4),
@@ -557,7 +570,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
               AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
-                height: 8,
+                height: isSmallScreen ? 6 : 8,
                 width: MediaQuery.of(context).size.width * (_step + 1) / _steps.length,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -572,10 +585,10 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: isSmallScreen ? 8 : 12),
           Text('Step ${_step + 1} of ${_steps.length}',
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: isSmallScreen ? 12 : 14,
               color: Colors.white.withOpacity(0.9),
               fontWeight: FontWeight.w500,
             )),
@@ -584,9 +597,12 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _buildBottomButtons(bool isTablet) {
+  Widget _buildBottomButtons(bool isTablet, bool isSmallScreen) {
+    final buttonHeight = isSmallScreen ? 48.0 : 56.0;
+    final fontSize = isSmallScreen ? 14.0 : 16.0;
+    
     return Container(
-      padding: EdgeInsets.all(isTablet ? 32 : 20),
+      padding: EdgeInsets.all(isTablet ? 32 : (isSmallScreen ? 16 : 20)),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -603,12 +619,15 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: _isLoading ? null : _back,
-                icon: const Icon(Icons.arrow_back),
-                label: Text('Back', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                icon: Icon(Icons.arrow_back, size: isSmallScreen ? 18 : 20),
+                label: Text('Back', style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: fontSize,
+                )),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: darkGreen,
                   side: BorderSide(color: darkGreen, width: 2),
-                  minimumSize: const Size.fromHeight(56),
+                  minimumSize: Size.fromHeight(buttonHeight),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
               ),
@@ -620,18 +639,18 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
               style: ElevatedButton.styleFrom(
                 backgroundColor: darkGreen,
                 foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(56),
+                minimumSize: Size.fromHeight(buttonHeight),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 elevation: 4,
               ),
               onPressed: _isLoading ? null : _next,
               child: _isLoading
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
+                  ? SizedBox(
+                      width: isSmallScreen ? 20 : 24,
+                      height: isSmallScreen ? 20 : 24,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
                   : Row(
@@ -641,11 +660,11 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
                           _step == _steps.length - 1 ? 'Create My Plan' : 'Continue',
                           style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w700,
-                            fontSize: 16,
+                            fontSize: fontSize,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward),
+                        Icon(Icons.arrow_forward, size: isSmallScreen ? 18 : 20),
                       ],
                     ),
             ),
@@ -655,54 +674,54 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _buildStepContent(int index) {
+  Widget _buildStepContent(int index, bool isTablet, bool isSmallScreen) {
     if (widget.planMode == 'auto') {
       switch (index) {
-        case 0: return _genderStep();
-        case 1: return _heightInteractiveStep();
-        case 2: return _weightInteractiveStep();
-        case 3: return _bmiResultsStep();
-        case 4: return _goalStep();
-        case 5: return _activityStep();
-        case 6: return _conditionsStep();
-        case 7: return _restrictionsStep();
+        case 0: return _genderStep(isTablet, isSmallScreen);
+        case 1: return _heightInteractiveStep(isTablet, isSmallScreen);
+        case 2: return _weightInteractiveStep(isTablet, isSmallScreen);
+        case 3: return _bmiResultsStep(isTablet, isSmallScreen);
+        case 4: return _goalStep(isTablet, isSmallScreen);
+        case 5: return _activityStep(isTablet, isSmallScreen);
+        case 6: return _conditionsStep(isTablet, isSmallScreen);
+        case 7: return _restrictionsStep(isTablet, isSmallScreen);
         default: return const SizedBox();
       }
     } else {
       switch (index) {
-        case 0: return _genderStep();
-        case 1: return _heightInteractiveStep();
-        case 2: return _weightInteractiveStep();
-        case 3: return _bmiResultsStep();
-        case 4: return _goalStep();
-        case 5: return _targetWeightStep();
-        case 6: return _activityStep();
-        case 7: return _mealsPerDayStep();
-        case 8: return _mealPreferencesStep();
-        case 9: return _conditionsStep();
-        case 10: return _restrictionsStep();
+        case 0: return _genderStep(isTablet, isSmallScreen);
+        case 1: return _heightInteractiveStep(isTablet, isSmallScreen);
+        case 2: return _weightInteractiveStep(isTablet, isSmallScreen);
+        case 3: return _bmiResultsStep(isTablet, isSmallScreen);
+        case 4: return _goalStep(isTablet, isSmallScreen);
+        case 5: return _targetWeightStep(isTablet, isSmallScreen);
+        case 6: return _activityStep(isTablet, isSmallScreen);
+        case 7: return _mealsPerDayStep(isTablet, isSmallScreen);
+        case 8: return _mealPreferencesStep(isTablet, isSmallScreen);
+        case 9: return _conditionsStep(isTablet, isSmallScreen);
+        case 10: return _restrictionsStep(isTablet, isSmallScreen);
         default: return const SizedBox();
       }
     }
   }
 
-  Widget _genderStep() {
+  Widget _genderStep(bool isTablet, bool isSmallScreen) {
     return Column(
       children: [
-        _stepTitle('What is your gender?'),
-        const SizedBox(height: 48),
+        _stepTitle('What is your gender?', isTablet, isSmallScreen),
+        SizedBox(height: isSmallScreen ? 32 : 48),
         Row(
           children: [
-            Expanded(child: _genderOption('Male', Icons.man, 'Male')),
+            Expanded(child: _genderOption('Male', Icons.man, 'Male', isTablet, isSmallScreen)),
             const SizedBox(width: 16),
-            Expanded(child: _genderOption('Female', Icons.woman, 'Female')),
+            Expanded(child: _genderOption('Female', Icons.woman, 'Female', isTablet, isSmallScreen)),
           ],
         ),
       ],
     );
   }
 
-  Widget _genderOption(String label, IconData icon, String value) {
+  Widget _genderOption(String label, IconData icon, String value, bool isTablet, bool isSmallScreen) {
     final isSelected = _gender == value;
     return GestureDetector(
       onTap: () {
@@ -722,7 +741,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(isSmallScreen ? 24 : 32),
         decoration: BoxDecoration(
           gradient: isSelected 
               ? LinearGradient(
@@ -742,12 +761,12 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
         child: Column(
           children: [
             Icon(icon,
-              size: 64,
+              size: isSmallScreen ? 48 : 64,
               color: isSelected ? Colors.white : darkGreen),
-            const SizedBox(height: 16),
+            SizedBox(height: isSmallScreen ? 12 : 16),
             Text(label,
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: isSmallScreen ? 16 : 20,
                 fontWeight: FontWeight.w700,
                 color: isSelected ? Colors.white : darkGreen,
               )),
@@ -757,7 +776,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _heightInteractiveStep() {
+  Widget _heightInteractiveStep(bool isTablet, bool isSmallScreen) {
     if (_gender == null) {
       return Center(
         child: Text('Please select gender first',
@@ -767,12 +786,12 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
 
     return Column(
       children: [
-        _stepTitle('What is your height?'),
-        _stepSubtitle('Drag the character up or down'),
-        const SizedBox(height: 32),
+        _stepTitle('What is your height?', isTablet, isSmallScreen),
+        _stepSubtitle('Drag the character up or down', isTablet, isSmallScreen),
+        SizedBox(height: isSmallScreen ? 24 : 32),
         
         Container(
-          height: 450,
+          height: isSmallScreen ? 350 : 450,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -796,7 +815,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: ((_height - 100) / 120) * 350, // 100cm at bottom, 220cm at top
+                bottom: ((_height - 100) / 120) * (isSmallScreen ? 270 : 350), // 100cm at bottom, 220cm at top
                 child: GestureDetector(
                   onVerticalDragUpdate: (details) {
                     setState(() {
@@ -823,7 +842,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
                         child: Text(
                           '${_height.round()} cm',
                           style: GoogleFonts.poppins(
-                            fontSize: 24,
+                            fontSize: isSmallScreen ? 20 : 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -850,7 +869,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
                         },
                         child: Text(
                           _gender == 'Male' ? '🧍‍♂️' : '🧍‍♀️',
-                          style: const TextStyle(fontSize: 90), // Increased from 64 to 90
+                          style: TextStyle(fontSize: isSmallScreen ? 70 : 90),
                         ),
                       ),
                     ],
@@ -860,11 +879,71 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
             ],
           ),
         ),
+        
+        const SizedBox(height: 20),
+        
+        // Manual input option
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: lightGreen.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: darkGreen.withOpacity(0.3)),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.edit, color: darkGreen, size: 20),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: _heightController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'Enter height (cm)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  style: GoogleFonts.poppins(fontSize: 16),
+                  onChanged: (value) {
+                    final height = double.tryParse(value);
+                    if (height != null && height >= 100 && height <= 220) {
+                      setState(() => _height = height);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final height = double.tryParse(_heightController.text);
+                  if (height != null && height >= 100 && height <= 220) {
+                    setState(() => _height = height);
+                    _heightController.clear();
+                    HapticFeedback.mediumImpact();
+                  } else {
+                    _showError('Please enter a height between 100-220 cm');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: darkGreen,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+                child: Text('Set', style: GoogleFonts.poppins(color: Colors.white, fontSize: 14)),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _weightInteractiveStep() {
+  Widget _weightInteractiveStep(bool isTablet, bool isSmallScreen) {
     if (_gender == null) {
       return Center(
         child: Text('Please select gender first',
@@ -874,12 +953,12 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
 
     return Column(
       children: [
-        _stepTitle('What is your current weight?'),
-        _stepSubtitle('Drag the character left or right'),
-        const SizedBox(height: 32),
+        _stepTitle('What is your current weight?', isTablet, isSmallScreen),
+        _stepSubtitle('Drag the character left or right', isTablet, isSmallScreen),
+        SizedBox(height: isSmallScreen ? 24 : 32),
         
         Container(
-          height: 400,
+          height: isSmallScreen ? 320 : 400,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -907,13 +986,13 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
                 child: Text(
                   '${_weight.toStringAsFixed(1)} kg',
                   style: GoogleFonts.poppins(
-                    fontSize: 32,
+                    fontSize: isSmallScreen ? 24 : 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: isSmallScreen ? 24 : 32),
               Expanded(
                 child: Stack(
                   children: [
@@ -961,7 +1040,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
                           },
                           child: Text(
                             _gender == 'Male' ? '🧍‍♂️' : '🧍‍♀️',
-                            style: const TextStyle(fontSize: 80),
+                            style: TextStyle(fontSize: isSmallScreen ? 60 : 80),
                           ),
                         ),
                       ),
@@ -980,11 +1059,71 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
             ],
           ),
         ),
+        
+        const SizedBox(height: 20),
+        
+        // Manual input option
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: lightGreen.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: darkGreen.withOpacity(0.3)),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.edit, color: darkGreen, size: 20),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: _weightController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'Enter weight (kg)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  style: GoogleFonts.poppins(fontSize: 16),
+                  onChanged: (value) {
+                    final weight = double.tryParse(value);
+                    if (weight != null && weight >= 30 && weight <= 200) {
+                      setState(() => _weight = weight);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final weight = double.tryParse(_weightController.text);
+                  if (weight != null && weight >= 30 && weight <= 200) {
+                    setState(() => _weight = weight);
+                    _weightController.clear();
+                    HapticFeedback.mediumImpact();
+                  } else {
+                    _showError('Please enter a weight between 30-200 kg');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: darkGreen,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+                child: Text('Set', style: GoogleFonts.poppins(color: Colors.white, fontSize: 14)),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _bmiResultsStep() {
+  Widget _bmiResultsStep(bool isTablet, bool isSmallScreen) {
     final bmi = _calculateBMI(_height, _weight);
     final bmiCategory = _getBMICategory(bmi);
     final bmiColor = _getBMIColor(bmiCategory);
@@ -1221,7 +1360,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     }
   }
 
-  Widget _goalStep() {
+  Widget _goalStep(bool isTablet, bool isSmallScreen) {
     final bmi = _calculateBMI(_height, _weight);
     final bmiCategory = _getBMICategory(bmi);
     final recommendedGoal = _getRecommendedGoal(bmiCategory);
@@ -1237,8 +1376,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
 
     return Column(
       children: [
-        _stepTitle('What is your dietary goal?'),
-        _stepSubtitle('Based on your BMI (${bmi.toStringAsFixed(1)}), we recommend ${recommendedGoal.toLowerCase()}'),
+        _stepTitle('What is your dietary goal?', isTablet, isSmallScreen),
+        _stepSubtitle('Based on your BMI (${bmi.toStringAsFixed(1)}), we recommend ${recommendedGoal.toLowerCase()}', isTablet, isSmallScreen),
         const SizedBox(height: 40),
         
         // Show recommendation banner
@@ -1317,7 +1456,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _targetWeightStep() {
+  Widget _targetWeightStep(bool isTablet, bool isSmallScreen) {
     final minWeight = _getHealthyWeightMin();
     final maxWeight = _getHealthyWeightMax();
     final recommendedWeight = _getRecommendedWeight();
@@ -1327,8 +1466,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     
     return Column(
       children: [
-        _stepTitle('What is your target weight?'),
-        _stepSubtitle('Set a realistic goal based on your BMI'),
+        _stepTitle('What is your target weight?', isTablet, isSmallScreen),
+        _stepSubtitle('Set a realistic goal based on your BMI', isTablet, isSmallScreen),
         const SizedBox(height: 32),
         
         if (_targetWeight == null) ...[
@@ -1566,7 +1705,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     return 24.9 * (heightM * heightM);
   }
 
-  Widget _activityStep() {
+  Widget _activityStep(bool isTablet, bool isSmallScreen) {
     final activities = [
       {'title': 'Sedentary', 'subtitle': 'Little to no exercise', 
         'icon': Icons.chair, 'value': 'Sedentary'},
@@ -1580,7 +1719,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
 
     return Column(
       children: [
-        _stepTitle('What is your activity level?'),
+        _stepTitle('What is your activity level?', isTablet, isSmallScreen),
         const SizedBox(height: 40),
         ...activities.map((activity) => Padding(
           padding: const EdgeInsets.only(bottom: 16),
@@ -1599,15 +1738,15 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _conditionsStep() {
+  Widget _conditionsStep(bool isTablet, bool isSmallScreen) {
     final conditions = [
       'Diabetes', 'Hypertension', 'CKD', 'Hyperlipidemia', 'None'
     ];
     
     return Column(
       children: [
-        _stepTitle('Do you have any health conditions?'),
-        _stepSubtitle('Select all that apply'),
+        _stepTitle('Do you have any health conditions?', isTablet, isSmallScreen),
+        _stepSubtitle('Select all that apply', isTablet, isSmallScreen),
         const SizedBox(height: 40),
         Wrap(
           spacing: 12,
@@ -1642,7 +1781,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _restrictionsStep() {
+  Widget _restrictionsStep(bool isTablet, bool isSmallScreen) {
     final restrictions = [
       'Vegetarian', 'Vegan', 'Dairy-free', 
       'Nut allergy', 'Gluten-free', 'Pork-free', 'None'
@@ -1650,8 +1789,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     
     return Column(
       children: [
-        _stepTitle('Any dietary restrictions?'),
-        _stepSubtitle('Select all that apply (optional)'),
+        _stepTitle('Any dietary restrictions?', isTablet, isSmallScreen),
+        _stepSubtitle('Select all that apply (optional)', isTablet, isSmallScreen),
         const SizedBox(height: 40),
         Wrap(
           spacing: 12,
@@ -1686,7 +1825,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _mealsPerDayStep() {
+  Widget _mealsPerDayStep(bool isTablet, bool isSmallScreen) {
     final mealOptions = [
       {'title': '2 Meals', 'subtitle': 'Intermittent fasting style', 
         'icon': Icons.restaurant, 'value': 2},
@@ -1694,14 +1833,12 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
         'icon': Icons.restaurant_menu, 'value': 3},
       {'title': '4 Meals', 'subtitle': '3 meals + 1 snack', 
         'icon': Icons.local_dining, 'value': 4},
-      {'title': '5-6 Meals', 'subtitle': 'Small frequent meals', 
-        'icon': Icons.fastfood, 'value': 6},
     ];
 
     return Column(
       children: [
-        _stepTitle('How many meals per day?'),
-        _stepSubtitle('Choose your preferred eating schedule'),
+        _stepTitle('How many meals per day?', isTablet, isSmallScreen),
+        _stepSubtitle('Choose your preferred eating schedule', isTablet, isSmallScreen),
         const SizedBox(height: 40),
         ...mealOptions.map((option) => Padding(
           padding: const EdgeInsets.only(bottom: 16),
@@ -1720,7 +1857,7 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     );
   }
 
-  Widget _mealPreferencesStep() {
+  Widget _mealPreferencesStep(bool isTablet, bool isSmallScreen) {
     final preferences = [
       'Home-cooked meals',
       'Quick & easy recipes',
@@ -1734,8 +1871,8 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
     
     return Column(
       children: [
-        _stepTitle('Meal preferences'),
-        _stepSubtitle('What type of meals do you prefer? (Select all that apply)'),
+        _stepTitle('Meal preferences', isTablet, isSmallScreen),
+        _stepSubtitle('What type of meals do you prefer? (Select all that apply)', isTablet, isSmallScreen),
         const SizedBox(height: 40),
         Wrap(
           spacing: 12,
@@ -1804,23 +1941,23 @@ class _OnboardingFlowScreenState extends State<OnboardingFlowScreen> with Single
   }
 
   // Helper widgets
-  Widget _stepTitle(String title) {
+  Widget _stepTitle(String title, bool isTablet, bool isSmallScreen) {
     return Text(title,
       textAlign: TextAlign.center,
       style: GoogleFonts.poppins(
-        fontSize: 26,
+        fontSize: isSmallScreen ? 20 : (isTablet ? 30 : 26),
         fontWeight: FontWeight.bold,
         color: darkGreen,
       ));
   }
 
-  Widget _stepSubtitle(String subtitle) {
+  Widget _stepSubtitle(String subtitle, bool isTablet, bool isSmallScreen) {
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: Text(subtitle,
         textAlign: TextAlign.center,
         style: GoogleFonts.poppins(
-          fontSize: 15,
+          fontSize: isSmallScreen ? 13 : 15,
           color: Colors.grey.shade600,
         )),
     );

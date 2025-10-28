@@ -417,6 +417,7 @@ class _MealPlansManagementScreenState extends State<MealPlansManagementScreen> {
                           startDate: startDate,
                           endDate: endDate,
                           isActive: plan?.isActive ?? true,
+                          mealsPerDay: plan?.mealsPerDay ?? 3, // Use existing value or default to 3
                           createdAt: plan?.createdAt ?? DateTime.now(),
                           updatedAt: DateTime.now(),
                         );

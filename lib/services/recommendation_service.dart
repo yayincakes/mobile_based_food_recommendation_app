@@ -711,7 +711,7 @@ class RecommendationService {
   static int _getMealFrequency(UserProfile userProfile) {
     // Check if user has meal preferences that indicate frequency
     if (userProfile.preferences.contains('Small frequent meals')) {
-      return 6; // 5-6 meals
+      return 4; // 4 meals
     } else if (userProfile.preferences.contains('Intermittent fasting')) {
       return 2; // 2 meals
     } else {

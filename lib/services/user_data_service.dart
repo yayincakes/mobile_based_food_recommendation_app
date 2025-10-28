@@ -37,6 +37,7 @@ class UserDataService {
         bmiCategory: bmiCategory,
         healthConditions: await _getHealthConditions(prefs),
         restrictions: await _getRestrictions(prefs),
+        mealPreferences: await _getMealPreferences(prefs),
       );
     } catch (e) {
       return null;
@@ -62,6 +63,7 @@ class UserDataService {
       
       await prefs.setString('healthConditions', json.encode(profile.healthConditions));
       await prefs.setString('restrictions', json.encode(profile.restrictions));
+      await prefs.setString('mealPreferences', json.encode(profile.mealPreferences));
       
       return true;
     } catch (e) {
@@ -148,6 +150,18 @@ class UserDataService {
       return [];
     }
   }
+  
+  static Future<List<String>> _getMealPreferences(SharedPreferences prefs) async {
+    try {
+      final preferencesJson = prefs.getString('mealPreferences');
+      if (preferencesJson != null) {
+        return List<String>.from(json.decode(preferencesJson));
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
 // User profile data model
@@ -164,6 +178,7 @@ class UserProfileData {
   final String bmiCategory;
   final List<String> healthConditions;
   final List<String> restrictions;
+  final List<String> mealPreferences;
   
   UserProfileData({
     required this.name,
@@ -178,5 +193,6 @@ class UserProfileData {
     required this.bmiCategory,
     required this.healthConditions,
     required this.restrictions,
+    this.mealPreferences = const [],
   });
 }

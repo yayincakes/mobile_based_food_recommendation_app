@@ -275,6 +275,8 @@ class MealPlan {
   final DateTime startDate;
   final DateTime endDate;
   final bool isActive;
+  final List<String> mealPreferences;
+  final int mealsPerDay;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -285,6 +287,8 @@ class MealPlan {
     required this.startDate,
     required this.endDate,
     required this.isActive,
+    this.mealPreferences = const [],
+    this.mealsPerDay = 3,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -297,6 +301,10 @@ class MealPlan {
       startDate: DateTime.parse(json['start_date']),
       endDate: DateTime.parse(json['end_date']),
       isActive: json['is_active'] ?? true,
+      mealPreferences: (json['meal_preferences'] as List<dynamic>?)
+          ?.map((pref) => pref.toString())
+          .toList() ?? [],
+      mealsPerDay: json['meals_per_day'] ?? 3,
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );
@@ -310,6 +318,8 @@ class MealPlan {
       'start_date': startDate.toIso8601String(),
       'end_date': endDate.toIso8601String(),
       'is_active': isActive,
+      'meal_preferences': mealPreferences,
+      'meals_per_day': mealsPerDay,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
     };
