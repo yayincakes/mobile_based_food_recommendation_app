@@ -3,12 +3,6 @@
   "buildCommand": "flutter build web --release",
   "outputDirectory": "build/web",
   "installCommand": "flutter pub get",
-  "builds": [
-    {
-      "src": "build/web/**",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
