@@ -1,11 +1,5 @@
 {
-  "name": "food-recommendation-app",
-  "version": "1.0.0",
   "scripts": {
-    "build": "flutter build web --release",
-    "dev": "flutter run -d web-server --web-port 3000"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "build": "flutter build web --release"
   }
 }
