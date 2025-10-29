@@ -1,16 +1,7 @@
 {
   "name": "food-recommendation-app",
   "version": "1.0.0",
-  "description": "A Flutter food recommendation app with Filipino cuisine",
   "scripts": {
-    "build": "bash -c 'curl -o flutter_linux_3.16.0-stable.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.0-stable.tar.xz && tar xf flutter_linux_3.16.0-stable.tar.xz && export PATH=\"$PWD/flutter/bin:$PATH\" && flutter --version && flutter pub get && flutter build web --release'",
-    "start": "flutter run -d web-server --web-port 3000",
-    "dev": "flutter run -d web-server --web-port 3000 --hot",
-    "install-flutter": "curl -o flutter_linux_3.16.0-stable.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.0-stable.tar.xz && tar xf flutter_linux_3.16.0-stable.tar.xz"
-  },
-  "dependencies": {},
-  "devDependencies": {},
-  "engines": {
-    "node": ">=16.0.0"
+    "build": "flutter build web --release"
   }
 }
