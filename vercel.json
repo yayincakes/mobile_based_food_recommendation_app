@@ -1,24 +1,18 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "build/web",
-  "framework": null,
-  "installCommand": "npm install",
-  "devCommand": "npm run dev",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    }
-  ]
-}
+    "version": 2,
+    "buildCommand": "flutter build web --release",
+    "outputDirectory": "build/web",
+    "installCommand": "flutter pub get",
+    "builds": [
+      {
+        "src": "build/web/**",
+        "use": "@vercel/static"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
+      }
+    ]
+  }
