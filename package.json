@@ -1,5 +1,15 @@
 {
+  "name": "food-recommendation-app",
+  "version": "1.0.0",
+  "description": "A Flutter food recommendation app with Filipino cuisine",
   "scripts": {
-    "build": "flutter build web --release"
+    "build": "flutter build web --release",
+    "start": "flutter run -d web-server --web-port 3000",
+    "dev": "flutter run -d web-server --web-port 3000 --hot"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
